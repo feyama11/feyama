@@ -1,0 +1,20 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "Sobre mim:",
+      "description": "Sou estudante de Estatística na Universidade Estadual de Maringá (UEM),\napaixonado por números e dados e em constante aprendizado na área.",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2025-05-29T17:23:47-03:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Statistics & Data Science",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2025-05-29T17:23:53-03:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}
