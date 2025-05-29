@@ -1,0 +1,4 @@
+"0","bayes_wflow <-"
+"0","  workflow() %>%"
+"0","  add_formula(class ~ .) %>%"
+"0","  add_model(naive_Bayes())"

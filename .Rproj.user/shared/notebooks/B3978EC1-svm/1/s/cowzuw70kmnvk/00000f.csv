@@ -1,0 +1,6 @@
+"0","# Ajusta o modelo SVM com núcleo radial, gamma = 1 e custo muito alto (1e5) para reduzir erros de treinamento"
+"0","svmfit <- svm(y ~ ., data = dat[train, ], kernel = ""radial"", gamma = 1, cost = 1e5)"
+"0",""
+"0","# Plota a decisão do modelo SVM para os dados de treinamento com o novo valor de custo"
+"0","plot(svmfit, dat[train, ])"
+"0",""

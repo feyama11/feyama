@@ -1,0 +1,8 @@
+"0","# Agrupe os dados por 'work_tools', resuma as contagens e organize em ordem decrescente"
+"0","tool_count  <- tools  %>% "
+"0","    group_by(work_tools)  %>% "
+"0","    summarise(count = n()) %>%"
+"0","    arrange(desc(count))"
+"0",""
+"0","# primeiras linhas do resultado"
+"0","head(tool_count)"

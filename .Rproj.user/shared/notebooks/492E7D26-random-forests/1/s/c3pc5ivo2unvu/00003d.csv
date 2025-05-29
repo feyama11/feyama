@@ -1,0 +1,4 @@
+"0","rf_last_fit %>%"
+"0","  collect_predictions() %>%"
+"0","  roc_curve(is_legendary, .pred_0) %>%"
+"0","  autoplot()"

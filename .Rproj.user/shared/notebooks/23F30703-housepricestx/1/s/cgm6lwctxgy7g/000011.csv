@@ -1,0 +1,32 @@
+"0","library(finetune)"
+"0","library(doParallel)"
+"0","cores <- parallel::detectCores()"
+"0","cl <- makePSOCKcluster(cores)"
+"0","registerDoParallel(cl)"
+"0",""
+"0","set.seed(234)"
+"0","xgb_word_rs <-"
+"0","  tune_race_anova("
+"0","    xgb_word_wf,"
+"0","    austin_folds,"
+"0","    grid = xgb_grid,"
+"0","    metrics = metric_set(mn_log_loss),"
+"0","    control = control_race(verbose_elim = TRUE)"
+"0","  )"
+"1","[30mℹ Racing will minimize the mn_log_loss metric.[39m
+"
+"1","[30mℹ Resamples are analyzed in a random order.[39m
+"
+"1","[30mℹ Fold5: 15 eliminated; 5 candidates remain.[39m
+"
+"1","[30mℹ Fold4: 3 eliminated; 2 candidates remain.[39m
+"
+"0","xgb_word_rs"
+"1","# Tuning results
+"
+"1","#"
+"1"," "
+"1","5-fold cross-validation using stratification"
+"1"," "
+"1","
+"

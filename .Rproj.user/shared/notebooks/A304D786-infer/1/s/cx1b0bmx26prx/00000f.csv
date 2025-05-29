@@ -1,0 +1,4 @@
+"0","# Gerar a distribuição nula por meio de uma aproximação teórica."
+"0","null_dist_theory <- gss %>%"
+"0","  specify(college ~ finrela) %>%"
+"0","  assume(distribution = ""Chisq"")"

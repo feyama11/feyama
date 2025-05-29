@@ -1,0 +1,37 @@
+"0","```r
+summary(win_mod)
+```"
+"1","
+Call:
+lm(formula = winpercent ~ . - competitorname, data = candy_rankings)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-20.2244  -6.6247   0.1986   6.8420  23.8680 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           34.5340     4.3199   7.994 1.44e-11 ***
+chocolateTRUE         19.7481     3.8987   5.065 2.96e-06 ***
+fruityTRUE             9.4223     3.7630   2.504  0.01452 *  
+caramelTRUE            2.2245     3.6574   0.608  0.54493    
+peanutyalmondyTRUE    10.0707     3.6158   2.785  0.00681 ** 
+nougatTRUE             0.8043     5.7164   0.141  0.88849    
+crispedricewaferTRUE   8.9190     5.2679   1.693  0.09470 .  
+hardTRUE              -6.1653     3.4551  -1.784  0.07852 .  
+barTRUE                0.4415     5.0611   0.087  0.93072    
+pluribusTRUE          -0.8545     3.0401  -0.281  0.77945    
+sugarpercent           9.0868     4.6595   1.950  0.05500 .  
+pricepercent          -5.9284     5.5132  -1.075  0.28578    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 10.7 on 73 degrees of freedom
+Multiple R-squared:  0.5402,	Adjusted R-squared:  0.4709 
+F-statistic: 7.797 on 11 and 73 DF,  p-value: 9.504e-09
+"
+"0","```r
+ggplot(augment(win_mod), aes(x = .fitted, y = .resid)) +
+       geom_point() +
+       geom_hline(yintercept = 0)
+```"

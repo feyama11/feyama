@@ -1,0 +1,6 @@
+"0","# gerar a distribuição nula com randomização"
+"0","null_dist_2_sample <- gss %>%"
+"0","  specify(hours ~ college) %>%"
+"0","  hypothesize(null = ""independence"") %>%"
+"0","  generate(reps = 1000, type = ""permute"") %>%"
+"0","  calculate(stat = ""diff in means"", order = c(""degree"", ""no degree""))"

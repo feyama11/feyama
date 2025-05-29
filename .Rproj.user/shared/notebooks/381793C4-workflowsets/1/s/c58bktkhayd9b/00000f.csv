@@ -1,0 +1,8 @@
+"0","final_fit <-"
+"0","  extract_workflow(pumpkin_rs, ""recipe_4_lm_bayes"") %>%"
+"0","  finalize_workflow("
+"0","    pumpkin_rs %>%"
+"0","      extract_workflow_set_result(""recipe_4_lm_bayes"") %>%"
+"0","      select_best(metric = ""rmse"")"
+"0","  ) %>%"
+"0","  last_fit(split = pumpkin_split)"

@@ -1,0 +1,6 @@
+"0","rpart.plot( final_fit_reg$fit$fit$fit )
+"
+"2","Warning: Cannot retrieve the data used to build the model (so cannot determine roundint and is.binary for the variables).
+To silence this warning:
+    Call rpart.plot with roundint=FALSE,
+    or rebuild the rpart model with model=TRUE."

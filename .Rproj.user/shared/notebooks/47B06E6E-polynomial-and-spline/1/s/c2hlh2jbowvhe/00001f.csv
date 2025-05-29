@@ -1,0 +1,6 @@
+"0",""
+"0","# Fit with all data"
+"0","ns_mod <- fit("
+"0","  ns_wflow, #workflow"
+"0","  data = college"
+"0",")"

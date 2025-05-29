@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Lasso &amp; Ridge Regression</title>
+
+  <meta property="description" itemprop="description" content="Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-01-06"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-01-06"/>
+  <meta name="article:author" content="Felipe Yamamoto Tenedine"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Lasso &amp; Ridge Regression"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Lasso &amp; Ridge Regression"/>
+  <meta property="twitter:description" content="Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","preview","date","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Lasso & Ridge Regression"]},{"type":"character","attributes":{},"value":["Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Felipe Yamamoto Tenedine"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/felipe-yamamoto-tenedine/"]}]}]},{"type":"character","attributes":{},"value":["regularization.jpg"]},{"type":"character","attributes":{},"value":["2024-01-06"]},{"type":"character","attributes":{},"value":["estatistica","lasso","ridge","regressão","regularização","machine learning","R","tidymodels"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","toc_float","toc_collapsed","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["images/clipboard-1032827121.png","images/clipboard-1699057498.png","images/clipboard-2511830211.png","images/clipboard-2561616505.png","images/clipboard-843206345.png","lasso-and-ridge_files/anchor-4.2.2/anchor.min.js","lasso-and-ridge_files/bowser-1.9.3/bowser.min.js","lasso-and-ridge_files/distill-2.2.21/template.v2.js","lasso-and-ridge_files/figure-html5/unnamed-chunk-12-1.png","lasso-and-ridge_files/figure-html5/unnamed-chunk-14-1.png","lasso-and-ridge_files/figure-html5/unnamed-chunk-6-1.png","lasso-and-ridge_files/header-attrs-2.25/header-attrs.js","lasso-and-ridge_files/jquery-3.6.0/jquery-3.6.0.js","lasso-and-ridge_files/jquery-3.6.0/jquery-3.6.0.min.js","lasso-and-ridge_files/jquery-3.6.0/jquery-3.6.0.min.map","lasso-and-ridge_files/popper-2.6.0/popper.min.js","lasso-and-ridge_files/tippy-6.2.7/tippy-bundle.umd.min.js","lasso-and-ridge_files/tippy-6.2.7/tippy-light-border.css","lasso-and-ridge_files/tippy-6.2.7/tippy.css","lasso-and-ridge_files/tippy-6.2.7/tippy.umd.min.js","lasso-and-ridge_files/webcomponents-2.0.0/webcomponents.js","regularization.jpg"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="lasso-and-ridge_files/header-attrs-2.25/header-attrs.js"></script>
+  <script src="lasso-and-ridge_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="lasso-and-ridge_files/popper-2.6.0/popper.min.js"></script>
+  <link href="lasso-and-ridge_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="lasso-and-ridge_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="lasso-and-ridge_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="lasso-and-ridge_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="lasso-and-ridge_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="lasso-and-ridge_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="lasso-and-ridge_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Lasso & Ridge Regression","description":"Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels.","authors":[{"author":"Felipe Yamamoto Tenedine","authorURL":"https://www.linkedin.com/in/felipe-yamamoto-tenedine/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-01-06T00:00:00.000-03:00","citationText":"Tenedine, 2024"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Lasso &amp; Ridge Regression</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">estatistica</div>
+<div class="dt-tag">lasso</div>
+<div class="dt-tag">ridge</div>
+<div class="dt-tag">regressão</div>
+<div class="dt-tag">regularização</div>
+<div class="dt-tag">machine learning</div>
+<div class="dt-tag">R</div>
+<div class="dt-tag">tidymodels</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Iremos além da regressão linear com coeficientes obtidos por mínimos quadrados. Vamos aprender sobre seleção de variáveis e regularização com as regressões de Ridge e Lasso e vamos aplicar em um conjunto de dados sobre a série The Office, utilizando o pacote tidymodels.</p></p>
+</div>
+
+<div class="d-byline">
+  Felipe Yamamoto Tenedine <a href="https://www.linkedin.com/in/felipe-yamamoto-tenedine/" class="uri">https://www.linkedin.com/in/felipe-yamamoto-tenedine/</a> 
+  
+<br/>2024-01-06
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#teoria" id="toc-teoria">Teoria</a>
+<ul>
+<li><a href="#seleção-de-modelo-linear-e-regularização" id="toc-seleção-de-modelo-linear-e-regularização">Seleção de Modelo Linear e Regularização</a></li>
+<li><a href="#seleção-de-subconjunto" id="toc-seleção-de-subconjunto">Seleção de Subconjunto</a>
+<ul>
+<li><a href="#seleção-do-melhor-subconjunto" id="toc-seleção-do-melhor-subconjunto">Seleção do Melhor Subconjunto</a></li>
+<li><a href="#seleção-stepwise" id="toc-seleção-stepwise">Seleção Stepwise</a></li>
+<li><a href="#escolhendo-o-melhor-modelo" id="toc-escolhendo-o-melhor-modelo">Escolhendo o melhor modelo</a></li>
+</ul></li>
+<li><a href="#métodos-de-redução" id="toc-métodos-de-redução">Métodos de Redução</a>
+<ul>
+<li><a href="#ridge-regression" id="toc-ridge-regression">Ridge Regression</a></li>
+<li><a href="#lasso-regression" id="toc-lasso-regression">Lasso Regression</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#prática" id="toc-prática">Prática</a>
+<ul>
+<li><a href="#análise-exploratória" id="toc-análise-exploratória">Análise Exploratória</a></li>
+<li><a href="#modelagem" id="toc-modelagem">Modelagem</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h1 id="teoria">Teoria</h1>
+<h2 id="seleção-de-modelo-linear-e-regularização">Seleção de Modelo Linear e Regularização</h2>
+<p>O modelo de regressão linear, expresso pela equação <span class="math inline">\(Y = β_0 + β_1X_1 + ··· + β_pX_p + \epsilon\)</span> descreve a relação entre uma resposta (Y) e um conjunto de variáveis explicativas <span class="math inline">\((X_1, X_2,...,X_p)\)</span>. Esse modelo é comumente ajustado usando o método de mínimos quadrados. No entanto, para melhorar a precisão da previsão e a interpretabilidade do modelo, são exploradas outras abordagens de ajuste além dos mínimos quadrados.</p>
+<p>Existem duas principais razões para utilizar procedimentos de ajuste diferentes dos mínimos quadrados:</p>
+<ul>
+<li><p><strong>Precisão da Previsão:</strong> Quando a relação entre a resposta e as variáveis é aproximadamente linear, os mínimos quadrados tendem a ter baixo viés. Se o número de observações (<span class="math inline">\(n\)</span>) é muito maior que o número de variáveis (<span class="math inline">\(p\)</span>), os mínimos quadrados também tendem a ter baixa variância, funcionando bem em observações de teste. Contudo, se <span class="math inline">\(n\)</span> não for muito maior que <span class="math inline">\(p\)</span>, pode haver sobreajuste, resultando em previsões imprecisas em dados futuros não utilizados no treinamento do modelo. Se <span class="math inline">\(p &gt; n\)</span>, não existe mais uma solução única de mínimos quadrados, levando a muitas soluções com erro zero nos dados de treinamento, mas com desempenho ruim nos dados de teste.</p></li>
+<li><p><strong>Interpretabilidade do Modelo:</strong> Muitas vezes, algumas variáveis usadas no modelo de regressão múltipla não estão realmente relacionadas à resposta. Incluir tais variáveis irrelevantes resulta em complexidade desnecessária no modelo. Eliminando essas variáveis, ou seja, definindo os coeficientes correspondentes como zero, é possível obter um modelo mais facilmente interpretável.</p></li>
+</ul>
+<p>Há três classes importantes de métodos alternativos aos mínimos quadrados para ajustar o modelo de regressão:</p>
+<ul>
+<li><p><strong>Seleção de Subconjunto:</strong> Identificação de um subconjunto das <span class="math inline">\(p\)</span> variáveis consideradas relevantes para a resposta e ajuste do modelo usando mínimos quadrados com esse subconjunto reduzido de variáveis.</p></li>
+<li><p><strong>Encolhimento:</strong> Ajuste de um modelo com todas as <span class="math inline">\(p\)</span> variáveis, mas com os coeficientes estimados encolhidos em direção a zero em relação aos estimados pelos mínimos quadrados. Esse encolhimento reduz a variância e pode levar a alguns coeficientes estimados como exatamente zero, realizando também seleção de variáveis.</p></li>
+<li><p><strong>Redução de Dimensão:</strong> Projeção das <span class="math inline">\(p\)</span> variáveis em um subespaço de dimensão <span class="math inline">\(M\)</span>, onde <span class="math inline">\(M &lt; p\)</span>. Isso é feito calculando <span class="math inline">\(M\)</span> combinações lineares diferentes das variáveis e usando essas projeções como preditores para ajustar um modelo de regressão linear pelos mínimos quadrados.</p></li>
+</ul>
+<p>Cada uma dessas abordagens possui vantagens e desvantagens, que serão discutidas.</p>
+<h2 id="seleção-de-subconjunto">Seleção de Subconjunto</h2>
+<h3 id="seleção-do-melhor-subconjunto">Seleção do Melhor Subconjunto</h3>
+<p>Para realizar a seleção do melhor subconjunto, ajustamos uma regressão de mínimos quadrados separada para cada possível combinação dos <span class="math inline">\(p\)</span> preditores. Isso significa ajustar todos os modelos que contêm exatamente um preditor, todos os modelos que contêm exatamente dois preditores e assim por diante, até um máximo de <span class="math inline">\(p\)</span> modelos. O objetivo é identificar o modelo que melhor se ajusta aos dados.</p>
+<p>O desafio de escolher o melhor modelo dentre as <span class="math inline">\(2^p\)</span> possibilidades consideradas pela seleção do melhor subconjunto não é trivial. Geralmente, esse processo é dividido em duas etapas, conforme descrito no Algoritmo 1 abaixo.</p>
+<p>—————————————————————————————————————————————— <strong>Algoritmo 1.</strong> Seleção do Melhor Subconjunto ——————————————————————————————————————————————</p>
+<ul>
+<li><p>Começamos com o modelo nulo <span class="math inline">\((M_0)\)</span>, que não possui preditores, apenas prevê a média amostral para cada observação.</p></li>
+<li><p>Para cada tamanho de subconjunto <span class="math inline">\(k = 1, 2,...p\)</span>:</p></li>
+</ul>
+<ol type="a">
+<li><p>Ajustamos todos os modelos que contêm exatamente k preditores.</p></li>
+<li><p>Selecionamos o melhor modelo entre esses, chamado de <span class="math inline">\(M_k\)</span>, baseado na métrica de menor soma dos quadrados residuais (RSS) ou maior coeficiente de determinação (R²).</p></li>
+</ol>
+<ul>
+<li>Selecionamos um único melhor modelo entre <span class="math inline">\(M_0\)</span> até <span class="math inline">\(M_p\)</span> usando o erro de previsão em um conjunto de validação, Critério de Informação de Akaike (AIC), Critério de Informação Bayesiano (BIC), R² ajustado ou usando métodos de validação cruzada.</li>
+</ul>
+<p>——————————————————————————————————————————————</p>
+<p>O algoritmo identifica o melhor modelo para cada tamanho de subconjunto nos dados de treinamento, reduzindo o número de modelos considerados de <span class="math inline">\(2^p\)</span> para <span class="math inline">\(p + 1\)</span>. Em seguida, escolhemos o melhor modelo dentre essas opções usando uma métrica de desempenho em um conjunto de validação.</p>
+<p><strong>Aplicações e Limitações</strong></p>
+<p>A seleção do melhor subconjunto é ilustrada na figura 1 em um exemplo com 10 preditores no conjunto de dados “Credit”. Cada ponto no gráfico representa um modelo de regressão de mínimos quadrados usando um subconjunto diferente de preditores. As curvas vermelhas conectam os melhores modelos para cada tamanho de modelo, de acordo com o RSS ou R².</p>
+<p>Embora a seleção do melhor subconjunto seja uma abordagem simples e conceitualmente atrativa, ela enfrenta limitações computacionais. O número de modelos a serem considerados aumenta rapidamente com o número de preditores (<span class="math inline">\(2^p\)</span> modelos para <span class="math inline">\(p\)</span> preditores), tornando-se impraticável para <span class="math inline">\(p\)</span> grande. Para <span class="math inline">\(p = 10\)</span>, existem aproximadamente 1.000 modelos possíveis, e para <span class="math inline">\(p = 20\)</span>, existem mais de um milhão de possibilidades. Essa abordagem se torna computacionalmente inviável para <span class="math inline">\(p &gt; 40\)</span>, mesmo com computadores modernos rápidos. Algumas técnicas de otimização computacional podem ajudar a reduzir as escolhas, mas têm limitações em <span class="math inline">\(p\)</span> grandes e só funcionam para regressão linear de mínimos quadrados.</p>
+<p>Essa seleção de subconjunto é ilustrada graficamente, demonstrando como a RSS e o R² mudam conforme o número de preditores varia. É observado que essas métricas melhoram com a inclusão de mais preditores, mas a partir de um certo número de preditores adicionais, há pouca melhoria no ajuste do modelo.</p>
+<figure>
+<img src="images/clipboard-843206345.png" alt="Figura 1. Para cada modelo possível que contenha um subconjunto dos dez preditores no conjunto de dados Credit, são exibidos o RSS (Soma dos Quadrados dos Resíduos) e o R². A fronteira vermelha acompanha o melhor modelo para um determinado número de preditores, de acordo com o RSS e o R². Apesar do conjunto de dados conter apenas dez preditores, o eixo x varia de 1 a 11, pois uma das variáveis é categórica e assume três valores, levando à criação de dois variáveis dummy." />
+<figcaption aria-hidden="true"><strong>Figura 1.</strong> Para cada modelo possível que contenha um subconjunto dos dez preditores no conjunto de dados Credit, são exibidos o RSS (Soma dos Quadrados dos Resíduos) e o R². A fronteira vermelha acompanha o melhor modelo para um determinado número de preditores, de acordo com o RSS e o R². Apesar do conjunto de dados conter apenas dez preditores, o eixo x varia de 1 a 11, pois uma das variáveis é categórica e assume três valores, levando à criação de dois variáveis dummy.</figcaption>
+</figure>
+<h3 id="seleção-stepwise">Seleção Stepwise</h3>
+<p>Por questões computacionais, a seleção do melhor subconjunto não pode ser aplicada com um <span class="math inline">\(p\)</span>(número de preditores) muito grande. A seleção do melhor subconjunto também pode enfrentar problemas estatísticos quando <span class="math inline">\(p\)</span> é grande. Quanto maior o espaço de busca, maior a chance de encontrar modelos que parecem bons nos dados de treinamento, mesmo que possam não ter poder de previsão em dados futuros. Portanto, um espaço de busca enorme pode levar ao overfitting e alta variância das estimativas dos coeficientes.</p>
+<p>Por esses motivos, os métodos stepwise, que exploram um conjunto de modelos muito mais restrito, são alternativas atraentes à seleção do melhor subconjunto.</p>
+<p><strong>Forward Stepwise Selection</strong></p>
+<p>A seleção stepwise progressiva é uma alternativa computacionalmente eficiente à melhor seleção de subconjuntos. Enquanto a melhor seleção de subconjuntos considera todos os <span class="math inline">\(2^p\)</span> modelos possíveis que contêm subconjuntos dos <span class="math inline">\(p\)</span> preditores, a seleção progressiva considera um conjunto muito menor de modelos. Ela começa com um modelo sem preditores e adiciona preditores ao modelo, um de cada vez, até que todos os preditores estejam no modelo. Em cada etapa, é adicionada ao modelo a variável que proporciona a maior melhoria adicional ao ajuste. Em termos mais formais, o procedimento de seleção progressiva passo a passo é definido no Algoritmo 2.</p>
+<p>—————————————————————————————————————————————— <strong>Algoritmo 2.</strong> Forward stepwise selection ——————————————————————————————————————————————</p>
+<ul>
+<li><p>Dado que <span class="math inline">\(M_0\)</span> represente o modelo nulo, que não contém preditores.</p></li>
+<li><p>Para <span class="math inline">\(k = 0,...,p − 1:\)</span></p></li>
+</ul>
+<ol type="a">
+<li><p>Considere todos os <span class="math inline">\(p − k\)</span> modelos que aumentam os preditores em <span class="math inline">\(M_k\)</span> com um preditor adicional.</p></li>
+<li><p>Escolha o melhor entre esses <span class="math inline">\(p − k\)</span> modelos e o chame de <span class="math inline">\(M_{k+1}\)</span>. Aqui, “melhor” é definido como tendo o menor RSS ou o maior R².</p></li>
+</ol>
+<ul>
+<li>Selecione um único melhor modelo dentre <span class="math inline">\(M_0,...,M_p\)</span> usando o erro de previsão em um conjunto de validação, Cp (AIC), BIC ou R² ajustado. Ou utilize o método de validação cruzada.</li>
+</ul>
+<p>——————————————————————————————————————————————</p>
+<p>Ao contrário da melhor seleção de subconjuntos, que envolve ajustar <span class="math inline">\(2^p\)</span> modelos, a seleção progressiva envolve o ajuste de um modelo nulo, juntamente com <span class="math inline">\(p − k\)</span> modelos na iteração <span class="math inline">\(k\)</span>, para <span class="math inline">\(k = 0,...,p − 1\)</span>. Isso totaliza <span class="math inline">\(1 + ∑_{k=0}^{p-1} (p - k) = 1 + \frac{p(p + 1)}{2}\)</span> modelos. Essa diferença é substancial: quando p = 20, a melhor seleção de subconjuntos requer o ajuste de 1.048.576 modelos, enquanto a seleção progressiva para a frente requer apenas 211 modelos.</p>
+<p>No Passo 2(b) do Algoritmo 2, é necessário identificar o melhor modelo entre os <span class="math inline">\(p−k\)</span> que acrescentam um preditor adicional a <span class="math inline">\(M_k\)</span>. Isso pode ser feito simplesmente escolhendo o modelo com o menor RSS ou o maior R². No entanto, no Passo 3, é necessário identificar o melhor modelo entre um conjunto de modelos com diferentes números de variáveis. Isso é mais desafiador e é discutido na próxima seção.</p>
+<p>A vantagem computacional da seleção progressiva sobre a melhor seleção de subconjuntos é clara. Embora a seleção progressiva tenda a se sair bem na prática, não é garantido encontrar o melhor modelo possível entre todos os <span class="math inline">\(2^p\)</span> modelos que contêm subconjuntos dos <span class="math inline">\(p\)</span> preditores. Por exemplo, suponha que, em um determinado conjunto de dados com <span class="math inline">\(p = 3\)</span> preditores, o melhor modelo univariado possível contenha <span class="math inline">\(X_1\)</span>, e o melhor modelo bivariado possível contenha <span class="math inline">\(X_2\)</span> e <span class="math inline">\(X_3\)</span>. Nesse caso, a seleção progressiva falhará em selecionar o melhor modelo bivariado possível, porque <span class="math inline">\(M_1\)</span> conterá <span class="math inline">\(X_1\)</span>, então <span class="math inline">\(M_2\)</span> também deve conter <span class="math inline">\(X_1\)</span> juntamente com um preditor adicional.</p>
+<p>A seleção progressiva pode ser aplicada mesmo em cenários de alta dimensionalidade, onde <span class="math inline">\(n&lt;p\)</span>; no entanto, nesse caso, é possível construir submodelos <span class="math inline">\(M_0,...,M_{n−1}\)</span> apenas, já que cada submodelo é ajustado usando mínimos quadrados, o que não resultará em uma solução única se <span class="math inline">\(p ≥ n\)</span>.</p>
+<p><strong>Backward Stepwise Selection</strong></p>
+<p>Assim como a seleção progressiva, a seleção regressiva fornece uma alternativa eficiente à melhor seleção de subconjuntos. No entanto, ao contrário da seleção progressiva, ela começa com o modelo completo de mínimos quadrados contendo todos os <span class="math inline">\(p\)</span> preditores e, em seguida, remove iterativamente o preditor menos útil, um de cada vez. Detalhes são fornecidos no Algoritmo 3.</p>
+<p>—————————————————————————————————————————————— <strong>Algoritmo 3.</strong> Backward Stepwise Selection ——————————————————————————————————————————————</p>
+<ul>
+<li><p>Dado que <span class="math inline">\(M_p\)</span> denote o modelo completo, que contém todos os p preditores.</p></li>
+<li><p>Para <span class="math inline">\(k = p, p − 1,..., 1\)</span>:</p></li>
+</ul>
+<ol type="a">
+<li><p>Considere todos os <span class="math inline">\(k\)</span> modelos que contêm todos, exceto um dos preditores em <span class="math inline">\(M_k\)</span>, totalizando <span class="math inline">\(k − 1\)</span> preditores.</p></li>
+<li><p>Escolha o melhor entre esses <span class="math inline">\(k\)</span> modelos e o chame de <span class="math inline">\(M_{k−1}\)</span>. Aqui, “melhor” é definido como tendo o menor RSS ou o maior R².</p></li>
+</ol>
+<ul>
+<li>Selecione um único melhor modelo dentre <span class="math inline">\(M_0,...,M_p\)</span> usando o erro de previsão em um conjunto de validação, Cp (AIC), BIC ou R² ajustado. Ou utilize o método de validação cruzada.</li>
+</ul>
+<p>——————————————————————————————————————————————</p>
+<p>A abordagem de seleção regressiva, assim como a seleção progressiva, examina apenas <span class="math inline">\(1 + \frac{p(p + 1)}{2}\)</span> modelos e, portanto, pode ser aplicada em configurações onde <span class="math inline">\(p\)</span> é muito grande para aplicar a melhor seleção de subconjuntos. Da mesma forma que a seleção progressiva, a seleção regressiva também não garante produzir o melhor modelo que contenha um subconjunto dos <span class="math inline">\(p\)</span> preditores.</p>
+<p>A seleção regressiva requer que o número de amostras <span class="math inline">\(n\)</span> seja maior do que o número de variáveis <span class="math inline">\(p\)</span> (para que o modelo completo possa ser ajustado). Em contrapartida, a seleção progressiva pode ser usada mesmo quando <span class="math inline">\(n&lt;p\)</span>, sendo assim, é o único método de subconjunto viável quando <span class="math inline">\(p\)</span> é muito grande.</p>
+<p><strong>Abordagens Híbridas</strong></p>
+<p>As abordagens de melhor subconjunto, seleção progressiva e seleção regressiva geralmente fornecem modelos semelhantes, mas não idênticos. Como outra alternativa, versões híbridas da seleção progressiva e regressiva estão disponíveis, nas quais variáveis são adicionadas ao modelo sequencialmente, de forma análoga à seleção progressiva. No entanto, após adicionar cada nova variável, o método pode também remover quaisquer variáveis que não contribuam mais para a melhoria do ajuste do modelo. Essa abordagem tenta se assemelhar mais à melhor seleção de subconjuntos, ao mesmo tempo em que mantém as vantagens computacionais da seleção progressiva e regressiva.</p>
+<h3 id="escolhendo-o-melhor-modelo">Escolhendo o melhor modelo</h3>
+<p>Os métodos de melhor seleção de subconjuntos, seleção progressiva e regressiva resultam na criação de um conjunto de modelos, cada um contendo um subconjunto dos <span class="math inline">\(p\)</span> preditores. Para aplicar esses métodos, precisamos determinar qual desses modelos é o melhor. Conforme discutido, o modelo que contém todos os preditores sempre terá o menor RSS e o maior R², pois essas quantidades estão relacionadas ao erro de treinamento. No entanto, desejamos escolher um modelo com um baixo erro de teste. Como fica evidente aqui, o erro de treinamento pode ser uma má estimativa do erro de teste. Portanto, RSS e R² não são adequados para selecionar o melhor modelo entre uma coleção de modelos com diferentes números de preditores.</p>
+<p>Para escolher o melhor modelo em relação ao erro de teste, precisamos estimar esse erro de teste. Existem duas abordagens comuns:</p>
+<ul>
+<li>Podemos estimar indiretamente o erro de teste fazendo um ajuste no erro de treinamento para considerar o viés devido ao overfitting.</li>
+<li>Podemos estimar diretamente o erro de teste, usando uma abordagem de conjunto de validação ou uma abordagem de validação cruzada.</li>
+</ul>
+<p>Vamos considerar ambas as abordagens a seguir.</p>
+<figure>
+<img src="images/clipboard-2511830211.png" alt="**Figura 2.** C_p, BIC e R^2 ajustado são mostrados para os melhores modelos de cada tamanho para o conjunto de dados de Crédito. C_p e BIC são estimativas do MSE de teste. No gráfico do meio, observamos que a estimativa de erro de teste do BIC mostra um aumento após a seleção de quatro variáveis. Os outros dois gráficos são bastante planos após a inclusão de quatro variáveis." />
+<figcaption aria-hidden="true">**Figura 2.** <span class="math inline">\(C_p\)</span>, BIC e <span class="math inline">\(R^2\)</span> ajustado são mostrados para os melhores modelos de cada tamanho para o conjunto de dados de Crédito. <span class="math inline">\(C_p\)</span> e BIC são estimativas do MSE de teste. No gráfico do meio, observamos que a estimativa de erro de teste do BIC mostra um aumento após a seleção de quatro variáveis. Os outros dois gráficos são bastante planos após a inclusão de quatro variáveis.</figcaption>
+</figure>
+<p><span class="math inline">\(C_p\)</span>, AIC, BIC, e <span class="math inline">\(R^2\)</span> ajustado</p>
+<p>O erro de treinamento MSE geralmente subestima o erro de teste MSE, isso ocorre porque, ao ajustar um modelo aos dados de treinamento usando mínimos quadrados, estimamos especificamente os coeficientes de regressão de forma que o RSS de treinamento (mas não o RSS de teste) seja o menor possível. O erro de treinamento diminui à medida que mais variáveis são incluídas no modelo, mas o erro de teste pode não diminuir na mesma proporção. Logo, o RSS e o <span class="math inline">\(R^2\)</span> de treinamento não podem ser usados para selecionar entre modelos com diferentes números de variáveis.</p>
+<p>Para corrigir esse problema, há várias técnicas disponíveis que ajustam o erro de treinamento para o tamanho do modelo. Quatro dessas abordagens são <span class="math inline">\(C_p\)</span>, Critério de Informação de Akaike (AIC), Critério de Informação Bayesiano (BIC) e <span class="math inline">\(R^2\)</span> ajustado. O <span class="math inline">\(C_p\)</span> estima o MSE de teste com base no RSS de treinamento e um termo de penalidade que aumenta com o número de preditores, ajustando o erro de treinamento para subestimar o erro de teste.</p>
+<p><span class="math inline">\(C_p=\frac{1}{n}(RSS+2d\hat\sigma^2)\)</span></p>
+<p><span class="math inline">\(AIC = \frac{1}{n}(RSS+2d\hat{\sigma}^2)\)</span></p>
+<p><span class="math inline">\(BIC = \frac{1}{n}(RSS+log(n)d\hat{\sigma}^2)\)</span></p>
+<p>onde <span class="math inline">\(σ^2\)</span> é uma estimativa da variância do erro associado a cada medida de resposta.</p>
+<p>O AIC e o BIC, embora derivados de perspectivas diferentes, também adicionam termos de penalidade ao RSS de treinamento, mas com diferentes ênfases no número de preditores e no tamanho da amostra.</p>
+<p>O <span class="math inline">\(R^2\)</span> ajustado, por sua vez, é uma métrica que busca equilibrar a inclusão de variáveis corretas no modelo, penalizando a inclusão de variáveis desnecessárias. Enquanto o <span class="math inline">\(R^2\)</span> tradicional sempre aumenta com a inclusão de mais variáveis, o <span class="math inline">\(R^2\)</span> ajustado pode aumentar ou diminuir, dependendo da inclusão ou exclusão de variáveis relevantes.</p>
+<p><span class="math inline">\(adj R^2 = 1-\frac{RSS/(n-d-1)}{TSS/(n-1)}\)</span>, onde <span class="math inline">\(TSS=\sum(y_i-\bar{y})^2\)</span> é a soma total dos quadrados.</p>
+<p>No caso do conjunto de dados Credit, as métricas <span class="math inline">\(C_p\)</span>, AIC e BIC selecionam modelos com um número variável de preditores, enquanto o <span class="math inline">\(R_2\)</span> ajustado opta por um modelo com sete variáveis, como observado na figura 2. Essas métricas são valiosas para a seleção de modelos, pois cada uma se concentra em diferentes aspectos do ajuste do modelo. Apesar de sua popularidade e utilidade, o <span class="math inline">\(R_2\)</span> ajustado não possui uma justificativa teórica tão robusta quanto o AIC, BIC e <span class="math inline">\(C_p\)</span>, que têm fundamentações mais profundas em teoria estatística, baseadas em argumentos assintóticos.</p>
+<p><strong>Validação e Validação Cruzada</strong></p>
+<p>Além das abordagens anteriores discutidas, uma alternativa é estimar diretamente o erro de teste usando métodos de conjunto de validação e validação cruzada. Podemos calcular o erro do conjunto de validação ou o erro da validação cruzada para cada modelo considerado e selecionar o modelo para o qual o erro estimado de teste resultante é o menor. Isso é vantajoso em relação ao AIC, BIC, <span class="math inline">\(C_p\)</span> e <span class="math inline">\(R_2\)</span> ajustado, pois fornece uma estimativa direta do erro de teste e faz menos suposições sobre o verdadeiro modelo subjacente. Pode ser usado em uma variedade maior de tarefas de seleção de modelos, mesmo em casos onde é difícil determinar os graus de liberdade do modelo (por exemplo, o número de preditores no modelo) ou estimar a variância do erro <span class="math inline">\(σ^2\)</span>. Quando a validação cruzada é usada, a sequência de modelos <span class="math inline">\(M_k\)</span> nos algoritmos é determinada separadamente para cada dobra de treinamento, e os erros de validação são médias sobre todas os ‘folds’ para cada tamanho de modelo <span class="math inline">\(k\)</span>. Uma vez escolhido o melhor tamanho <span class="math inline">\(k\)</span>, encontramos o melhor modelo desse tamanho no conjunto de dados completo.</p>
+<p>Anteriormente, fazer validação cruzada era computacionalmente proibitivo para muitos problemas com grande <span class="math inline">\(p\)</span> e/ou grande <span class="math inline">\(n\)</span>, então AIC, BIC, <span class="math inline">\(C_p\)</span> e <span class="math inline">\(R^2\)</span> ajustado eram abordagens mais atraentes para escolher entre um conjunto de modelos. No entanto, atualmente, com computadores rápidos, os cálculos necessários para realizar a validação cruzada raramente são um problema. Portanto, a validação cruzada é uma abordagem muito atraente para selecionar entre vários modelos considerados.</p>
+<p>A Figura 3 exibe, como função de <span class="math inline">\(d\)</span>, o BIC, erros do conjunto de validação e erros da validação cruzada no conjunto de dados Credit, para o melhor modelo de <span class="math inline">\(d\)</span> variáveis. Os erros de validação foram calculados selecionando aleatoriamente três quartos das observações como conjunto de treinamento e o restante como conjunto de validação. Os erros da validação cruzada foram calculados usando <span class="math inline">\(k = 10\)</span> ‘folds’. Neste caso, os métodos de validação e validação cruzada resultam em um modelo de seis variáveis. No entanto, todas as três abordagens sugerem que os modelos de quatro, cinco e seis variáveis são aproximadamente equivalentes em termos de seus erros de teste.</p>
+<figure>
+<img src="images/clipboard-1032827121.png" alt="**Figura 3.** Para o conjunto de dados Credit, três valores são exibidas para o melhor modelo contendo d preditores, variando de 1 a 11. O melhor modelo geral, com base em cada um desses valores, é mostrado como uma cruz azul. À esquerda: Raiz quadrada do BIC. No centro: Erros do conjunto de validação. À direita: Erros da validação cruzada." />
+<figcaption aria-hidden="true">**Figura 3.** Para o conjunto de dados Credit, três valores são exibidas para o melhor modelo contendo d preditores, variando de 1 a 11. O melhor modelo geral, com base em cada um desses valores, é mostrado como uma cruz azul. À esquerda: Raiz quadrada do BIC. No centro: Erros do conjunto de validação. À direita: Erros da validação cruzada.</figcaption>
+</figure>
+<p>Na verdade, as curvas de erro de teste estimado exibidas nos painéis central e direito da Figura 3 são bastante largas. Embora um modelo de três variáveis tenha claramente um erro de teste estimado mais baixo do que um modelo de duas variáveis, os erros de teste estimados dos modelos de 3 a 11 variáveis são bastante semelhantes. Além disso, se repetíssemos a abordagem do conjunto de validação usando uma divisão diferente dos dados em um conjunto de treinamento e um conjunto de validação, ou se repetíssemos a validação cruzada usando um conjunto diferente de ‘folds’ de validação cruzada, então o modelo preciso com o menor erro de teste estimado certamente mudaria. Nesse cenário, podemos selecionar um modelo usando a regra de um erro padrão. Primeiro, calculamos o erro padrão do erro de MSE estimado para cada tamanho de modelo e, em seguida, selecionamos o modelo menor para o qual o erro de teste estimado está dentro de um erro padrão do ponto mais baixo na curva. A ideia é que, se um conjunto de modelos parecer mais ou menos igualmente bom, é melhor escolher o modelo mais simples, ou seja, o modelo com o menor número de preditores. Neste caso, aplicar a regra de um erro padrão à abordagem de validação ou validação cruzada leva à seleção do modelo de três variáveis.</p>
+<h2 id="métodos-de-redução">Métodos de Redução</h2>
+<p>Vimos métodos de seleção de subconjuntos que buscam ajustar um modelo linear com apenas um grupo de variáveis. No entanto, existe uma abordagem alternativa que ajusta um modelo usando todas as variáveis, mas aplica técnicas que restringem ou regularizam as estimativas dos coeficientes, reduzindo-os em direção a zero. Isso pode parecer estranho à primeira vista, mas essa restrição pode realmente diminuir significativamente a variância das estimativas dos coeficientes. As duas técnicas mais conhecidas para isso são a regressão ridge e o lasso.</p>
+<h3 id="ridge-regression">Ridge Regression</h3>
+<p>Relembre que o procedimento de ajuste de mínimos quadrados estima <span class="math inline">\(β_0, β_1,..., β_p\)</span> usando os valores que minimizam</p>
+<p><span class="math inline">\(RSS = \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2\)</span></p>
+<p>Na regressão ridge, os coeficientes são estimados minimizando uma quantidade ligeiramente diferente em comparação com a mínima dos quadrados. Os estimadores dos coeficientes na regressão ridge, representados por <span class="math inline">\(\hat{\beta^R}\)</span>, são obtidos minimizando:</p>
+<p><span class="math inline">\(\sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{p} \beta_j^2 = \text{RSS} + \lambda \sum_{j=1}^{p} \beta_j^2\)</span>, onde <span class="math inline">\(\lambda ≥ 0\)</span> é um hiperparâmetro que necissa ser otimizado separadamente.</p>
+<p>Em comparação com método de mínimos quadrados, a regressão ridge procura estimativas de coeficientes que se ajustem bem aos dados, reduzindo o RSS. No entanto, ela introduz um termo adicional, <span class="math inline">\(λ ∑ βj²\)</span>, conhecido como penalidade de contração, que é pequeno quando <span class="math inline">\(β_1,..., β_p\)</span> estão próximos de zero. Esse termo tem o efeito de reduzir as estimativas dos <span class="math inline">\(β_j\)</span> em direção a zero. O parâmetro de ajuste <span class="math inline">\(λ\)</span> controla o impacto relativo desses dois termos nas estimativas dos coeficientes de regressão. Quando <span class="math inline">\(λ = 0\)</span>, o termo de penalidade não tem efeito e a regressão ridge produzirá as estimativas de mínimos quadrados. No entanto, à medida que <span class="math inline">\(λ → ∞\)</span>, o impacto da penalidade de contração aumenta, e as estimativas dos coeficientes de regressão ridge se aproximam de zero. Diferentemente dos mínimos quadrados, que geram apenas um conjunto de estimativas de coeficientes, a regressão ridge produzirá um conjunto diferente de estimativas de coeficientes, <span class="math inline">\(β^R_λ\)</span>, para cada valor de λ. Selecionar um bom valor para <span class="math inline">\(λ\)</span> é crucial. Vale ressaltar que a penalidade de contração é aplicada aos <span class="math inline">\(β_1,..., β_p\)</span>, mas não ao intercepto <span class="math inline">\(β_0\)</span>. Desejamos reduzir a associação estimada de cada variável com a resposta, mas não queremos diminuir o intercepto, que é simplesmente uma medida do valor médio da resposta quando <span class="math inline">\(x_{i1} = x_{i2} = ... = x_{ip} = 0\)</span>. Se assumirmos que as variáveis, ou seja, as colunas da matriz de dados X, foram centralizadas para terem média zero antes da regressão ridge ser realizada, então o intercepto estimado terá a forma <span class="math inline">\(\hat{β_0} = \hat{y} = ∑ y_i/n.\)</span></p>
+<p><strong>Por que a regressão Ridge melhora o métodos dos mínimos quadrados?</strong></p>
+<p>A vantagem da regressão ridge sobre os mínimos quadrados está ligada ao trade-off viés-variância. Conforme <span class="math inline">\(λ\)</span> aumenta, a flexibilidade do ajuste de regressão ridge diminui, resultando em uma redução da variância, mas um aumento do viés. Isso é ilustrado no painel esquerdo da Figura 4, usando um conjunto de dados simulado com p = 45 preditores e n = 50 observações.</p>
+<figure>
+<img src="images/clipboard-2561616505.png" alt="Figura 4.Viés ao quadrado (preto), variância (verde) e erro médio quadrático de teste (roxo) para as previsões da regressão ridge em um conjunto de dados simulado, em função de λ e ||\hat{β}^R_λ||_2/||\hat{β}||_2. As linhas tracejadas horizontais indicam o MSE mínimo possível. As cruzes roxas indicam os modelos de regressão ridge para os quais o MSE é o menor." />
+<figcaption aria-hidden="true"><strong>Figura 4.</strong>Viés ao quadrado (preto), variância (verde) e erro médio quadrático de teste (roxo) para as previsões da regressão ridge em um conjunto de dados simulado, em função de <span class="math inline">\(λ\)</span> e <span class="math inline">\(||\hat{β}^R_λ||_2/||\hat{β}||_2\)</span>. As linhas tracejadas horizontais indicam o MSE mínimo possível. As cruzes roxas indicam os modelos de regressão ridge para os quais o MSE é o menor.</figcaption>
+</figure>
+<p>A curva verde no painel esquerdo exibe a variância das previsões da regressão ridge em função de <span class="math inline">\(λ\)</span>. Para as estimativas de coeficientes de mínimos quadrados, que correspondem à regressão ridge com <span class="math inline">\(λ = 0\)</span>, a variância é alta, mas não há viés. No entanto, à medida que <span class="math inline">\(λ\)</span> aumenta, a contração das estimativas dos coeficientes da regressão ridge leva a uma redução substancial na variância das previsões, às custas de um leve aumento no viés. Lembre-se de que o erro médio quadrático (MSE) de teste, plotado em roxo, está intimamente relacionado à variância mais o quadrado do viés. Para valores de <span class="math inline">\(λ\)</span> até cerca de 10, a variância diminui rapidamente, com muito pouco aumento no viés, plotado em preto. Consequentemente, o MSE cai consideravelmente à medida que <span class="math inline">\(λ\)</span> aumenta de 0 para 10. Além desse ponto, a diminuição na variância devido ao aumento de <span class="math inline">\(λ\)</span> desacelera, e a contração nos coeficientes faz com que sejam significativamente subestimados, resultando em um grande aumento no viés. O MSE mínimo é alcançado em aproximadamente <span class="math inline">\(λ = 30\)</span>. Curiosamente, devido à sua alta variância, o MSE associado ao ajuste dos mínimos quadrados, quando <span class="math inline">\(λ = 0\)</span>, é quase tão alto quanto o do modelo nulo para o qual todas as estimativas de coeficientes são zero, quando <span class="math inline">\(λ = ∞\)</span>. No entanto, para um valor intermediário de <span class="math inline">\(λ\)</span>, o MSE é consideravelmente menor.</p>
+<p>O painel direito da Figura 4 exibe as mesmas curvas do painel esquerdo, desta vez plotadas em relação à norma <span class="math inline">\(ℓ_2\)</span> das estimativas de coeficientes da regressão ridge dividida pela norma <span class="math inline">\(ℓ_2\)</span> das estimativas de mínimos quadrados. Agora, à medida que avançamos da esquerda para a direita, os ajustes se tornam mais flexíveis, e assim o viés diminui e a variância aumenta.</p>
+<p>Em situações em que a relação entre a resposta e os preditores é próxima à linear, as estimativas de mínimos quadrados terão baixo viés, mas podem ter alta variância. Isso significa que uma pequena mudança nos dados de treinamento pode causar uma grande mudança nas estimativas dos coeficientes de mínimos quadrados. Em particular, quando o número de variáveis <span class="math inline">\(p\)</span> é quase tão grande quanto o número de observações <span class="math inline">\(n\)</span>, como no exemplo na Figura 4, as estimativas de mínimos quadrados serão extremamente variáveis. E se <span class="math inline">\(p &gt; n\)</span>, então as estimativas de mínimos quadrados nem mesmo têm uma solução única, enquanto a regressão ridge ainda pode funcionar bem ao trocar um pequeno aumento no viés por uma grande redução na variância. Portanto, a regressão ridge funciona melhor em situações onde as estimativas de mínimos quadrados têm alta variância.</p>
+<p>A regressão ridge também tem substanciais vantagens computacionais sobre a melhor seleção de subconjuntos, que requer a busca por <span class="math inline">\(2^p\)</span> modelos. Como discutido anteriormente, mesmo para valores moderados de <span class="math inline">\(p\)</span>, essa busca pode ser computacionalmente inviável. Em contraste, para qualquer valor fixo de <span class="math inline">\(λ\)</span>, a regressão ridge ajusta apenas um modelo e o procedimento de ajuste do modelo pode ser realizado rapidamente.</p>
+<h3 id="lasso-regression">Lasso Regression</h3>
+<p>A regressão Ridge possui uma desvantagem evidente. Ao contrário da seleção de subconjuntos, forward stepwise e backward stepwise, que geralmente escolhem modelos que envolvem apenas um subconjunto das variáveis, a regressão Ridge incluirá todos os <span class="math inline">\(p\)</span> preditores no modelo final. A penalidade <span class="math inline">\(λ\sumβ^2_j\)</span> diminuirá todos os coeficientes em direção a zero, mas não os definirá como exatamente zero (a menos que <span class="math inline">\(λ = ∞\)</span>). Isso pode não afetar a precisão da previsão, mas pode criar um desafio na interpretação do modelo em configurações com um número considerável de variáveis. Por exemplo, no conjunto de dados Credit, parece que as variáveis mais importantes são income, limit, rating e student. Portanto, poderíamos desejar construir um modelo incluindo apenas esses preditores. No entanto, a regressão Ridge sempre gerará um modelo envolvendo todos os dez preditores. Aumentar o valor de <span class="math inline">\(λ\)</span> tenderá a reduzir as magnitudes dos coeficientes, mas não resultará na exclusão de nenhuma das variáveis.</p>
+<p>O Lasso é uma alternativa relativamente recente à regressão Ridge que supera essa desvantagem. Os coeficientes do Lasso, <span class="math inline">\(\hat{β}^L_\lambda\)</span>, minimizam:</p>
+<p><span class="math inline">\(\sum_{i=1}^{n} \left(y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{p} \lvert \beta_j \rvert = \text{RSS} + \lambda \sum_{j=1}^{p} \lvert \beta_j \rvert.\)</span></p>
+<p>Comparando as equações, vemos que o Lasso e a regressão Ridge têm formulações semelhantes, com a diferença de que o termo <span class="math inline">\(β^2_j\)</span> na penalidade da regressão Ridge foi substituído por <span class="math inline">\(|β_j|\)</span> na penalidade do Lasso. Em termos estatísticos, o Lasso usa uma penalidade <span class="math inline">\(ℓ_1\)</span> em vez de uma penalidade <span class="math inline">\(ℓ_2\)</span>. A norma <span class="math inline">\(ℓ_1\)</span> de um vetor de coeficientes <span class="math inline">\(β\)</span> é dada por <span class="math inline">\(||β||_1 = \sum|β_j|\)</span>. Assim como na regressão Ridge, o Lasso reduz as estimativas dos coeficientes em direção a zero. No entanto, no caso do Lasso, a penalidade <span class="math inline">\(ℓ_1\)</span> tem o efeito de forçar algumas das estimativas dos coeficientes a serem exatamente iguais a zero quando o parâmetro de ajuste <span class="math inline">\(λ\)</span> é suficientemente grande. Portanto, assim como na melhor seleção de subconjuntos, o Lasso realiza a seleção de variáveis. Como resultado, os modelos gerados pelo Lasso são geralmente muito mais fáceis de interpretar do que os produzidos pela regressão Ridge. Dizemos que o Lasso gera modelos esparsos, ou seja, modelos que envolvem apenas um subconjunto das variáveis. Assim como na regressão Ridge, a seleção de um bom valor de <span class="math inline">\(λ\)</span> para o Lasso é crucial.</p>
+<p>Um exemplo são os gráficos de coeficientes na Figura 5, gerados aplicando o Lasso ao conjunto de dados Credit. Quando <span class="math inline">\(λ = 0\)</span>, o Lasso simplesmente dá o ajuste de mínimos quadrados e, quando <span class="math inline">\(λ\)</span> se torna suficientemente grande, o Lasso fornece o modelo nulo no qual todas as estimativas dos coeficientes são iguais a zero. No entanto, entre esses dois extremos, os modelos de regressão Ridge e Lasso são bastante diferentes um do outro. Movendo da esquerda para a direita no painel direito da Figura 5, observamos que inicialmente o Lasso resulta em um modelo que contém apenas o preditor rating. Então student e limit entram no modelo quase simultaneamente, seguidos logo por income. Eventualmente, as variáveis restantes entram no modelo. Portanto, dependendo do valor de <span class="math inline">\(λ\)</span>, o Lasso pode produzir um modelo envolvendo qualquer número de variáveis. Em contraste, a regressão Ridge sempre incluirá todas as variáveis no modelo, embora a magnitude das estimativas dos coeficientes dependerá de <span class="math inline">\(λ\)</span>.</p>
+<figure>
+<img src="images/clipboard-1699057498.png" alt="Figura 5. Os coeficientes de Lasso padronizados nos dados Credit são mostrados como uma função de λ e ||\hat{β}^L_λ||_1/||\hat{β}||_1" />
+<figcaption aria-hidden="true"><strong>Figura 5.</strong> Os coeficientes de Lasso padronizados nos dados Credit são mostrados como uma função de <span class="math inline">\(λ\)</span> e <span class="math inline">\(||\hat{β}^L_λ||_1/||\hat{β}||_1\)</span></figcaption>
+</figure>
+<h1 id="prática">Prática</h1>
+<p>UFA!!! Chega de teoria, vamos por o que aprendemos em prática usando dados sobre o famoso seriado The Office. Nosso objetivo final será construir um modelo que prevê a nota IMBD para cada episódio, de acordo com algumas variáveis.</p>
+<h2 id="análise-exploratória">Análise Exploratória</h2>
+<p>Temos dois conjuntos de dados, um com as avaliações e outro com informações como diretor, escritor e qual personagem falou cada linha. Os números e títulos dos episódios não são consistentes entre eles, então podemos usar expressões regulares para fazer um trabalho melhor ao unir os conjuntos de dados para juntá-los.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ratings_raw</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-17/office_ratings.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'>schrute</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/schrute/man/theoffice.html'>theoffice</a></span></span></code></pre>
+</div>
+<pre><code># A tibble: 55,130 × 12
+   index season episode episode_name director   writer character text 
+   &lt;int&gt;  &lt;int&gt;   &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;
+ 1     1      1       1 Pilot        Ken Kwapis Ricky… Michael   All …
+ 2     2      1       1 Pilot        Ken Kwapis Ricky… Jim       Oh, …
+ 3     3      1       1 Pilot        Ken Kwapis Ricky… Michael   So y…
+ 4     4      1       1 Pilot        Ken Kwapis Ricky… Jim       Actu…
+ 5     5      1       1 Pilot        Ken Kwapis Ricky… Michael   All …
+ 6     6      1       1 Pilot        Ken Kwapis Ricky… Michael   Yes,…
+ 7     7      1       1 Pilot        Ken Kwapis Ricky… Michael   I&#39;ve…
+ 8     8      1       1 Pilot        Ken Kwapis Ricky… Pam       Well…
+ 9     9      1       1 Pilot        Ken Kwapis Ricky… Michael   If y…
+10    10      1       1 Pilot        Ken Kwapis Ricky… Pam       What?
+# ℹ 55,120 more rows
+# ℹ 4 more variables: text_w_direction &lt;chr&gt;, imdb_rating &lt;dbl&gt;,
+#   total_votes &lt;int&gt;, air_date &lt;chr&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ratings_raw</span></span></code></pre>
+</div>
+<pre><code># A tibble: 188 × 6
+   season episode title             imdb_rating total_votes air_date  
+    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;       &lt;dbl&gt; &lt;date&gt;    
+ 1      1       1 Pilot                     7.6        3706 2005-03-24
+ 2      1       2 Diversity Day             8.3        3566 2005-03-29
+ 3      1       3 Health Care               7.9        2983 2005-04-05
+ 4      1       4 The Alliance              8.1        2886 2005-04-12
+ 5      1       5 Basketball                8.4        3179 2005-04-19
+ 6      1       6 Hot Girl                  7.8        2852 2005-04-26
+ 7      2       1 The Dundies               8.7        3213 2005-09-20
+ 8      2       2 Sexual Harassment         8.2        2736 2005-09-27
+ 9      2       3 Office Olympics           8.4        2742 2005-10-04
+10      2       4 The Fire                  8.4        2713 2005-10-11
+# ℹ 178 more rows</code></pre>
+</div>
+<p>Podemos ver que as colunas ‘season’ e ‘episode’ não estão no mesmo formato nos dois conjuntos de dados. Vamos fazer algumas modificações para juntá-los.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#Criar conjunto de strings para remover</span></span>
+<span><span class='va'>remove_regex</span> <span class='op'>&lt;-</span> <span class='st'>"[:punct:] | [:digit:] |parts |part |the |and"</span></span>
+<span></span>
+<span><span class='co'>#Criar coluna 'episode_name' &lt;- transformar todas as srt para minúsculo, remover todas os padrões que criamos em 'remove_regex', e retirar todos os espaços no começo e final com 'str_trim'</span></span>
+<span></span>
+<span><span class='va'>office_ratings</span> <span class='op'>&lt;-</span> <span class='va'>ratings_raw</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_lower</a></span><span class='op'>(</span><span class='va'>title</span><span class='op'>)</span>,</span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove_all</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>remove_regex</span><span class='op'>)</span>,</span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span><span class='op'>(</span><span class='va'>episode_name</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>imdb_rating</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#mudar season e episode para numerico e fazer as mesmas mudanças no 'episode_name'</span></span>
+<span><span class='va'>office_info</span> <span class='op'>&lt;-</span><span class='fu'>schrute</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/schrute/man/theoffice.html'>theoffice</a></span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    season <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>season</span><span class='op'>)</span>,</span>
+<span>    episode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>episode</span><span class='op'>)</span>,</span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_lower</a></span><span class='op'>(</span><span class='va'>episode_name</span><span class='op'>)</span>,</span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_remove.html'>str_remove_all</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>remove_regex</span><span class='op'>)</span>,</span>
+<span>    episode_name <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_trim.html'>str_trim</a></span><span class='op'>(</span><span class='va'>episode_name</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>season</span>, <span class='va'>episode</span>, <span class='va'>episode_name</span>, <span class='va'>director</span>, <span class='va'>writer</span>, <span class='va'>character</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#vamos ver como os dois datasets ficaram</span></span>
+<span><span class='va'>office_ratings</span></span></code></pre>
+</div>
+<pre><code># A tibble: 188 × 2
+   episode_name      imdb_rating
+   &lt;chr&gt;                   &lt;dbl&gt;
+ 1 pilot                     7.6
+ 2 diversity day             8.3
+ 3 health care               7.9
+ 4 alliance                  8.1
+ 5 basketball                8.4
+ 6 hot girl                  7.8
+ 7 dundies                   8.7
+ 8 sexual harassment         8.2
+ 9 office olympics           8.4
+10 fire                      8.4
+# ℹ 178 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>office_info</span></span></code></pre>
+</div>
+<pre><code># A tibble: 55,130 × 6
+   season episode episode_name director   writer             character
+    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;    
+ 1      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+ 2      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Jim      
+ 3      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+ 4      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Jim      
+ 5      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+ 6      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+ 7      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+ 8      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Pam      
+ 9      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Michael  
+10      1       1 pilot        Ken Kwapis Ricky Gervais;Ste… Pam      
+# ℹ 55,120 more rows</code></pre>
+</div>
+<p>Vamos usar vários tipos diferentes de características para modelagem. Primeiro, vamos descobrir quantas vezes os personagens falam por episódio.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Vamos criar um df que contenha o nome do episódio e cada personagem nas colunas.</span></span>
+<span><span class='co'># Primeiro vamos contar por episode_name e character,</span></span>
+<span><span class='co'># Depois adicionar uma contagem somente por character, para depois</span></span>
+<span><span class='co'># Filtrar somente os com mais fala.</span></span>
+<span><span class='va'>characters</span> <span class='op'>&lt;-</span> <span class='va'>office_info</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>character</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>add_count</a></span><span class='op'>(</span><span class='va'>character</span>, wt <span class='op'>=</span> <span class='va'>n</span>, name <span class='op'>=</span> <span class='st'>"character_count"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>character_count</span> <span class='op'>&gt;</span> <span class='fl'>800</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>character_count</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>character</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>n</span>,</span>
+<span>    values_fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>characters</span></span></code></pre>
+</div>
+<pre><code># A tibble: 186 × 16
+   episode_name    Andy Angela Darryl Dwight   Jim Kelly Kevin Michael
+   &lt;chr&gt;          &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+ 1 a benihana ch…    28     37      3     61    44     5    14     108
+ 2 a.a.r.m           44     39     30     87    89     0    30       0
+ 3 after hours       20     11     14     60    55     8     4       0
+ 4 alliance           0      7      0     47    49     0     3      68
+ 5 angry y           53      7      5     16    19    13     9       0
+ 6 baby shower       13     13      9     35    27     2     4      79
+ 7 back from vac…     3      4      6     22    25     0     5      70
+ 8 banker             1      2      0     17     0     0     2      44
+ 9 basketball         0      3     15     25    21     0     1     104
+10 beach games       18      8      0     38    22     9     5     105
+# ℹ 176 more rows
+# ℹ 7 more variables: Oscar &lt;int&gt;, Pam &lt;int&gt;, Phyllis &lt;int&gt;,
+#   Ryan &lt;int&gt;, Toby &lt;int&gt;, Erin &lt;int&gt;, Jan &lt;int&gt;</code></pre>
+</div>
+<p>Em seguida, vamos descobrir quais diretores e escritores estão envolvidos em cada episódio. Estou optando por combinar isso em uma única categoria na modelagem, para um modelo mais simples, já que frequentemente são as mesmas pessoas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Primeiro vamos achar as combinações únicas entre episode_name, director, writer</span></span>
+<span><span class='co'># Voltar as colunas episode_name e writer para um formato tidy</span></span>
+<span><span class='co'># separar ass observações da coluna 'person' que sao separadas por ";"</span></span>
+<span><span class='co'># Adicionar uma coluna que conta o número de vezes que a pessoa aparece</span></span>
+<span><span class='co'># Filtrar para n&gt;10</span></span>
+<span><span class='co'># Achar as combinações únicas de episode_name, person</span></span>
+<span><span class='co'># Adicionar o valor 1 para cada combinação e </span></span>
+<span><span class='co'># Voltar para o formato wider ("dummy')</span></span>
+<span><span class='va'>creators</span> <span class='op'>&lt;-</span> <span class='va'>office_info</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>director</span>, <span class='va'>writer</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='va'>director</span><span class='op'>:</span><span class='va'>writer</span>, names_to <span class='op'>=</span> <span class='st'>"role"</span>, values_to <span class='op'>=</span> <span class='st'>"person"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate_rows.html'>separate_rows</a></span><span class='op'>(</span><span class='va'>person</span>, sep <span class='op'>=</span> <span class='st'>";"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>add_count</a></span><span class='op'>(</span><span class='va'>person</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>n</span> <span class='op'>&gt;</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>episode_name</span>, <span class='va'>person</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>person_value <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span></span>
+<span>    names_from <span class='op'>=</span> <span class='va'>person</span>,</span>
+<span>    values_from <span class='op'>=</span> <span class='va'>person_value</span>,</span>
+<span>    values_fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>person_value <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>creators</span></span></code></pre>
+</div>
+<pre><code># A tibble: 136 × 14
+   episode_name      `Ken Kwapis` `Greg Daniels` `B.J. Novak`
+   &lt;chr&gt;                    &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
+ 1 pilot                        1              1            0
+ 2 diversity day                1              0            1
+ 3 health care                  0              0            0
+ 4 basketball                   0              1            0
+ 5 hot girl                     0              0            0
+ 6 dundies                      0              1            0
+ 7 sexual harassment            1              0            1
+ 8 office olympics              0              0            0
+ 9 fire                         1              0            1
+10 halloween                    0              1            0
+# ℹ 126 more rows
+# ℹ 10 more variables: `Paul Lieberstein` &lt;dbl&gt;,
+#   `Mindy Kaling` &lt;dbl&gt;, `Paul Feig` &lt;dbl&gt;, `Gene Stupnitsky` &lt;dbl&gt;,
+#   `Lee Eisenberg` &lt;dbl&gt;, `Jennifer Celotta` &lt;dbl&gt;,
+#   `Randall Einhorn` &lt;dbl&gt;, `Brent Forrester` &lt;dbl&gt;,
+#   `Jeffrey Blitz` &lt;dbl&gt;, `Justin Spitzer` &lt;dbl&gt;</code></pre>
+</div>
+<p>Agora, vamos encontrar a temporada e o número do episódio para cada episódio e, finalmente, vamos reunir tudo em um único conjunto de dados para a modelagem.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>office</span> <span class='op'>&lt;-</span> <span class='va'>office_info</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>season</span>, <span class='va'>episode</span>, <span class='va'>episode_name</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>characters</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>creators</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>office_ratings</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://sfirke.github.io/janitor/reference/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>office</span></span></code></pre>
+</div>
+<pre><code># A tibble: 118 × 32
+   season episode episode_name   andy angela darryl dwight   jim kelly
+    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;         &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1      1       1 pilot             0      1      0     29    36     0
+ 2      1       2 diversity day     0      4      0     17    25     2
+ 3      1       3 health care       0      5      0     62    42     0
+ 4      1       5 basketball        0      3     15     25    21     0
+ 5      1       6 hot girl          0      3      0     28    55     0
+ 6      2       1 dundies           0      1      1     32    32     7
+ 7      2       2 sexual haras…     0      2      9     11    16     0
+ 8      2       3 office olymp…     0      6      0     55    55     0
+ 9      2       4 fire              0     17      0     65    51     4
+10      2       5 halloween         0     13      0     33    30     3
+# ℹ 108 more rows
+# ℹ 23 more variables: kevin &lt;int&gt;, michael &lt;int&gt;, oscar &lt;int&gt;,
+#   pam &lt;int&gt;, phyllis &lt;int&gt;, ryan &lt;int&gt;, toby &lt;int&gt;, erin &lt;int&gt;,
+#   jan &lt;int&gt;, ken_kwapis &lt;dbl&gt;, greg_daniels &lt;dbl&gt;, b_j_novak &lt;dbl&gt;,
+#   paul_lieberstein &lt;dbl&gt;, mindy_kaling &lt;dbl&gt;, paul_feig &lt;dbl&gt;,
+#   gene_stupnitsky &lt;dbl&gt;, lee_eisenberg &lt;dbl&gt;,
+#   jennifer_celotta &lt;dbl&gt;, randall_einhorn &lt;dbl&gt;, …</code></pre>
+</div>
+<p>Vemos que é um dataset com muitas variáveis (32), o que justifica usar uma regressão de Lasso ou Ridge. Vamo dar uma olhada na distribuição das notas por episódio</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>office</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>episode</span>, y <span class='op'>=</span> <span class='va'>imdb_rating</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>episode</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="lasso-and-ridge_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+<p>As avaliações são mais altas para episódios mais tarde na temporada. O que mais está associado a avaliações mais altas? Vamos usar regressão Ridge e Lasso para descobrir! 🚀</p>
+<h2 id="modelagem">Modelagem</h2>
+<p>Podemos começar carregando o metapacote tidymodels e dividindo nossos dados em conjuntos de treinamento e teste.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2020</span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span></span>
+<span><span class='va'>office_split</span> <span class='op'>&lt;-</span> <span class='fu'>initial_split</span><span class='op'>(</span><span class='va'>office</span>, strata <span class='op'>=</span> <span class='va'>season</span><span class='op'>)</span></span>
+<span><span class='va'>office_train</span> <span class='op'>&lt;-</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>office_split</span><span class='op'>)</span></span>
+<span><span class='va'>office_test</span> <span class='op'>&lt;-</span> <span class='fu'>testing</span><span class='op'>(</span><span class='va'>office_split</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Então, construímos um conjunto de instruções para pré-processamento dos dados.</p>
+<ul>
+<li>Primeiro, precisamos informar à função recipe() qual será o nosso modelo (usando uma fórmula) e qual é o nosso conjunto de dados de treinamento.</li>
+<li>Em seguida, atualizamos o papel da variável episode_name, já que é uma variável que talvez queiramos manter como identificador das linhas por conveniência, mas que não é um preditor ou resultado.</li>
+<li>Depois, removemos quaisquer variáveis numéricas que não tenham variação.</li>
+<li>Como último passo, normalizamos (centralizamos e escalamos) as variáveis numéricas. Precisamos fazer isso porque é importante para a regularização Lasso.</li>
+</ul>
+<p>O objeto office_rec é um conjunto de instruções (receita) que ainda não foi treinado nos dados (por exemplo, as etapas de centralização e escala ainda não foram calculadas).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>office_rec</span> <span class='op'>&lt;-</span> <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>imdb_rating</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>office_train</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>update_role</span><span class='op'>(</span><span class='va'>episode_name</span>, new_role <span class='op'>=</span> <span class='st'>"ID"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_zv</span><span class='op'>(</span><span class='fu'>all_numeric</span><span class='op'>(</span><span class='op'>)</span>, <span class='op'>-</span><span class='fu'>all_outcomes</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_normalize</span><span class='op'>(</span><span class='fu'>all_numeric</span><span class='op'>(</span><span class='op'>)</span>, <span class='op'>-</span><span class='fu'>all_outcomes</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Agora é hora de especificar nossos modelos e criar um workflow. Aqui, configuro uma especificação de modelo para regressão Ridge (mixture = 0) e Lasso (mixture = 1). O hiperparâmetro penalty() é o <span class="math inline">\(λ\)</span> que vimos na teoria e que precisamos otimizar.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ridge_spec</span> <span class='op'>&lt;-</span> <span class='fu'>linear_reg</span><span class='op'>(</span>penalty <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, mixture <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"glmnet"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lasso_spec</span> <span class='op'>&lt;-</span> <span class='fu'>linear_reg</span><span class='op'>(</span>penalty <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, mixture <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"glmnet"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Com a receita e as duas especificações criadas, vamos criar um workflow para cada modelo e comparar os dois modelos. Para isso, precisamos criar os dados de validação para otimizar os parâmetros e um ‘grid’ de possíveis parâmetros para testar. Para isso, vamos usar a técnica de bootstrap e grid_regular</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#Criação dos workflows</span></span>
+<span><span class='va'>workflow_ridge</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>office_rec</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>ridge_spec</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>workflow_lasso</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>office_rec</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>lasso_spec</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#dados de validação</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span></span>
+<span><span class='va'>office_boot</span> <span class='op'>&lt;-</span> <span class='fu'>bootstraps</span><span class='op'>(</span><span class='va'>office_train</span>, strata <span class='op'>=</span> <span class='va'>season</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#grid de parâmetros</span></span>
+<span><span class='va'>lambda_grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_regular</span><span class='op'>(</span><span class='fu'>penalty</span><span class='op'>(</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Agora é hora de otimizar os parâmetros, usando nosso workflow</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#biblioteca para processamento em paralelo</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/doparallel'>doParallel</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cores</span> <span class='op'>&lt;-</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/parallel/makeCluster.html'>makePSOCKcluster</a></span><span class='op'>(</span><span class='va'>cores</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></span><span class='op'>(</span><span class='va'>cl</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#Otimização do parâmetro</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2020</span><span class='op'>)</span></span>
+<span><span class='va'>ridge_results</span> <span class='op'>&lt;-</span> <span class='fu'>tune_grid</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>workflow_ridge</span>,</span>
+<span>                           resamples <span class='op'>=</span> <span class='va'>office_boot</span>, </span>
+<span>                           grid <span class='op'>=</span> <span class='va'>lambda_grid</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lasso_results</span> <span class='op'>&lt;-</span> <span class='fu'>tune_grid</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>workflow_lasso</span>,</span>
+<span>                           resamples <span class='op'>=</span> <span class='va'>office_boot</span>, </span>
+<span>                           grid <span class='op'>=</span> <span class='va'>lambda_grid</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#parando o cluster em paralelo</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/parallel/makeCluster.html'>stopCluster</a></span><span class='op'>(</span><span class='va'>cl</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Vamos visualizar os resultados:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#coltar as métricas de cada modelo</span></span>
+<span><span class='va'>ridge_metrics</span> <span class='op'>&lt;-</span> <span class='va'>ridge_results</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>modelo <span class='op'>=</span> <span class='st'>"Ridge"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lasso_metrics</span> <span class='op'>&lt;-</span> <span class='va'>lasso_results</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>modelo <span class='op'>=</span> <span class='st'>"Lasso"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#juntar os 2 datasets e plotar</span></span>
+<span><span class='va'>ridge_metrics</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>full_join</a></span><span class='op'>(</span><span class='va'>lasso_metrics</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>penalty</span>, <span class='va'>mean</span>, color <span class='op'>=</span> <span class='va'>modelo</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_linerange.html'>geom_errorbar</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span></span>
+<span>    ymin <span class='op'>=</span> <span class='va'>mean</span> <span class='op'>-</span> <span class='va'>std_err</span>,</span>
+<span>    ymax <span class='op'>=</span> <span class='va'>mean</span> <span class='op'>+</span> <span class='va'>std_err</span></span>
+<span>  <span class='op'>)</span>,</span>
+<span>  alpha <span class='op'>=</span> <span class='fl'>0.5</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>.metric</span>, scales <span class='op'>=</span> <span class='st'>"free"</span>, nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="lasso-and-ridge_files/figure-html5/unnamed-chunk-12-1.png" width="624" /></p>
+</div>
+<p>Podemos ver que os dois modelos são bem parecidos, com alternâncias em performance de acordo com a penalidade. Mas para penalidades menores, o Lasso performa melhor. Vamos ver como o melhor modelo de cada performa nos dados de teste.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#finalizar os 2 workflows</span></span>
+<span><span class='va'>workflow_ridge_final</span> <span class='op'>&lt;-</span> <span class='fu'>finalize_workflow</span><span class='op'>(</span><span class='va'>workflow_ridge</span>, <span class='fu'>select_best</span><span class='op'>(</span><span class='va'>ridge_results</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>workflow_lasso_final</span> <span class='op'>&lt;-</span> <span class='fu'>finalize_workflow</span><span class='op'>(</span><span class='va'>workflow_lasso</span>, <span class='fu'>select_best</span><span class='op'>(</span><span class='va'>lasso_results</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#fazer ulimo ajuste</span></span>
+<span><span class='va'>final_ridge</span> <span class='op'>&lt;-</span> <span class='va'>workflow_ridge_final</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>last_fit</span><span class='op'>(</span><span class='va'>office_split</span><span class='op'>)</span></span>
+<span><span class='va'>final_lasso</span> <span class='op'>&lt;-</span> <span class='va'>workflow_lasso_final</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>last_fit</span><span class='op'>(</span><span class='va'>office_split</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#métricas nos dados de teste</span></span>
+<span><span class='va'>final_ridge</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  .metric .estimator .estimate .config             
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard     0.524   Preprocessor1_Model1
+2 rsq     standard     0.00932 Preprocessor1_Model1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>final_lasso</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  .metric .estimator .estimate .config             
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard    0.533    Preprocessor1_Model1
+2 rsq     standard    0.000966 Preprocessor1_Model1</code></pre>
+</div>
+<p>Analisando as métricas, a regressão de Ridge se saiu um pouco melhor.</p>
+<p>Podemos ver também quais as variáveis mais importantes para a construção do modelo:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koalaverse/vip/'>vip</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>final_ridge</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>extract_fit_parsnip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://koalaverse.github.io/vip/reference/vip.html'>vip</a></span><span class='op'>(</span>num_features <span class='op'>=</span> <span class='fl'>30</span>, mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='va'>Sign</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="lasso-and-ridge_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<p>Olha q interessante como o diretor do episódio influencia a sua nota. Além disso, alguns personagens que influenciam positivamente: Andy, Jan, Jim, Michael etc. E os que influenciam negativamente na nota: Kevin, Dwight (infelizmente) e Kelly (kkkkkkk)</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

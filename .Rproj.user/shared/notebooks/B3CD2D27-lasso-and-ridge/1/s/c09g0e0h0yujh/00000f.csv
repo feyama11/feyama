@@ -1,0 +1,5 @@
+"0","office_rec <- recipe(imdb_rating ~ ., data = office_train) %>%"
+"0","  update_role(episode_name, new_role = ""ID"") %>%"
+"0","  step_zv(all_numeric(), -all_outcomes()) %>%"
+"0","  step_normalize(all_numeric(), -all_outcomes())"
+"0",""

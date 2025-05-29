@@ -1,0 +1,4 @@
+"0","# Ferramentas e idiomas dos primeiros respondentes"
+"0","kaggle %>% "
+"0","  select(WorkToolsSelect) %>%"
+"0","  head()"

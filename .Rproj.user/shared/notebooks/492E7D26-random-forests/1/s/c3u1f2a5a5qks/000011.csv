@@ -1,0 +1,7 @@
+"0","#Criando conjunto de treinamento e teste"
+"0","#Definindo a semente para reprodutibilidade"
+"0","library(tidymodels)"
+"0","set.seed(1)"
+"0","initial_split = initial_split(pokedex, prop = 0.8 ,strata = is_legendary)"
+"0","train = training(initial_split)"
+"0","test = testing(initial_split)"

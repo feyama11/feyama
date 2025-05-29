@@ -1,0 +1,6 @@
+"0",""
+"0","# Treina SVM com kernel radial"
+"0","svmfit <- svm(y ~ ., data = dat, kernel = ""radial"", cost = 10, gamma = 1)"
+"2","Error in svm(y ~ ., data = dat, kernel = ""radial"", cost = 10, gamma = 1) : 
+  não foi possível encontrar a função ""svm""
+"

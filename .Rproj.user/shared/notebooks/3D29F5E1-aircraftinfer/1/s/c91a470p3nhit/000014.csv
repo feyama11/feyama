@@ -1,0 +1,8 @@
+"0","visualize(qui2_boot) +"
+"0","  shade_ci("
+"0","    endpoints = get_ci(qui2_boot),"
+"0","    fill = ""midnightblue"","
+"0","    color = ""midnightblue"","
+"0","    lty = 2"
+"0","  ) +"
+"0","  theme_bw()"

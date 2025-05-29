@@ -1,0 +1,7 @@
+"0","library(bestNormalize)"
+"0","bean_rec <-"
+"0","  # receita com dados de treinamento"
+"0","  recipe(class ~ ., data = bean_train) %>%"
+"0","  step_zv(all_numeric_predictors()) %>%"
+"0","  step_orderNorm(all_numeric_predictors()) %>% "
+"0","  step_normalize(all_numeric_predictors())"

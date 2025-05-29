@@ -1,0 +1,2 @@
+"0","beta_val <- cal_validate_beta(bayes_res, metrics = cls_met, save_pred = TRUE)"
+"0","collect_metrics(beta_val)"

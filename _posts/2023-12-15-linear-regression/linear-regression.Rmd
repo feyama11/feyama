@@ -1,0 +1,517 @@
+---
+title: "Modelo de Regressão Linear"
+description: |
+  Qual o objetivo de uma regressão linear e como fazer uma análise no R
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+preview: lm.png
+date: 2023-12-22
+categories:
+  - regressão
+  - regressão linear
+  - estatistica
+  - R
+  - tidymodels
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(tidyverse)
+```
+
+## Conceitos Iniciais
+
+-   Origem?
+
+O modelo de regressão linear foi desenvolvido por Francis Galton, no
+século XIX, em um estudo de altura de pais e filhos.
+
+-   Objetivos?
+
+Descrever a relação de dependência linear entre uma variável resposta
+(ou dependente) Y, e uma ou mais variáveis explicativas (ou preditoras)
+$X_1, X_2, ... , X_n.$
+
+## Exemplo de Relação Linear
+
+Vamos utilizar a conhecida base de dados: Abalone
+
+```{r}
+## Leitura dos Dados (Dataset: Abalone)
+db <- read.table('Abalone.data', header = TRUE, sep = ',')
+
+#Adicionando coluna 'Age' de acordo com nº de 'Rings'
+db$Age <- db$Rings + 1.5
+```
+
+Sendo X = "altura (em cm) da concha" versus Y = "peso (em gramas) da
+concha" de n = 99 moluscos Abalone.
+
+```{r fig.height=3,fig.width=4}
+#Tirando uma amostra dos dados
+amostra <- sample_n(db, size = 99, replace = F)
+
+#grafico de dispersão
+plot(x = amostra$Height, y = amostra$Shell.Weight, xlab = "Altura da concha", ylab = "Peso da concha", col = "red", pch=16)
+title("Relação linear?")
+```
+
+## Modelo de Regressão Linear
+
+-   Equação do modelo?
+
+$Y = \beta_0 + \beta_1 X_{1i} + ... + \beta_k X_{ki} + ε_i$
+
+-   em que:
+
+$Y$ é a variável resposta.
+
+$X_1, ... ,X_k$ são as variáveis preditoras.
+
+$β_0, β_1, ... , β_k$ são os coeficientes de regressão.
+
+$ε$ é o termo de erro aleatório.
+
+Vamos fazer uma predição do peso total do Abalone (variável
+Whole.Weight) de acordo com as medidas dos pesos: peso da concha
+(variável Shell.Weight), peso limpo (variável Shucked.Weight), e peso
+das vísceras (variável Viscera.Weight).
+
+-   Desse modo, o modelo ficará:
+
+$Whole.Weight_i = β_0 + β_1Shucked.Weighti + β_.2Viscera.Weighti + β_3Shell.Weighti + ε_i$
+
+-   Primeiros passos:
+
+Antes de ajustar qualquer modelo de regressão, é necessário a realização
+de uma análise exploratória de dados para entender como as variáveis,
+resposta e preditoras, se comportam e se relacionam.
+
+-   Elementos necessários:
+
+Análise gráfica: gráfico de dispersão, boxplots, gráfico de densidade,
+histogramas.
+
+### Gráfico de dipersão
+
+Para isso, vamos utilizar o pacote GGally para visualizar a relação
+linear e correlação em um só gráfico
+
+```{r message=FALSE, warning=FALSE}
+## função para a plotar a liinha de regressão linear
+lm_fn <- function(data, mapping, ...){
+  p <- ggplot(data = data, mapping = mapping) + 
+    geom_point() + 
+    geom_smooth(method=lm, fill="red", color="red", linewidth = 0.2,...)
+  p
+}
+
+library(GGally)
+ggpairs(db[, c(5:8)], lower = list(continuous =  lm_fn))
+```
+
+### Boxplot
+
+```{r fig.height=6, fig.width=5}
+## definindo matriz 2x2 para mostrar os dados
+par(mfrow = c(2, 2))
+
+#Fazendo os boxplots
+boxplot(db$Whole.Weight, main = "Boxplot: Peso total", pch = 19)
+boxplot(db$Shucked.Weight, main = "Boxplot: Peso limpo", pch = 19)
+boxplot(db$Viscera.Weight, main = "Boxplot: Peso das visceras", pch = 19)
+boxplot(db$Shell.Weight, main = "Boxplot: Peso da concha", pch = 19)
+```
+
+### Gráfico de Densidade
+
+Para isso vamos utilizar o pacote 'ggridges'
+
+```{r}
+library(ggridges)
+
+##Mudando a estrutura dos dados
+db_longo <- db %>%
+  select(Whole.Weight, Shucked.Weight, Viscera.Weight, Shell.Weight) %>%
+  pivot_longer(cols = c("Whole.Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight"),  names_to = "variables", values_to = "values")
+
+##grafico de densidade conjunta
+ggplot(db_longo, aes(x = values,  y = variables)) +
+  geom_density_ridges(fill = "darkred") +
+  theme_minimal()+
+  labs(x = "Valor", y = "Variáveis")
+```
+
+## Estimação dos Parâmetros do Modelo
+
+-   Principais métodos?
+
+### **Método dos mínimos quadrados ordinários**:
+
+O Método dos Mínimos Quadrados Ordinários busca minimizar a soma dos quadrados das diferenças entre os valores observados $y_i$ e os valores previstos $\hat{y_i}$ pelo modelo.
+
+A equação de um modelo de regressão linear simples é $y_i=\beta_0+\beta_1x_i + ε_i$, onde:
+
+$y_i$ são os valores observados
+
+$\beta_0 e \beta_1$ são os coeficientes a serem estimados
+
+$x_i$ são os valores das variáveis independentes
+
+$ε_i$ são os erros
+
+A equação de minimização dos quadrados é:
+
+$\text{Min } \sum_{i=1}^{n} (y_i - \bar{y}_i)^2 = \sum_{i=1}^{n} (y_i - \beta_0 - \beta_1 x_i)^2$
+
+A solução para essa equação é dada por:
+
+$\hat{\beta_0} = \bar{y} - \beta_1 \bar{x}\\\hat{\beta_1} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$
+
+Onde:
+
+$\bar{y_1}$ é a média dos valores observados
+
+$\bar{x}$ é a média dos valores das variáveis independentes
+
+### **Método da máxima verossimilhança**:
+
+No contexto da regressão linear com erros normalmente distribuídos, a função de verossimilhança L é maximizada para encontrar os estimadores de máxima verossimilhança dos parâmetros.
+
+Assumindo erros $ε_i$ independentes e normalmente distribuídos com média zero e variância $\sigma^2$:
+
+$L(\beta_0, \beta_1, \sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(y_i - \beta_0 - \beta_1 x_i)^2}{2\sigma^2}}$
+
+O logaritmo da função de verossimilhança é maximizado para estimar os parâmetros porque é mais fácil de manipular. A solução para a equação de maximização do logaritmo da função de verossimilhança é dada por:
+
+$\hat{\beta_0} = \bar{y} - \beta_1 \bar{x}\\\hat{\beta_1} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$
+
+A solução para o logaritmo da função de verossimilhança é a mesma que a solução para o método dos mínimos quadrados ordinários. Isso ocorre porque o método dos mínimos quadrados ordinários é um caso especial do método da máxima verossimilhança, quando a função de verossimilhança é dada por uma distribuição normal.
+
+### **Método de decomposição QR**
+
+A decomposição QR divide a matriz de variáveis independentes X em duas matrizes: uma matriz ortogonal Q e uma matriz triangular superior R.
+
+A equação da regressão 
+
+$\hat{\beta} = (X^T X)^{-1} X^T y$, onde:
+
+$X$ é a matriz de design contendo os valores das variáveis independentes.
+
+$y$ é o vetor de resposta contendo os valores da variável dependente.
+
+$X^T$ é a matriz transposta de $X$
+
+$(X^T X)^{-1}$ é a inversa da matriz resultante da multiplicação entre $X^T$ e $X$
+
+$X^T y$ é o produto entre a transposta de $X$ e $y$
+
+pode ser reescrita como:
+
+$\hat{\beta} = R^{-1} Q^T y$, onde:
+
+Q é uma matriz ortogonal e R é uma matriz triangular superior.
+
+A decomposição QR simplifica a resolução do sistema de equações normais e lida com problemas numéricos de matriz de design mal condicionada
+
+-   No R?
+
+Utiliza-se a função 'lm' que é uma função exclusiva para estimação e
+ajuste de modelos lineares, porém, vamos utilizar o pacote tidymodels para acostumar com a sintaxe, visto que ele é muito utilizado para modelos de machine learning.
+
+```{r message=FALSE, warning=FALSE}
+#Leitura do pacote
+library(tidymodels)
+
+#definindo a fórmula ou 'recipe'
+recipe <- recipe(Whole.Weight ~ Shucked.Weight + Viscera.Weight + Shell.Weight, data = db)
+
+#Criando um workflow
+workflow = workflow() %>% add_recipe(recipe)
+
+#Criando a especiificação do modelo
+lm_spec <- linear_reg() %>%
+    set_engine("lm") %>%
+    set_mode("regression")
+
+#Juntando o workflow e as especificações e ajustando o modelo nos dados
+lm_model <- workflow %>%
+  add_model(lm_spec) %>%
+  fit(db)
+
+#visualiziando o modelo
+tidy(lm_model)
+```
+
+-   Interpretação dos coeficientes:
+
+• Shucked Weight $(β_1)$: 0,93656 - Significa que, mantendo todas as
+outras variáveis constantes, existe uma relação positiva entre as
+variáveis Whole Weight e Shucked Weight tal que a cada unidade que se
+aumenta em Shucked Weight, o Whole Weight aumenta, em média, 0,93656.
+
+• Viscera Weight $(β_2)$: 1,11165 - Significa que, mantendo todas as
+outras variáveis constantes, existe uma relação positiva entre as
+variáveis Whole Weight e Viscera Weight tal que a cada unidade que se
+aumenta em Viscera Weight, o Whole Weight aumenta, em média, 1,11165.
+
+• Shell Weight $(β_3)$: 1,25296 - Significa que, mantendo todas as
+outras variáveis constantes, existe uma relação positiva entre as
+variáveis Whole Weight e Shell Weight tal que a cada unidade que se
+aumenta em Shell Weight, o Whole Weight aumenta, em média, 1,25296.
+
+• Intercepto $(β_0)$: -0,00783 ≈ 0 - Significa que, se as variáveis
+Shell Weight, Shucked Weight, Viscera Weight forem iguais a zero,
+espera-se que o peso total do Abalone seja, em média, zero.
+
+## Diagnóstico do Modelo Linear
+
+-   Como fazer?
+
+Antes de utilizar um modelo de regressão para previsão, é necessário
+garantir que ele seja estatisticamente significativo (Teste F) e que
+seus pressupostos (em relação aos erros aleatórios) sejam satisfeitos.
+
+-   Cálculo dos erros aleatórios (resíduos) do modelo:
+
+Por definição, o i-ésimo resíduo é o erro resultante do uso da equação
+de regressão estimada para prever o valor da variável dependente, isto
+é, $r_i = y_i − \hat{y}_i$
+
+-   Quais pressupostos?
+
+**Média zero**: os erros aleatórios têm valor esperado (ou média) nulo,
+isto é, $E[εi] = 0, ∀_i, ... , n.$
+
+**Normalidade**: os erros aleatórios segue uma distribuição normal com
+média zero e variância constante, isto é, $ε ∼ N (0, σ^{2})$.
+
+**Homogeneidade de variância**: os erros aleatórios devem ter uma
+variância constante (homoscedasticidade), isto é,
+$Var (ε_i) = σ^{2}, i = 1, ... n.$
+
+**Independência**: os erros aleatórios são independentes, isto é, a
+covariância entre $ε_i$ e $ε^{'}_i$ é igual a zero para $i ≠ i′$.
+
+-   No R?
+
+Uso da função 'check_model' do pacote 'performance'.
+
+```{r}
+## Leitura do pacote
+library('performance')
+
+#extraindo o modelo
+linearMod <- extract_fit_parsnip(lm_model)
+
+check_model(linearMod, check = c('linearity', 'normality'))
+check_model(linearMod, check = c('homogeneity', 'outliers'))
+check_model(linearMod, check = c('vif', 'pp_check'))
+```
+
+## Testes de Significância
+
+-   Objetivos?
+
+Verificar quais parâmetros são significativos para o modelo de regressão
+linear, e, também, verificar a significância da regressão.
+
+- Teste de significância da regressão?
+
+Faz-se o uso do teste F considerando as hipóteses:
+
+$H_0 : \beta_1 = ⋯  = \beta_k$ 
+
+VS
+        
+$H_a:\beta_j ≠ 0$ para ao menos um j
+
+A estatística do teste é dada por:
+
+$F_{calc}=\frac{\frac{SS_r}{k}}{\frac{SS_e}{(n-k-1)}}$
+
+em que:
+
+$SS_R  =  \sum^n_{i=1} (\hat{y_i} - \hat{y})^2$ define a soma de quadrados da regressão.
+
+$SS_E = \sum^n_{i=1} ({y_i} - \hat{y_i})^2$ define a soma de quadrado dos resíduos.
+
+$F_{calc}$ segue uma distribuição $F$ com $k$ e $(n − k − 1)$ graus de liberdade.
+
+-   Teste de significância dos parâmetros do modelo?
+
+Faz-se o uso do teste t de Student para os $β_j$ considerando as hipóteses:
+
+$H_0: β_j = 0$ vs $H_a: β_j ≠ 0$
+
+A estatística do teste, neste caso, é dada por:
+
+$t_{calc}=\frac{\hat{\beta_j}}{\sqrt{\sigma^2C_{jj}}} = \frac{\hat{\beta_j}}{se(\hat{\beta_j})}$
+
+onde $C_{jj}$ é o elemento da $(X'X)^{-1}$ que corresponde a $\hat{\beta_j}$
+
+-   No R?
+
+Utiliza-se a função summary disponível no R.
+
+```{r}
+summary(linearMod$fit)
+```
+
+## Coeficiente de Determinação
+
+-   Objetivo?
+
+Fornecer uma medida da qualidade do ajuste para a
+equação de regressão estimada. Essa medida é conhecida como
+variabilidade "explicada" pelo modelo.
+
+-   Como obter?
+
+O coeficiente de determinação $(R^2)$ é obtido pela expressão:
+
+$R^2=\frac{SS_R}{SS_R + SS_E}$
+
+-   No R?
+
+Obtido pelo argumento r.squared da função summary se feito com a função 'lm' do R, ou com o código abaixo, se feito com o pacote tidymodels
+
+```{r}
+summary(linearMod$fit)
+```
+
+Este resultado nos dá que 99% da variabilidade do Whole.Weight é explicada pelas variáveis preditoras Shucked.Weight, Viscera.Weight e Shell.Weight.
+
+## Predição do Modelo Linear
+
+-   Objetivo?
+
+Tem por objetivo fornecer novas informações sobre novas observações
+inseridas na base de dados a partir da equação de regressão estimada
+obtida por $\hat{y}=X\hat{β}$
+
+-   Como fazer?
+
+Dividir o conjunto de dados em uma amostra 80:20 (treinamento:teste) e,
+em seguida, construir o modelo na amostra de 80% e usar o modelo
+assim construído para prever a variável dependente nos dados de teste.
+
+-   Procedimento computacional?
+
+**1a Etapa**: Criar amostras de dados de treinamento (desenvolvimento) e
+teste (validação) a partir dos dados originais. Para isso, vamos utilizar funções do pacote tidymodels
+
+```{r}
+##semente para reprodutubilidade
+set.seed(100)
+
+## Criar base de dados para o treino e teste
+initial_split <- initial_split(db, prop = 0.8)
+train <- training(initial_split)
+test <- testing(initial_split)
+```
+
+**2a Etapa**: Desenvolver o modelo nos dados de treinamento e usá-lo para
+prever o peso total nos dados de teste.
+
+```{r}
+#definindo a fórmula ou 'recipe'
+recipe <- recipe(Whole.Weight ~ Shucked.Weight + Viscera.Weight + Shell.Weight, data = train)
+
+#Criando um workflow
+workflow = workflow() %>% add_recipe(recipe)
+
+#Criando a especiificação do modelo
+lm_spec <- linear_reg() %>%
+    set_engine("lm") %>%
+    set_mode("regression")
+
+#Juntando o workflow e as especificações e ajustando o modelo nos dados
+lm_model <- workflow %>%
+  add_model(lm_spec) %>%
+  fit(train)
+```
+
+**3a Etapa**: Revisar as medidas de diagnóstico.
+
+```{r}
+#visualiziando o modelo
+summary(lm_model$fit$fit$fit)
+
+check_model(lm_model$fit$fit, check = c('linearity', 'normality'))
+check_model(lm_model$fit$fit, check = c('homogeneity', 'outliers'))
+check_model(lm_model$fit$fit, check = c('vif', 'pp_check'))
+```
+
+**4a Etapa**: Calcular a precisão da previsão e as taxas de erro.
+
+```{r}
+## Fazer a predição do modelo de treino com base na base de teste
+pesoPred <- predict(lm_model, test)
+
+## Valor atual (da base de dados teste) e valores preditos
+actuals_preds <- pesoPred %>%
+  mutate(actual = test$Whole.Weight)
+
+## Comparação entre valor atual x valores preditos (base de dados teste)
+head(actuals_preds, 5)
+```
+
+Nossas previsões aparentemente estão boas, vamos visualizar e calcular algumas métricas de desempenho
+
+```{r}
+## Correlação entre valor atual x valores preditos (base de dados teste)
+cor(actuals_preds)
+
+## Erro absoluto médio em percentual (MAPE)
+yardstick::mape(actuals_preds, truth = actual, estimate = .pred)
+
+# raiz do erro quadrático médio
+yardstick::rmse(actuals_preds, truth = actual, estimate = .pred)
+```
+
+Analisando os resultados, em média, os erros do modelo têm uma raiz quadrada média de aproximadamente 0.04845594 e um Erro absoluto médio em percentual de 3.66%. Ou seja, os erros do modelo estão bem baixos, o que signifiica que é um bom modelo para predizer o peso do molusco. Vamos visualizar esses erros:
+
+```{r}
+ggplot(actuals_preds, aes(x = .pred, y=actual))  +
+  geom_point() +
+  geom_abline(col="red") +
+  geom_jitter() +
+  theme_minimal()
+```
+
+O gráfico de dispersão mostra a relação entre os valores previstos pelo modelo e os valores reais. A linha vermelha representa a situação ideal, onde as previsões são perfeitamente iguais aos valores reais. A dispersão dos pontos ao redor dessa linha indica a precisão do modelo: quanto mais próximos da linha, melhor.
+
+No geral, a maioria dos pontos está próxima da linha vermelha, sugerindo que o modelo faz boas previsões. No entanto, é importante analisar os pontos mais distantes da linha, pois representam divergências entre as previsões e os valores reais, podendo indicar áreas para melhorias no modelo, ou seja, informações que não foram capturadas pelo modelo linear.
+
+## Referencias
+
+-   Rencher, A. C., & Schaalje, G. B. (2008). Linear Models in Statistics. John
+Wiley & Sons.
+
+-   Chatterjee, S., & Hadi, A. S. (2006). Regression Analysis by Example.
+John Wiley & Sons.
+
+-   Matloff, N. (2011). The Art of R Programming: A Tour of Statistical
+Software Design. No Starch Press.
+
+-   Neter, J., Kutner, M. H., Nachtsheim, C. J., & Wasserman, W. (1996).
+Applied Linear Statistical Models. McGraw-Hill/Irwin.
+
+-   Davies, T. M. (2016). The Book of R: A First Course in Programming and
+Statistics. No Starch Press.
+
+-   Oliveira, R. P. (2023). Notas de Aula: Estatística Computacional.
+Departamento de Estatística - Universidade Estadual de Maringá.
+

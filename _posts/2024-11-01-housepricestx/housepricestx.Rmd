@@ -1,0 +1,366 @@
+---
+title: "Prevendo preços de casas"
+description: |
+  Avaliando o algoritmo XGBoost para prever preços de casas em Austin, Texas.
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2024-11-01
+preview: house.jpg{size=50%}
+categories:
+ - estatistica
+ - R
+ - tidymodels
+ - machine learning
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+Neste post vou usar os pacotes do tidymodels para modelar preços de casas. Os dados são de uma competição do Kaggle chamada SLICED. Vou comparar 3 modelos e escolher e aprimorar o que se sair melhor.
+
+# Exploração dos Dados
+
+Nosso objetivo de modelagem é prever o preço (em faixas) das casas em Austin, TX, com base nas características dos anúncios imobiliários. Este é um problema de classificação multiclasse, onde precisamos calcular uma probabilidade para cada casa estar em cada faixa de preço. O principal conjunto de dados fornecido está em um arquivo CSV chamado training.csv.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+train_0 <- read_csv("train.csv")
+
+train_0 %>%
+  ggplot(aes(x = priceRange)) +
+  geom_bar(fill = 'darkblue') +
+  labs(x = "Preço", y = "Frequência") +
+  theme_bw()
+```
+
+Podemos ver que as faixas de preço estão equilibradas, exceto pela faixa de menor valor. 
+
+## Como o preço está distribuído em Austin?
+
+```{r}
+price_plot <- train_0 %>%
+  mutate(priceRange = parse_number(priceRange)) %>%
+  ggplot(aes(longitude, latitude, col = priceRange)) +
+  geom_point(alpha = 0.8) +
+  labs(title = "Preço", col = "Média") +
+  scale_color_viridis_c() +
+  theme_bw()
+
+price_plot
+```
+
+Como era de se esperar, as casas mais caras estão localizadas no centro da cidade. Ao passo que nos afastamos, o preço tende a diminuir.
+
+Vamos examinar essa distribuição e compará-la com outras variáveis disponíveis no conjunto de dados. Podemos criar uma pequena função de plotagem usando {{}} para iterar rapidamente e combiná-las com o *patchwork*
+
+```{r, fig.height=7, fig.width=10}
+library(patchwork)
+
+plot_austin <- function(var, title) {
+  train_0 %>%
+    ggplot(aes(longitude, latitude, col = {{ var }})) +
+    geom_point(alpha = 0.8) +
+    scale_color_viridis_c() +
+    labs(
+      title = title,
+      col = "Média"
+    ) +
+    theme_bw()
+}
+
+(price_plot + plot_austin(avgSchoolRating, "Qualidade das Escolas")) /
+  (plot_austin(yearBuilt, "Ano de Construção") + plot_austin(log(lotSizeSqFt), "Tamanho do lote (log)"))
+```
+Observe as relações entre o preço e as outras variáveis. São essas relações que buscamos ao construir os modelos.
+
+## Encontrando palavras relacionadas ao preço
+
+A variável *description* contém o texto de cada anúncio imobiliário. Podemos tentar usar as características do texto diretamente na modelagem, mas isso muitas vezes não funciona tão bem para modelos de *boosted trees*. Vamos explorar outra opção que pode funcionar melhor em algumas situações: usar uma análise separada para identificar palavras importantes e depois criar variáveis dummy que indiquem se determinado anúncio contém essas palavras.
+
+Vamos começar organizando o texto da variável *description*.
+
+```{r}
+library(tidytext)
+
+austin_tidy <-
+  train_0 %>%
+  mutate(priceRange = parse_number(priceRange)) %>%
+  unnest_tokens(word, description) %>% # Tokenizar o variavel description
+  anti_join(get_stopwords()) # Tirar as 'stop words' que nao tem significado
+
+austin_tidy %>%
+  count(word, sort = TRUE)
+```
+Em seguida, vamos calcular as frequências das palavras por faixa de preço para as 100 palavras mais frequentes.
+
+```{r}
+top_words <-
+  austin_tidy %>%
+  count(word, sort = TRUE) %>%
+  filter(!word %in% as.character(1:5)) %>% # Tirar alguns numeros
+  slice_max(n, n = 100) %>% 
+  pull(word)
+
+word_freqs <-
+  austin_tidy %>%
+  count(word, priceRange) %>%
+  complete(word, priceRange, fill = list(n = 0)) %>% # completar se houver valores ausentes
+  group_by(priceRange) %>%
+  mutate(
+    price_total = sum(n),
+    proportion = n / price_total
+  ) %>%
+  ungroup() %>%
+  filter(word %in% top_words)
+
+word_freqs
+```
+Agora, vamos usar a modelagem para identificar as palavras que estão aumentando com o preço e aquelas que estão diminuindo com o preço.
+
+```{r}
+library(tidymodels)
+word_mods <-
+  word_freqs %>%
+  nest(data = - word) %>%
+  mutate(
+    model = map(data, ~ glm(cbind(n, price_total) ~ priceRange, data = ., family = "binomial")),
+    model = map(model, tidy)
+  ) %>%
+  unnest(model) %>%
+  filter(term == "priceRange") %>%
+  mutate(p.value = p.adjust(p.value)) %>%
+  arrange(-estimate)
+
+word_mods
+```
+Essas são as palavras associadas com preços mais altos.
+
+```{r}
+word_mods %>%
+  arrange(estimate)
+```
+Já essas, são palavras associadas com preços mais baixos
+
+Vamos fazer algo semelhante a um gráfico de vulcão para ver a relação entre o valor-p e o tamanho do efeito dessas palavras.
+
+```{r}
+library(ggrepel)
+
+word_mods %>%
+  ggplot(aes(estimate, p.value, color=estimate)) +
+  geom_vline(xintercept = 0, lty = 2, alpha = 0.7, color = "gray50") +
+  geom_point(alpha = 0.8, size = 2.5) +
+  scale_y_log10() +
+  geom_text_repel(aes(label = word), family = "IBMPlexSans") +
+  scale_color_viridis_b() +
+  theme_bw()
+```
+
+-   Palavras como "outdoor", "custom", "pool", "suite" e "office" aumentam com o preço. 
+-   Palavras como "new", "paint", "carpet", "great", "tile", "close" e "flooring" diminuem com o preço. 
+
+Essas são as palavras que gostaríamos de tentar detectar e usar nos nossos modelos, em vez de usar todos os tokens de texto como características individualmente.
+
+```{r}
+higher_words <-
+  word_mods %>%
+  filter(p.value < 0.05) %>%
+  slice_max(estimate, n = 12) %>%
+  pull(word)
+
+lower_words <-
+  word_mods %>%
+  filter(p.value < 0.05) %>%
+  slice_min(estimate, n = 12) %>%
+  pull(word)
+
+
+```
+
+Podemos observar essas variações diretamente em relação ao preço. Por exemplo, estas são as palavras mais associadas à diminuição do preço.
+
+```{r, fig.height=8, fig.width=10}
+word_freqs %>%
+  filter(word %in% lower_words) %>%
+  ggplot(aes(priceRange, proportion, color = word)) +
+  geom_line(size = 2.5, alpha = 0.7, show.legend = FALSE) +
+  facet_wrap(vars(word), scales = "free_y") +
+  scale_x_continuous(labels = scales::dollar) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, NA)) +
+  labs(x = NULL, y = "Proporção do total de palavras usadas para casas naquele preço") +
+  theme_light(base_family = "IBMPlexSans")
+```
+
+Casas mais baratas são descritas como "great" (ótimas), mas as casas caras não. E, aparentemente, não há necessidade de mencionar a localização ("close", "minutes", "location") em casas mais caras.
+
+# Modelagem
+
+Vamos começar nossa modelagem definindo nosso "orçamento de dados", assim como as métricas (este desafio foi avaliado usando a métrica de log loss para classificação multiclasse).
+
+```{r}
+set.seed(123)
+train_0$hasSpa <- factor(train_0$hasSpa)
+austin_split <- train_0 %>%
+  select(-city) %>%
+  mutate(description = str_to_lower(description)) %>%
+  initial_split(strata = priceRange)
+austin_train <- training(austin_split)
+austin_test <- testing(austin_split)
+austin_metrics <- metric_set(accuracy, roc_auc, mn_log_loss)
+
+set.seed(234)
+austin_folds <- vfold_cv(austin_train, v = 5, strata = priceRange)
+austin_folds
+```
+
+Para a *feature engineering*, vamos usar basicamente tudo no conjunto de dados (exceto a variável "city", que não foi muito útil) e criar variáveis *dummy* ou indicadoras usando *step_regex()*. A ideia aqui é detectar se essas palavras associadas a preços baixos/altos estão presentes e criar uma variável sim/não indicando sua presença ou ausência.
+
+```{r}
+higher_pat <- glue::glue_collapse(higher_words, sep = "|")
+lower_pat <- glue::glue_collapse(lower_words, sep = "|")
+austin_rec <-
+  recipe(priceRange ~ ., data = austin_train) %>%
+  update_role(uid, new_role = "uid") %>%
+  step_regex(description, pattern = higher_pat, result = "high_price_words") %>%
+  step_regex(description, pattern = lower_pat, result = "low_price_words") %>%
+  step_rm(description) %>%
+  step_novel(homeType) %>%
+  step_unknown(homeType) %>%
+  step_other(homeType, threshold = 0.02) %>%
+  step_dummy(all_nominal_predictors()) %>%
+  step_nzv(all_predictors())
+
+austin_rec
+```
+
+Agora, vamos criar uma especificação de modelo xgboost ajustável, ajustando muitos dos hiperparâmetros importantes do modelo, e combiná-la com nossa receita em um *workflow*(). Também podemos criar uma grade personalizada, xgb_grid, para especificar quais parâmetros queremos testar.
+
+```{r}
+xgb_spec <-
+  boost_tree(
+    trees = 1000,
+    tree_depth = tune(),
+    min_n = tune(),
+    mtry = tune(),
+    sample_size = tune(),
+    learn_rate = tune()
+  ) %>%
+  set_engine("xgboost") %>%
+  set_mode("classification")
+
+xgb_word_wf <- workflow(austin_rec, xgb_spec)
+
+set.seed(123)
+xgb_grid <-
+  grid_max_entropy(
+    tree_depth(c(5L, 10L)),
+    min_n(c(10L, 40L)),
+    mtry(c(5L, 10L)),
+    sample_prop(c(0.5, 1.0)),
+    learn_rate(c(-2, -1)),
+    size = 40
+  )
+
+xgb_grid
+```
+Agora podemos ajustar o modelo através da grade de parâmetros e nossas amostras reamostradas. Como estamos testando muitas combinações de hiperparâmetros, vamos usar o método de racing para interromper cedo as combinações de hiperparâmetros que claramente apresentam desempenho ruim.
+
+```{r}
+library(finetune)
+```
+
+
+```{r eval=FALSE, include=TRUE}
+library(doParallel)
+cores <- parallel::detectCores()
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+set.seed(234)
+xgb_word_rs <-
+  tune_race_anova(
+    xgb_word_wf,
+    austin_folds,
+    grid = xgb_grid,
+    metrics = metric_set(mn_log_loss),
+    control = control_race(verbose_elim = TRUE)
+  )
+
+xgb_word_rs
+```
+
+```{r,include=F}
+xgb_word_rs <- readRDS("xgb_word_rs.rds")
+```
+
+# Resultados
+
+```{r}
+plot_race(xgb_word_rs) + theme_bw()
+
+show_best(xgb_word_rs)
+```
+
+Vamos usar o *last_fit()* para ajustar uma última vez aos dados de treinamento e avaliar uma última vez nos dados de teste, utilizando o resultado numericamente otimizado do *xgb_word_rs*.
+
+```{r}
+xgb_last <-
+  xgb_word_wf %>%
+  finalize_workflow(select_best(xgb_word_rs)) %>%
+  last_fit(austin_split)
+
+xgb_last
+```
+
+Como esse modelo se saiu nos dados de teste, que não foram utilizados no ajuste ou treinamento?
+
+```{r}
+collect_predictions(xgb_last) %>%
+  mn_log_loss(priceRange, `.pred_0-250000`:`.pred_650000+`)
+```
+Esse resultado é bastante bom para um único modelo (não combinado).
+
+Como esse modelo se comporta entre as diferentes classes?
+
+```{r message=FALSE, warning=FALSE}
+collect_predictions(xgb_last) %>%
+  conf_mat(priceRange, .pred_class) %>%
+  autoplot()
+```
+Podemos também visualizar isso com uma curva ROC
+
+```{r}
+collect_predictions(xgb_last) %>%
+  roc_curve(priceRange, `.pred_0-250000`:`.pred_650000+`) %>%
+  ggplot(aes(1 - specificity, sensitivity, color = .level)) +
+  geom_abline(lty = 2, color = "gray80", size = 1.5) +
+  geom_path(alpha = 0.8, size = 1.2) +
+  coord_equal() +
+  labs(color = NULL) +
+  theme_classic()
+```
+Note que é mais fácil identificar as casas mais caras, mas mais difícil classificar corretamente as casas menos caras.
+
+Quais características são mais importantes para este modelo xgboost?
+
+```{r}
+library(vip)
+extract_workflow(xgb_last) %>%
+  extract_fit_parsnip() %>%
+  vip(geom = "point", num_features = 15) +
+  theme_minimal()
+```
+
+As informações espaciais de latitude/longitude são de longe as mais importantes. Note que o modelo usa as palavras de preço baixo com mais frequência do que usa, por exemplo, se há um spa ou se é uma casa unifamiliar (em oposição a um sobrado ou condomínio). Parece que o modelo está tentando distinguir algumas dessas categorias de preço mais baixo. O modelo realmente não usa a variável de palavras de preço alto, talvez porque já seja fácil identificar as casas caras.
+

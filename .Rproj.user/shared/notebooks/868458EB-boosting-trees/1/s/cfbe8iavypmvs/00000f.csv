@@ -1,0 +1,9 @@
+"0","#correlação estatística"
+"0","DataExplorer::plot_correlation(cc_apps, type = ""all"")"
+"2","3 features with more than 20 categories ignored!
+X2: 350 categories
+X11: 23 categories
+X14: 171 categories
+
+"
+"2","Warning: o desvio padrão é zero"

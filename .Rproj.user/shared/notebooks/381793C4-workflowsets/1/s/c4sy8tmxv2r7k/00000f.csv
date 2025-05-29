@@ -1,0 +1,35 @@
+"0","# Carrega o pacote tidyverse"
+"0","library(tidyverse)"
+"2","── [1mAttaching core tidyverse packages[22m ───────────────────────────────────────────── tidyverse 2.0.0 ──
+[32m✔[39m [34mforcats  [39m 1.0.0     [32m✔[39m [34mreadr    [39m 2.1.4
+[32m✔[39m [34mlubridate[39m 1.9.3     [32m✔[39m [34mstringr  [39m 1.5.1"
+"2","── [1mConflicts[22m ─────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+[31m✖[39m [34mreadr[39m::[32mcol_factor()[39m masks [34mscales[39m::col_factor()
+[31m✖[39m [34mpurrr[39m::[32mdiscard()[39m    masks [34mscales[39m::discard()
+[31m✖[39m [34mdplyr[39m::[32mfilter()[39m     masks [34mstats[39m::filter()
+[31m✖[39m [34mstringr[39m::[32mfixed()[39m    masks [34mrecipes[39m::fixed()
+[31m✖[39m [34mdplyr[39m::[32mlag()[39m        masks [34mstats[39m::lag()
+[31m✖[39m [34mreadr[39m::[32mspec()[39m       masks [34myardstick[39m::spec()
+[36mℹ[39m Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors"
+"0","# Lê os dados"
+"0","pumpkins_raw <- readr::read_csv(""https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-10-19/pumpkins.csv"")"
+"2","[1mRows: [22m[34m28065[39m [1mColumns: [22m[34m14[39m"
+"2","[36m──[39m [1mColumn specification[22m [36m─────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (14): id, place, weight_lbs, grower_name, city, state_prov, country, gpc_site, seed_mother, p..."
+"2","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message."
+"0","# Limpa e organiza os dados"
+"0","pumpkins <- "
+"0","  pumpkins_raw %>%"
+"0","  # Divide a coluna 'id' em 'year' (ano) e 'type' (tipo)"
+"0","  separate(id, into = c(""year"", ""type"")) %>%"
+"0","  # Filtra apenas os dados do tipo ""P"""
+"0","  filter(type == ""P"") %>%"
+"0","  # Converte algumas colunas para números"
+"0","  mutate(across(c(year, weight_lbs, ott, place), parse_number)) %>%"
+"0","  # Escolhe colunas importantes"
+"0","  select(weight_lbs, year, place, ott, gpc_site, country)"
+"0",""
+"0","pumpkins"

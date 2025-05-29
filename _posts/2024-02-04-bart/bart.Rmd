@@ -1,0 +1,349 @@
+---
+title: "BART - Bayesian Additive Regression Trees"
+description: |
+  O que são árvores Bayesianas e como implementá-las no R usando o pacote tidymodels?
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2024-06-05
+categories:
+  - machine learning   
+  - estatistica
+  - R   
+  - tidymodels
+preview: https://gomesfellipe.github.io/img/2018/08/img1.png
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Teoria
+
+## Introdução
+
+As Árvores Bayesianas são outro método que utiliza árvores de decisão como blocos de construção. Para simplificar, veremos o BART para regressão (em oposição à classificação).
+
+Lembre-se de que o *bagging* e as florestas aleatórias fazem previsões a partir de uma média de árvores de regressão, cada uma das quais é construída usando uma amostra aleatória de dados e/ou preditores. Cada árvore é construída separadamente das outras. Por outro lado, o *boosting* usa uma soma ponderada de árvores, cada uma das quais é construída ajustando uma árvore ao resíduo do ajuste atual. Assim, cada nova árvore tenta capturar o sinal que ainda não foi considerado pelo conjunto atual de árvores.
+
+O BART está relacionado a ambos os enfoques: cada árvore é construída de maneira aleatória como no *bagging* e nas florestas aleatórias, e cada árvore tenta capturar o sinal que ainda não foi considerado pelo modelo atual, como no *boosting*. A principal novidade no BART é a forma como novas árvores são geradas.
+
+## Algoritmo
+
+Antes de introduzirmos o algoritmo BART, definimos algumas notações. Vamos denotar por $K$ o número de árvores de regressão e por $B$ o número de iterações nas quais o algoritmo BART será executado. A notação $\hat{f}_b^k(x)$ representa a previsão em $x$ para a $k$-ésima árvore de regressão usada na $b$-ésima iteração. No final de cada iteração, as $K$ árvores daquela iteração serão somadas, ou seja, $\hat{f}_b(x) = \sum_{k=1}^{K} \hat{f}_b^k(x)$ para b = 1,...,B.
+
+Na primeira iteração do algoritmo BART, todas as árvores são inicializadas com um único nó raiz, com $\hat{f}_1^k(x) = \frac{1}{nK} \sum_{i=1}^{n} y_i$ a média dos valores de resposta dividida pelo número total de árvores. Assim, $\hat{f}_1(x) = \frac{1}{n} \sum_{k=1}^{K} \hat{f}_1^k(x) = \frac{1}{n} \sum_{i=1}^{n} y_i$. Em iterações subsequentes, o BART atualiza cada uma das K árvores, uma de cada vez. Na b-ésima iteração, para atualizar a k-ésima árvore, subtraímos de cada valor de resposta as previsões de todas as árvores exceto a k-ésima, para obter um resíduo parcial $$r_i = y_i - \sum_{k'<k} \hat{f}_{k'}^b(x_i) - \sum_{k'>k} \hat{f}_{k'}^{b-1}(x_i)$$ para a i-ésima observação, $i=1,...,n$. Em vez de ajustar uma nova árvore a esse resíduo parcial, o BART escolhe aleatoriamente uma perturbação para a árvore da iteração anterior $(\hat{f}_{b-1}^k)$ de um conjunto de possíveis perturbações, favorecendo aquelas que melhoram o ajuste ao resíduo parcial. Existem dois componentes para essa perturbação:
+
+-   Podemos alterar a estrutura da árvore adicionando ou podando ramos.
+-   Podemos alterar a previsão em cada nó terminal da árvore.
+
+A saída do BART é um conjunto de modelos de previsão: $$\hat{f}^b(x) = \sum_{k=1}^{B} \hat{f}_{b}^{k}(x), \text{ para } b = 1,2,...,B$$
+
+Normalmente descartamos os primeiros desses modelos de previsão, já que os modelos obtidos nas iterações iniciais - conhecidas como período de burn-in - geralmente não fornecem resultados muito bons. Podemos designar $L$ como o número de iterações de *burn-in*; por exemplo, poderíamos tomar $L=200$. Então, para obter uma única previsão, simplesmente fazemos a média após as iterações de *burn-in*, $$\hat{f}(x) = \frac{1}{B - L} \sum_{b=L+1}^{B} \hat{f}_b(x)$$ No entanto, também é possível calcular quantidades diferentes da média: por exemplo, os percentis de $\hat{f}_{L+1}(x),...,\hat{f}_B(x)$ fornecem uma medida de incerteza na previsão final. O procedimento geral do BART é resumido no Algoritmo 1 abaixo.
+
+—————————————————————————————————————————————— **Algoritmo 1** - Árvores Bayesianas ——————————————————————————————————————————————
+
+1.  Seja $\hat{f}_1^1(x) = \hat{f}_1^2(x) = \dots = \hat{f}_1^K(x) = \frac{1}{nK} \sum_{i=1}^{n} y_i$
+
+2.  Calcule $\hat{f}_1(x) = \frac{1}{n} \sum_{k=1}^{K} \hat{f}_1^k(x) = \frac{1}{n} \sum_{i=1}^{n} y_i$
+
+3.  Para $b = 2, \ldots, B$:
+
+    a) Para $k = 1, 2, \ldots, K$:
+    
+        i. Para $i = 1, \ldots, n$, calcule o resíduo parcial atual:
+        
+        $r_i = y_i - \hat{f}^{b-1}_k(x_i) + \sum_{k' \neq k} \hat{f}^{b-1}_{k'}(x_i)$.
+        
+        ii. Ajuste uma nova árvore, $\hat{f}^b_k(x)$, a $r_i$, perturbando aleatoriamente a $k$-ésima árvore da iteração anterior, $\hat{f}^{b-1}_k(x)$. Perturbações que melhoram o ajuste são favorecidas.
+        
+    b) Calcule $\hat{f}^b(x) = \sum_{k=1}^{K} \hat{f}^b_k(x)$.
+
+4.  Calcule a média após $L$ amostras de burn-in,
+
+$$\hat{f}(x) = \frac{1}{B-L} \sum_{b=L+1}^{B} \hat{f}^b(x)$$.
+——————————————————————————————————————————————
+
+Um elemento-chave da abordagem do BART é que, no Passo 3(a)ii., não ajustamos uma nova árvore ao resíduo parcial atual: em vez disso, tentamos melhorar o ajuste ao resíduo parcial atual modificando ligeiramente a árvore obtida na iteração anterior. Em termos gerais, isso protege contra o *overfitting*, já que limita o quão "fortemente" ajustamos os dados em cada iteração. Além disso, as árvores individuais são tipicamente bastante pequenas. Limitamos o tamanho da árvore para evitar o *overfitting* dos dados, o que seria mais provável de ocorrer se cultivássemos árvores muito grandes. Embora os detalhes estejam fora do escopo deste artigo, descobre-se que o método do BART pode ser visto como uma abordagem bayesiana para ajustar um conjunto de árvores: cada vez que perturbamos aleatoriamente uma árvore para ajustar os resíduos, estamos de fato tirando uma nova árvore de uma distribuição posterior. (Claro, essa conexão bayesiana é a motivação para o nome do BART.)
+
+Além disso, o Algoritmo 1 pode ser visto como uma cadeia de Markov Monte Carlo para ajustar o modelo BART. Quando aplicamos o BART, devemos selecionar o número de árvores K, o número de iterações B e o número de iterações de *burn-in* L. Normalmente escolhemos valores grandes para B e K, e um valor moderado para L: por exemplo, K=200, B=1000 e L=100 é uma escolha razoável. Foi demonstrado que o BART tem um desempenho impressionante fora da caixa - ou seja, ele se sai bem com ajustes mínimos.
+
+## Resumo
+
+### Visão Geral
+
+BART é uma técnica de aprendizado de máquina que combina muitas árvores de decisão para fazer previsões mais precisas. Ele funciona de forma similar a métodos como "Random Forests" e "Boosting", mas com uma abordagem bayesiana. Aqui está uma explicação passo a passo de como o algoritmo BART funciona:
+
+-   **Passos do Algoritmo BART**
+
+1) Inicialização:
+
+Começamos com várias árvores de decisão simples, cada uma tentando prever o valor médio da variável de interesse. Todas as árvores são inicialmente iguais e fazem a mesma previsão básica.
+
+2) Cálculo Inicial:
+
+Calculamos uma previsão inicial simples com base na média dos valores de saída (as respostas y_i).
+
+3) Iteração:
+
+O algoritmo executa várias iterações (chamadas de "iteração de MCMC") para melhorar as previsões.
+Para cada iteração, fazemos os seguintes passos:
+
+4) Atualização das Árvores:
+
+Para cada árvore, fazemos o seguinte:
+Cálculo dos Resíduos:
+Calculamos o quanto a previsão atual está errada (chamado de "resíduo"). Este resíduo é a diferença entre o valor real e a soma das previsões das outras árvores.
+Ajuste da Árvore:
+Atualizamos a árvore para ajustar melhor esses resíduos. Isso é feito através de pequenas alterações na estrutura da árvore, que são aceitas se melhorarem a previsão.
+
+5) Combinação das Árvores:
+
+Após ajustar cada árvore, combinamos todas as árvores atualizadas para fazer uma nova previsão.
+
+6) Média das Previsões:
+
+Depois de várias iterações, descartamos as primeiras previsões (chamadas de "burn-in") para garantir que o algoritmo tenha se estabilizado.
+Calculamos a média das previsões das iterações restantes para obter a previsão final.
+
+## Prática
+
+### **1.Ames: dados de casas**
+
+![](https://gomesfellipe.github.io/img/2018/08/img1.png)
+
+Os dados de casas de Ames contém informações de 2930 propriedades em Ames, Iowa, e inclui colunas relacionadas a: - Características da casa (quartos, garagem, lareira, piscina, varanda etc.); - Localização; - Informações do lote (zoneamento, forma, tamanho etc.); - Avaliações de condição e qualidade; - Preço de venda
+
+Nosso objetivo de modelagem é prever o preço de venda de uma casa com base em outras informações que temos, como suas características e localização.
+
+Os dados brutos de habitação são fornecidos em [De Cock (2011)](https://jse.amstat.org/v19n3/decock.pdf), mas em nossas análises, usaremos uma versão transformada disponível no pacote modeldata. Esta versão tem várias alterações e melhorias nos dados. Por exemplo, os valores de longitude e latitude foram determinados para cada propriedade. Além disso, algumas colunas foram modificadas para ficarem melhores para análise. Por exemplo:
+
+-   Nos dados brutos, se uma casa não tivesse uma característica específica, ela era implicitamente codificada como ausente. Por exemplo, 2.732 propriedades não tinham beco. Em vez de deixá-los como ausentes, eles foram rotulados novamente na versão transformada para indicar que nenhum beco estava disponível;
+
+-   Os preditores categóricos foram convertidos para o tipo de dados de fator. Embora tanto o tidyverse quanto o R base tenham deixado de importar dados como fatores por padrão, esse tipo de dados é uma abordagem melhor para armazenar dados qualitativos para modelagem do que strings simples.
+
+-   Removemos um conjunto de descritores de qualidade para cada casa, pois eles são mais como resultados do que preditores.
+
+```{r message=FALSE, warning=FALSE}
+#carregando pacotes
+library(modeldata)
+library(tidyverse)
+library(tidymodels)
+library(visdat)
+library(DataExplorer)
+library(plotly)
+#carregando dados
+data("ames")
+```
+
+### **2.Explorando os dados** {.tabset .tabset-pills}
+
+Primeiro, vamos analisar a estrutura dos dados
+
+```{r message=FALSE, warning=FALSE}
+plot_intro(ames, ggtheme = theme_bw())
+```
+Podemos ver que esses dados não contém valores ausentes e que a maioria é discreta
+
+Agora, vamos focar no resultado que queremos prever: o último preço de venda da casa (em USD). Podemos criar um histograma para ver a distribuição dos preços de venda
+
+#### Histograma
+```{r message=FALSE, warning=FALSE}
+# hist
+p <- ggplot(ames, aes(x = Sale_Price)) + 
+  geom_histogram(aes(y = ..density..), colour = "black", fill = "white") +
+  geom_density(alpha = .2, fill = "#FF6666") +
+  labs(x = "Preço", y = "Densidade") +
+  scale_x_continuous(labels = dollar) +
+  scale_y_continuous(labels = function(x) format(x, scientific = FALSE)) +
+  theme_bw()
+
+ggplotly(p)
+```
+
+#### Box-Plot
+```{r message=FALSE, warning=FALSE}
+# boxplot
+ggplotly(
+ggplot(ames, aes(y=Sale_Price)) + 
+ geom_boxplot(aes(x=""), colour="black", fill="white")+
+  coord_flip()+ 
+  labs(x = "", y = "Preço") +
+  scale_y_continuous(labels = dollar)+
+  theme_bw()
+)
+```
+
+#### QQ-Plot
+```{r}
+# qqplot
+ggplotly(
+ggplot(ames, aes(sample = Sale_Price))+ 
+  stat_qq()+
+  stat_qq_line()+ 
+  labs(x = "", y = "") +
+  scale_y_continuous(labels = dollar)+
+  theme_bw()
+)
+```
+
+Os gráficos nos mostram que os dados são assimétricos à direita; há mais casas baratas do que caras. O preço mediano de venda foi de $160.000, e a casa mais cara foi de $755.000. Ao modelar esse resultado, pode-se argumentar fortemente que o preço deve ser transformado para escala log. As vantagens desse tipo de transformação são que nenhuma casa seria prevista com preços de venda negativos e que os erros na previsão de casas caras não teriam influência indevida no modelo. Além disso, de uma perspectiva estatística, uma transformação logarítmica também pode estabilizar a variância de forma a tornar a inferência mais legítima.
+
+Embora não seja perfeito, isso provavelmente resultará em modelos melhores do que usar os dados não transformados, pelas razões que acabamos de descrever.
+
+### Modelagem
+
+Primeiro, vamos dividir os dados em treinamento e teste
+
+```{r message=FALSE, warning=FALSE}
+set.seed(502)
+ames_split <- initial_split(ames, prop = 0.80, strata = Sale_Price)
+ames_train <- training(ames_split)
+ames_test  <-  testing(ames_split)
+```
+
+Chegamos ao momento da análise em que precisamos aplicar transformações nos dados para que reflitam o estudo de forma mais realista
+
+O mesmo pré-processamento aplicado aos dados de treinamento precisa ser aplicado aos dados de teste. Para esta tarefa, usaremos o pacote *recipes* da estrutura do tidymodels para preparar uma receita de transformação.
+
+```{r message=FALSE, warning=FALSE}
+#Criar o recipe básico
+ames_rec = recipe(Sale_Price ~., data = ames_train) %>% 
+  step_log(all_numeric(),-all_outcomes(), signed = T) %>%#escala log10 para todas as variaveis numericas
+  step_normalize(all_numeric_predictors()) %>% #normalizar dados numericos
+  step_other(all_factor_predictors(), threshold = 0.01) %>% #criar fator novo para dados incomuns 
+  step_dummy(all_factor_predictors())
+```
+
+Vamos primeiro criar um modelo de regressão linear para compararmos depois com o BART:
+
+#### Regressão Linear
+
+```{r message=FALSE, warning=FALSE}
+#definindo modelo
+lm_model <- linear_reg() %>% 
+  set_engine("lm") %>%
+  set_mode("regression")
+
+#definindo workflow
+lm_wflow <- 
+  workflow() %>% 
+  add_model(lm_model) %>% 
+  add_recipe(ames_rec)
+
+#ajustando o modelo
+lm_fit <- last_fit(lm_wflow, ames_split)
+```
+
+#### BART
+
+```{r}
+#definindo modelo
+bart_model <- bart(trees = tune(), 
+                   prior_terminal_node_coef = tune(), 
+                   prior_terminal_node_expo = tune(), 
+                   prior_outcome_range = tune()) %>%
+  set_mode("regression") %>%
+  set_engine("dbarts")
+```
+
+Agora, vamos criar os dados para validação, que serão usados para otimizar os hiperparâmetros
+
+```{r}
+#dados para validação cruzada, por bootstrap
+set.seed(12345)
+resample <- bootstraps(ames_train, times = 5, strata = Sale_Price)
+
+# Workflow
+bart_wflow <- workflow() %>%
+  add_recipe(ames_rec) %>%
+  add_model(bart_model)
+```
+
+Precisamos, ainda, definir os parâmetros de cada modelo e criar um grid com várias combinações de parâmetros para podermos otimizá-los
+
+```{r}
+#parametros xgboost
+bart_params <- extract_parameter_set_dials(bart_model) %>%
+  finalize(ames_train)
+
+#grid de parâmetros (50 combinações para cada)
+bart_grid <- grid_latin_hypercube(x = bart_params, size = 50)
+```
+
+Podemos otimizar os parâmetros com o pacote tune. Vou utilizar um método de racing, que depois que um número inicial de reamostragens é avaliado, o processo elimina combinações de parâmetros de ajuste que são improváveis de resultar nos melhores resultados usando um modelo de ANOVA de medidas repetidas.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+#biblioteca para processamento em paralelo
+library(doParallel)
+cores <- parallel::detectCores()
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+#otimização com tune_race_anova
+library(finetune)
+bart_tune_results <- tune_race_anova(object = bart_wflow, 
+                                    resamples = resample, 
+                                    grid = bart_grid)
+
+doParallel::stopImplicitCluster()
+```
+
+```{r eval=TRUE, message=FALSE, warning=FALSE, include=FALSE}
+bart_tune_results <- readRDS("bart_tune_results.rds")
+```
+
+Podemos visualizar como as possíveis combinações de parâmetros que tentamos se saíram durante a "corrida". Note como economizamos MUITO tempo ao não avaliar as combinações de parâmetros que estavam claramente se saindo mal em todas as reamostragens; só continuamos com as boas combinações de parâmetros.
+
+```{r}
+finetune::plot_race(bart_tune_results) + theme_bw()
+```
+
+Também podemos ver os melhores resultados
+
+```{r}
+show_best(bart_tune_results)
+```
+
+ Vamos ver a performance nos dados de teste, finalizando o workflow com os melhores parâmetros e ajustando ao split inicial.
+ 
+```{r message=FALSE, warning=FALSE}
+#ajuste final BART
+bart_last <- finalize_workflow(x = bart_wflow, 
+                              parameters = select_best(bart_tune_results)) %>%
+  last_fit(ames_split)
+```
+
+Podemos coletar as previsões no conjunto de teste e comparar com a regressão linear simples que fizemos no começo
+
+```{r}
+rmse_bart <- bart_last %>% collect_metrics()
+rmse_lm <- lm_fit %>% collect_metrics()
+
+paste("O RMSE do modelo BART foi de: ", rmse_bart$.estimate[1])
+paste("O RMSE do modelo linear foi de: ", rmse_lm$.estimate[1])
+```
+Podemos também ver nossas previsões comparadas com o preço original das casas e observar que o modelo "erra" mais quando o preço das casas são mais elevados
+
+```{r}
+bart_last %>% collect_predictions() %>%
+  ggplot(aes(x = .pred, y = Sale_Price)) +
+  geom_point() +
+  geom_abline(col = "red") +
+  theme_bw() +
+  scale_x_continuous(labels = dollar) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Previsao", y = "Preco")
+```
+
+### Conclusão
+
+O modelo BART se saiu melhor que o modelo linear para prever os preços das casas, com um RMSE de 23549.03.

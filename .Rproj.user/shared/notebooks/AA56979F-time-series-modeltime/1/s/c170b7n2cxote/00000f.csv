@@ -1,0 +1,93 @@
+"0","# * Prophet Boost----"
+"0","wflw_fit_prophet_boost <- workflow() %>% "
+"0","  add_model("
+"0","    modeltime::prophet_boost("
+"0","      seasonality_daily = FALSE,"
+"0","      seasonality_weekly = FALSE,"
+"0","      seasonality_yearly = FALSE"
+"0","    ) %>% "
+"0","      set_engine('prophet_xgboost')"
+"0","  ) %>% "
+"0","  add_recipe(recipe_spec_1) %>% "
+"0","  fit(training(splits))"
+"0",""
+"0","wflw_fit_prophet_boost"
+"1","══ Workflow [trained] ═══════════════════════════════════════════════════════════"
+"1",""
+"1","
+"
+"1","[3mPreprocessor:[23m Recipe"
+"1",""
+"1","
+"
+"1","[3mModel:[23m prophet_boost()"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","── Preprocessor ─────────────────────────────────────────────────────────────────"
+"1",""
+"1","
+"
+"1","6 Recipe Steps"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","• step_timeseries_signature()
+• step_rm()
+• step_normalize()
+• step_zv()
+• step_mutate()
+• step_dummy()"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","── Model ────────────────────────────────────────────────────────────────────────"
+"1",""
+"1","
+"
+"1","PROPHET w/ XGBoost Errors
+"
+"1","---
+"
+"1","Model 1: PROPHET
+"
+"1"," - growth: 'linear'
+ - n.changepoints: 25
+ - changepoint.range: 0.8
+ - yearly.seasonality: 'FALSE'
+ - weekly.seasonality: 'FALSE'
+ - daily.seasonality: 'FALSE'
+ - seasonality.mode: 'additive'
+ - changepoint.prior.scale: 0.05
+ - seasonality.prior.scale: 10
+ - holidays.prior.scale: 10
+ - logistic_cap: NULL
+ - logistic_floor: NULL"
+"1","
+"
+"1","
+---
+"
+"1","Model 2: XGBoost Errors
+
+"
+"1","xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, 
+"
+"1","    colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, 
+"
+"1","    subsample = 1), data = x$data, nrounds = 15, watchlist = x$watchlist, 
+"
+"1","    verbose = 0, objective = ""reg:squarederror"", nthread = 1)
+"

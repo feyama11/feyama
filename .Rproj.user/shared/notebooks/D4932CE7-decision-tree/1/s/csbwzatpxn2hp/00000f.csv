@@ -1,0 +1,6 @@
+"0","#criando a receita com os pre-processamentos"
+"0","recipe <- recipe(formula = winpercent ~., data = train) %>%"
+"0","  step_normalize(all_numeric_predictors())"
+"0",""
+"0","#criando o workflow da regressão"
+"0","workflow_reg <- workflow() %>% add_recipe(recipe)"

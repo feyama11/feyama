@@ -1,0 +1,5 @@
+"0","all_workflows <- "
+"0","   bind_rows(no_pre_proc, normalized, with_features) %>% "
+"0","   # Make the workflow ID's a little more simple: "
+"0","   mutate(wflow_id = gsub(""(simple_)|(normalized_)"", """", wflow_id))"
+"0","all_workflows"

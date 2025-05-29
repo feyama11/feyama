@@ -1,0 +1,239 @@
+---
+title: "Projeto: Detectar Spam"
+description: |
+  Avaliando várias abordagens de modelagem para spam de e-mails.
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2024-09-25
+preview: spam.png
+categories:
+ - estatistica
+ - R
+ - tidymodels
+ - machine learning
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# Exploração dos Dados
+
+Nosso objetivo de modelagem é prever quais e-mails são spam, com base em algumas características de texto que foram preparadas previamente. Vamos começar lendo os dados:
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+spam <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-15/spam.csv')
+glimpse(spam)
+```
+
+A variável **yesno** nos informa se o e-mail é spam ou não, e temos informações sobre o comprimento total de LETRAS MAIÚSCULAS ININTERRUPTAS, bem como a ocorrência de símbolos como $, !, a palavra "money", a sequência "000" e a palavra "make" (tudo em proporções de caracteres ou palavras). Note que houve um grande esforço de *feature engineering* na preparação do conjunto de dados; não temos o conteúdo bruto dos e-mails, mas sim um conjunto de características extraídas desse texto. Isso significa que não precisamos nos preocupar muito com feature engineering para este exemplo.
+
+Como o número de LETRAS MAIÚSCULAS ININTERRUPTAS está distribuído?
+
+```{r}
+spam %>%
+  ggplot(aes(crl.tot, fill = yesno, color = yesno)) +
+  geom_density(linewidth = 1.2, alpha = 0.2) +
+  scale_x_log10() +
+  theme_bw() +
+  labs(fill = "Spam?", color = "Spam?", x = "Letras Maiúsculas", y = "Densidade")
+```
+
+E quanto às outras características? Como essas proporções possuem muitos zeros, vamos comparar visualmente as ocorrências de zero com as maiores que zero:
+
+```{r}
+spam |> 
+  pivot_longer(dollar:make) |> 
+  mutate(
+    yesno = if_else(yesno == "n", "Not spam", "Spam"),
+    value = if_else(value > 0, "Greater than zero", "Zero")
+  ) |> 
+  ggplot(aes(value, fill = yesno)) +
+  geom_bar(alpha = 0.8) +
+  facet_wrap(vars(name)) +
+  theme_bw() +
+  theme(legend.position="bottom") +
+  labs(fill = NULL, x = NULL)
+```
+
+Essas características parecem apresentar grandes diferenças entre e-mails de spam e não spam
+
+# Comparação de Modelos
+
+Podemos começar carregando o metapacote tidymodels, dividindo nossos dados em conjuntos de treinamento e teste, e criando amostras de validação cruzada. Pense nessa etapa como uma forma de gastar seu 'orçamento de dados'.
+
+```{r message=FALSE, warning=FALSE}
+library(tidymodels)
+
+set.seed(123)
+spam_split <-
+  spam |> 
+  mutate(yesno = as.factor(yesno)) |> 
+  initial_split(strata = yesno)
+
+spam_train <- training(spam_split)
+spam_test <- testing(spam_split)
+
+set.seed(234)
+spam_folds <- vfold_cv(spam_train, strata = yesno)
+spam_folds  
+```
+
+Vamos supor que não sabemos qual abordagem de modelagem pode funcionar melhor com esses dados, como é frequentemente o caso em um novo projeto de modelagem. Portanto, queremos experimentar várias opções. Começaremos com um classificador de Naive Bayes, que, por sinal, é uma das maneiras reais pelas quais os e-mails de spam são identificados (embora em uma aplicação real, o Naive Bayes seja usado com o conteúdo completo dos e-mails, não com características como estas). 
+
+Também incluiremos um modelo MARS, uma regressão logística, um modelo de floresta aleatória, lightgbm e uma rede neural.
+
+```{r}
+library(discrim)
+
+nb_spec <- naive_Bayes(smoothness = tune(), Laplace = tune())
+
+mars_spec <- mars(num_terms = tune(), prod_degree = tune()) |> 
+  set_mode("classification")
+
+rf_spec <- rand_forest(trees = tune(), mtry = tune(), min_n = tune()) |> 
+  set_mode("classification")
+
+logreg_spec <- logistic_reg(mode = "classification", 
+                            engine = "glmnet", 
+                            penalty = tune(), 
+                            mixture = tune())
+
+nnet_spec <- 
+   mlp(hidden_units = tune(), penalty = tune(), epochs = tune()) %>% 
+   set_engine("nnet") %>% 
+   set_mode("classification")
+
+library(bonsai)
+light_spec <- boost_tree(mode = "classification", engine = "lightgbm", mtry = tune(), trees = tune(), min_n = tune(), tree_depth = tune(), learn_rate = tune(), loss_reduction = tune(), sample_size = tune(), stop_iter = tune())
+```
+
+Agora podemos juntar tudo isso em um workflowset
+
+```{r}
+spam_models <-
+  workflow_set(
+    preproc = list(formula = yesno ~ .),
+    models = list(
+      nb = nb_spec, 
+      mars = mars_spec, 
+      rf = rf_spec,
+      lr = logreg_spec,
+      nnet = nnet_spec,
+      lgbm = light_spec
+    )
+  )
+
+spam_models
+```
+Vamos usar tune_race_anova() para avaliar o desempenho de cada modelo; Quero ver como o modelo se comporta tanto para spam quanto para não spam, então adicionarei algumas métricas específicas também
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+set.seed(123)
+library(doParallel)
+library(finetune)
+cores <- parallel::detectCores()
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+race_ctrl <-
+   control_race(
+      save_pred = TRUE,
+      parallel_over = "everything",
+      save_workflow = TRUE
+   )
+
+spam_results <-
+   spam_models %>%
+   workflow_map(
+      "tune_race_anova",
+      seed = 321,
+      resamples = spam_folds,
+      grid = 25,
+      control = race_ctrl,
+      metrics = metric_set(accuracy, sensitivity, specificity)
+   )
+
+stopCluster(cl)
+
+```
+
+```{r include=FALSE}
+spam_results <- readRDS('spam_results.rds')
+```
+
+Como todos esses modelos se saíram?
+
+```{r}
+autoplot(spam_results, select_best = T) + theme_bw()
+```
+
+Todos os modelos têm um desempenho melhor na identificação da classe positiva ('n') do que na classe negativa ('y'), mas o classificador de Naive Bayes se sai pior do que os outros; ele faz um trabalho inferior na identificação de e-mails de spam reais como spam. (Lembre-se de que essa não é a mesma situação que os classificadores de spam reais, que lidam com o texto completo.) O lighgbm e a floresta aleatória parecem estar se saindo muito bem!
+
+```{r}
+rank_results(spam_results, select_best = T, rank_metric = "accuracy")
+```
+# Treinar e avaliar o modelo final
+
+Vamos optar pelo lightgbm como nossa escolha final para prever spam com base nessas características. Também vamos atualizar a especificação do modelo para que ele calcule a importância das características durante o treinamento.
+
+```{r}
+gbm_last <- spam_results %>%
+  extract_workflow("formula_lgbm") %>%
+  finalize_workflow(
+    spam_results %>%
+      extract_workflow_set_result("formula_lgbm") %>%
+      select_best(metric = "accuracy")
+  ) %>%
+  last_fit(split = spam_split)
+
+collect_predictions(gbm_last) |> 
+    conf_mat(yesno, .pred_class)
+```
+
+É definitivamente mais fácil identificar e-mails que não são spam do que aqueles que são spam, mas lembre-se de que este modelo teve um desempenho melhor nisso do que os outros que tentamos. E quanto a uma curva ROC?
+
+```{r}
+collect_predictions(gbm_last) |> 
+    roc_curve(yesno, .pred_n) |> 
+    autoplot()
+```
+
+```{r}
+library(vip)
+
+extract_workflow(gbm_last) |>
+  extract_fit_parsnip() |>
+  vip() + theme_bw()
+```
+
+Quando temos muitos ‼️‼️‼️‼️, um e-mail tem uma alta probabilidade de ser spam.
+
+# Criando um modelo em produção
+
+Se você quisesse implantar este modelo, o próximo passo é criar um objeto de modelo implantável com o *vetiver*:
+
+```{r eval=FALSE, include=TRUE}
+library(vetiver)
+
+v <- extract_workflow(gbm_last) |> 
+    vetiver_model("spam-email-gbm")
+v
+
+library(plumber)
+pr() |> 
+    vetiver_api(v) |> 
+    pr_run()
+```
+

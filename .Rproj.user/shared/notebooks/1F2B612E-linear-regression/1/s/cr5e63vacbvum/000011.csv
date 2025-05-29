@@ -1,0 +1,1 @@
+"0","boxplot(db$Shucked.Weight, main = ""Boxplot: Peso limpo"", pch = 19)"

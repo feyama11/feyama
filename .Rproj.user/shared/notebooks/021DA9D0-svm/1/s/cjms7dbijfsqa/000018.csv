@@ -1,0 +1,24 @@
+"0","skimr::skim(netflix_titles)
+"
+"1","── Data Summary ────────────────────────
+"
+"1","                           Values        
+"
+"1","Name                       netflix_titles
+"
+"1","Number of rows             7787          
+"
+"1","Number of columns          12            
+"
+"1","_______________________                  
+"
+"1","Column type frequency:                   
+"
+"1","  character                11            
+"
+"1","  numeric                  1             
+"
+"1","________________________                 
+"
+"1","Group variables            None          
+"

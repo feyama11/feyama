@@ -1,0 +1,21 @@
+"0","#Vou criar 30 grids, então vou especificar direto na função
+tune_res <- tune_grid(rf_workflow, 
+                      resamples = resamples, 
+                      param_info = params, 
+                      grid = 30, 
+                      metrics = metric_set(accuracy, roc_auc, sensitivity,
+                                           specificity),
+                      seed = 456)
+"
+"2","Warning: The `...` are not used in this function but one or more objects were passed: 'seed'"
+"1","[1m[33mError[39m in `compute_grid_info()`:[22m
+[33m![39m Internal error: `workflow` should have some tunable parameters if `grid` is not `NULL`.
+Backtrace:
+[90m 1. [39m[1mtune[22m::tune_grid(...)
+[90m 2. [39mtune:::tune_grid.workflow(...)
+[90m 3. [39mtune:::tune_grid_workflow(...)
+[90m 4. [39mtune:::tune_grid_loop(...)
+[90m 5. [39mtune (local) fn_tune_grid_loop(...)
+[90m 6. [39mtune:::tune_grid_loop_impl(...)
+[90m 7. [39m[1m[94mtune:::compute_grid_info([39m[22mworkflow, grid[1m[94m)[39m[22m
+"

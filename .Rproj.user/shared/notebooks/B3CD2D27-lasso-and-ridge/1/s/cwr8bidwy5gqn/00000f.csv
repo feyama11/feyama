@@ -1,0 +1,5 @@
+"0","ridge_spec <- linear_reg(penalty = tune(), mixture = 0) %>%"
+"0","  set_engine(""glmnet"")"
+"0",""
+"0","lasso_spec <- linear_reg(penalty = tune(), mixture = 1) %>%"
+"0","  set_engine(""glmnet"")"

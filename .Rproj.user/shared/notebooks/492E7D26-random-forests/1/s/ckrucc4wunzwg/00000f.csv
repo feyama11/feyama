@@ -1,0 +1,27 @@
+"0","recipe
+"
+"2","
+"
+"2","[36m──[39m [1mRecipe[22m [36m───────────────────────────────────────────────────────────────────[39m
+"
+"2","
+"
+"2","── Inputs 
+"
+"2","Number of variables by role
+"
+"2","outcome:   1
+predictor: 9
+"
+"2","
+"
+"2","── Operations 
+"
+"2","[36m•[39m Bagged tree imputation for: [34mheight_m[39m and [34mweight_kg[39m
+"
+"2","[36m•[39m Centering and scaling for: [34mall_numeric_predictors()[39m
+"
+"2","[36m•[39m Dummy variables from: [34mall_factor_predictors()[39m
+"
+"2","[36m•[39m SMOTE based on: [34mis_legendary[39m
+"

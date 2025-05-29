@@ -1,0 +1,5 @@
+"0","pt(unname(observed_statistic), df = nrow(gss) - 2, lower.tail = FALSE)*2"
+"1","[1]"
+"1"," 0.2635476"
+"1","
+"

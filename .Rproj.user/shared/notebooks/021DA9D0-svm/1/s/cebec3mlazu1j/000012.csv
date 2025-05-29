@@ -1,0 +1,18 @@
+"0","collect_predictions(final_fit) %>%
+  conf_mat(type, .pred_class)
+"
+"1","          Truth
+"
+"1","Prediction"
+"1"," Movie"
+"1"," TV Show"
+"1","
+   Movie  "
+"1","   987"
+"1","     239"
+"1","
+   TV Show"
+"1","   358"
+"1","     364"
+"1","
+"

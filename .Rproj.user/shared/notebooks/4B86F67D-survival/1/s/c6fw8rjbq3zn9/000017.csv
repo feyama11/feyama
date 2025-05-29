@@ -1,0 +1,8 @@
+"0",""
+"0","par(mfrow = c(1, 2))"
+"0","fit.Center <-survfit(Surv(y, failed)~ Center,"
+"0"," data = queuing$data)"
+"0",""
+"0","plot(fit.Center, xlab = ""Segundos"","
+"0"," ylab = ""Probabilidade de Ainda Estar em Espera"","
+"0"," col = c(2, 4, 5))"

@@ -1,0 +1,8 @@
+"0","set.seed(1501)"
+"0","concrete_split <- initial_split(concrete, strata = compressive_strength)"
+"0","concrete_train <- training(concrete_split)"
+"0","concrete_test  <- testing(concrete_split)"
+"0",""
+"0","set.seed(1502)"
+"0","concrete_folds <- "
+"0","   vfold_cv(concrete_train, strata = compressive_strength, repeats = 5)"

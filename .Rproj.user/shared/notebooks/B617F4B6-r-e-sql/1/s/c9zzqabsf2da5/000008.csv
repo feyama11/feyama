@@ -1,0 +1,12 @@
+"0","SELECT
+  ""WorkToolsSelect"",
+  ""LanguageRecommendationSelect"",
+  ""EmployerIndustry"",
+  ""WorkAlgorithmsSelect"",
+  CASE
+WHEN (""WorkToolsSelect"" ~ 'R' AND NOT(""WorkToolsSelect"" ~ 'Python')) THEN 'R'
+WHEN (""WorkToolsSelect"" ~ 'Python' AND NOT(""WorkToolsSelect"" ~ 'R')) THEN 'Python'
+WHEN (""WorkToolsSelect"" ~ 'R' AND ""WorkToolsSelect"" ~ 'Python') THEN 'both'
+ELSE 'neither'
+END AS ""language_preference""
+FROM ""kaggle"""

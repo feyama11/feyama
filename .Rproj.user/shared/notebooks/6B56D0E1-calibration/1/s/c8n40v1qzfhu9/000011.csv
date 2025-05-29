@@ -1,0 +1,5 @@
+"0",""
+"0","collect_predictions(beta_val) %>%"
+"0","  filter(.type == ""calibrated"") %>%"
+"0","  cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +"
+"0","  ggtitle(""Calibração Beta"")"

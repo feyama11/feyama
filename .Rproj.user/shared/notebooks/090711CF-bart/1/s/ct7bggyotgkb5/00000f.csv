@@ -1,0 +1,8 @@
+"0","#dados para validação cruzada, por bootstrap"
+"0","set.seed(12345)"
+"0","resample <- bootstraps(ames_train, times = 5, strata = Sale_Price)"
+"0",""
+"0","# Workflow"
+"0","bart_wflow <- workflow() %>%"
+"0","  add_recipe(ames_rec) %>%"
+"0","  add_model(bart_model)"

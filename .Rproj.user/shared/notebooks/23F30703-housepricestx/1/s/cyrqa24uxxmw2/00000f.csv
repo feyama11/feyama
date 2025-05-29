@@ -1,0 +1,4 @@
+"0","teste <- glm(priceRange ~ .-uid, data=austin_train)
+"
+"2","Error in eval(mf, parent.frame()) : objeto 'austin_train' não encontrado
+"

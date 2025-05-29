@@ -1,0 +1,44 @@
+"0","final_df <- set_missing(dados, list(0L, ""unknown""))"
+"2","Column [dep_time]: Set 8255 missing values to 0
+"
+"2","Column [dep_delay]: Set 8255 missing values to 0
+"
+"2","Column [arr_time]: Set 8713 missing values to 0
+"
+"2","Column [arr_delay]: Set 9430 missing values to 0
+"
+"2","Column [air_time]: Set 9430 missing values to 0
+"
+"2","Column [year_planes]: Set 57912 missing values to 0
+"
+"2","Column [engines]: Set 52606 missing values to 0
+"
+"2","Column [seats]: Set 52606 missing values to 0
+"
+"2","Column [speed]: Set 335813 missing values to 0
+"
+"2","Column [lat_dest]: Set 7602 missing values to 0
+"
+"2","Column [lon_dest]: Set 7602 missing values to 0
+"
+"2","Column [alt_dest]: Set 7602 missing values to 0
+"
+"2","Column [tz_dest]: Set 7602 missing values to 0
+"
+"2","Column [tailnum]: Set 2512 missing values to unknown
+"
+"2","Column [type]: Set 52606 missing values to unknown
+"
+"2","Column [manufacturer]: Set 52606 missing values to unknown
+"
+"2","Column [model]: Set 52606 missing values to unknown
+"
+"2","Column [engine]: Set 52606 missing values to unknown
+"
+"2","Column [name]: Set 7602 missing values to unknown
+"
+"2","Column [dst_dest]: Set 7602 missing values to unknown
+"
+"2","Column [tzone_dest]: Set 7602 missing values to unknown
+"
+"0","plot_missing(final_df)"

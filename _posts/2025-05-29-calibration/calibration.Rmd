@@ -1,0 +1,308 @@
+---
+title: "Calibração de Probabilidades"
+description: |
+  Como calibrar as probabilidades de um classificador usando os pacotes probably e tidymodels.
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2025-05-29
+preview: cal.png
+categories:
+ - estatistica
+ - R
+ - tidymodels
+ - probably
+ - machine learning
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# Introdução
+
+A calibração de probabilidades é uma etapa essencial em modelos de classificação de machine learning, garantindo que as probabilidades previstas reflitam com precisão a probabilidade real de um evento. Um modelo bem calibrado implica que, por exemplo, se ele prevê uma probabilidade de 0.8 para a classe positiva, cerca de 80% das instâncias com essa previsão pertencem de fato à classe positiva.
+
+A curva de calibração é uma ferramenta chave para avaliar a qualidade da calibração, plotando as probabilidades previstas contra as frequências observadas. Uma curva próxima à linha diagonal indica boa calibração. Neste documento, exploraremos os métodos de calibração isotônica e beta, detalhando suas bases matemáticas e aplicando-os com o pacote probably do Tidymodels.
+
+# Técnicas
+
+## Sigmoide
+
+O regressor sigmoidal é baseado no modelo logístico de Platt. A formulação é dada por:
+
+\[
+p(y_i = 1 | f_i) = \frac{1}{1 + \exp(A f_i + B)},
+\]
+
+onde \( y_i \) é o rótulo verdadeiro da amostra \( i \), \( f_i \) é a saída do classificador não calibrado para a amostra \( i \), e \( A \) e \( B \) são números reais determinados ajustando o regressor por máxima verossimilhança.
+
+O método sigmoidal assume que a curva de calibração pode ser ajustada aplicando uma função sigmoidal às previsões brutas. Essa suposição foi empiricamente justificada no caso de Máquinas de Vetores de Suporte com funções de kernel comuns em vários conjuntos de dados de benchmark, mas não é válida de forma geral. Adicionalmente, o modelo logístico funciona melhor quando o erro de calibração é simétrico, ou seja, quando cada classe binária apresenta a mesma variância. Isso pode ser um problema para problemas de classificação altamente desbalanceados, onde as saídas não têm variância igual.
+
+Em geral, esse método é mais eficaz para tamanhos de amostra pequenos ou quando o modelo não calibrado está subconfiante e apresenta erros de calibração semelhantes para saídas altas e baixas.
+
+## Isotônica
+
+O método isotônico utiliza um regressor isotônico não paramétrico, que produz uma função não decrescente por etapas, conforme descrito. Ele minimiza:
+
+\[
+\sum_{i=1}^{n} (y_i - \hat{f}_i)^2,
+\]
+
+sujeito a \( \hat{f}_i \geq \hat{f}_j \) sempre que \( f_i \geq f_j \), onde \( y_i \) é o rótulo verdadeiro da amostra \( i \) e \( \hat{f}_i \) é a saída do classificador calibrado para a amostra \( i \) (ou seja, a probabilidade calibrada). Esse método é mais geral em comparação com *sigmoid*, pois a única restrição é que a função de mapeamento seja monotonicamente crescente. Assim, ele é mais poderoso, pois pode corrigir qualquer distorção monotônica do modelo não calibrado. No entanto, é mais propenso a sobreajuste, especialmente em conjuntos de dados pequenos.
+
+Em geral, o método  performa tão bem quanto ou melhor que *sigmoid* quando há dados suficientes (maior que ~1000 amostras) para evitar o sobreajuste.
+
+## Beta
+
+O método utiliza um modelo de calibração baseado na distribuição beta, que é uma abordagem paramétrica para ajustar as probabilidades previstas. A distribuição beta é definida pela função de densidade de probabilidade:
+
+\[
+\text{Beta}(p | \alpha, \beta) = \frac{p^{\alpha-1} (1-p)^{\beta-1}}{B(\alpha, \beta)},
+\]
+
+onde \( p \) é a probabilidade prevista, \( \alpha \) e \( \beta \) são parâmetros a serem estimados, e \( B(\alpha, \beta) = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha + \beta)} \) é a função beta, com \( \Gamma \) sendo a função gama.
+
+O método assume que as probabilidades calibradas seguem uma distribuição beta e ajusta os parâmetros \( \alpha \) e \( \beta \) para maximizar a verossimilhança dos dados observados. Para cada amostra \( i \), com probabilidade prevista \( p_i \) e rótulo verdadeiro \( y_i \), a verossimilhança é dada por:
+
+\[
+L_i = \begin{cases}
+\text{Beta}(p_i | \alpha, \beta) & \text{se } y_i = 1, \\
+1 - \text{Beta}(p_i | \alpha, \beta) & \text{se } y_i = 0.
+\end{cases}
+\]
+
+A log-verossimilhança total é então:
+
+\[
+\ell(\alpha, \beta) = \sum_{i: y_i=1} \log \text{Beta}(p_i | \alpha, \beta) + \sum_{i: y_i=0} \log (1 - \text{Beta}(p_i | \alpha, \beta)).
+\]
+
+Esse método é mais flexível que o \texttt{sigmoid}, pois a distribuição beta pode modelar uma ampla variedade de formas para as probabilidades calibradas. No entanto, ele pode sofrer com sobreajuste em conjuntos de dados muito pequenos e requer otimização numérica para estimar \( \alpha \) e \( \beta \), o que pode ser computacionalmente intensivo. Em geral, a calibração beta é mais eficaz em cenários com dados moderados a grandes e quando a distribuição das probabilidades previstas apresenta assimetrias que não são bem capturadas por métodos mais simples como *sigmoid*.
+
+# Exemplo
+
+Vamos começar carregando alguns pacotes necessários:
+
+```{r message=FALSE, warning=FALSE}
+library(tidymodels)
+library(probably)
+library(discrim)
+
+tidymodels_prefer()
+theme_set(theme_bw())
+options(pillar.advice = FALSE, pillar.min_title_chars = Inf)
+```
+
+## Dados
+
+O pacote modeldata contém um conjunto de dados chamado cells. Originalmente distribuído por Hill e Haney (2007), eles demonstraram como criar modelos para prever a qualidade da análise de imagens de células. O resultado tem dois níveis: "PS" (imagens mal segmentadas) ou "WS" (bem segmentadas). Há 56 características de imagem que podem ser usadas para construir um classificador.
+
+Vamos carregar os dados, remover uma coluna indesejada e verificar as frequências do resultado:
+
+```{r}
+data(cells)
+cells$case <- NULL
+
+dim(cells)
+
+cells %>% count(class)
+```
+
+Há um desequilíbrio de classes, mas isso não afetará nosso trabalho aqui.
+
+Vamos fazer uma divisão de 75% para 25% dos dados em treinamento e teste usando initial_split(). Também criaremos um conjunto de índices de validação cruzada de 10 dobras para reamostragem do modelo.
+
+```{r}
+set.seed(8928)
+split <- initial_split(cells, strata = class)
+cells_tr <- training(split)
+cells_te <- testing(split)
+
+cells_rs <- vfold_cv(cells_tr, strata = class)
+```
+
+Agora que temos dados para modelar, vamos começar!
+
+## Modelo Naive Bayes
+
+Vamos demonstrar a utilidade das ferramentas de calibração usando um tipo de modelo que, neste caso, provavelmente produzirá um modelo mal calibrado. O classificador Naive Bayes é um modelo bem estabelecido que assume que os preditores são estatisticamente independentes entre si (para simplificar os cálculos). Embora isso certamente não seja verdade para esses dados, o modelo pode ser eficaz para discriminar entre as classes. Infelizmente, quando há muitos preditores no modelo, ele tende a produzir distribuições de probabilidade de classe patológicas. As previsões tendem a se concentrar em valores próximos de zero ou um, produzindo distribuições em forma de "U".
+
+Para demonstrar, vamos configurar o modelo:
+
+```{r}
+bayes_wflow <-
+  workflow() %>%
+  add_formula(class ~ .) %>%
+  add_model(naive_Bayes())
+```
+
+Vamos reamostrar o modelo primeiro para obter uma boa avaliação dos resultados. Durante o processo de reamostragem, duas métricas são usadas para julgar o desempenho do modelo. Primeiro, a área sob a curva ROC é usada para medir a capacidade do modelo de separar as classes (usando previsões de probabilidade). Segundo, o escore de Brier pode medir quão próximas as estimativas de probabilidade estão dos valores reais do resultado (zero ou um). A função collect_metrics() mostra as estimativas de reamostragem:
+
+```{r message=FALSE, warning=FALSE}
+cls_met <- metric_set(roc_auc, brier_class)
+# Vamos salvar as previsões fora da amostra para visualizá-las.
+ctrl <- control_resamples(save_pred = TRUE)
+
+bayes_res <-
+  bayes_wflow %>%
+  fit_resamples(cells_rs, metrics = cls_met, control = ctrl)
+
+collect_metrics(bayes_res)
+```
+
+O escore ROC é impressionante! No entanto, o valor de Brier indica que os valores de probabilidade, embora discriminem bem, não são muito realistas. Um valor de 0.25 é o limiar de um "mau modelo" quando há duas classes (um valor de zero sendo o melhor resultado possível).
+
+### Está calibrado?
+
+Spoiler: não, não está.
+
+A primeira pista é a distribuição extremamente em forma de "U" das pontuações de probabilidade (facetada pelo valor da classe verdadeira):
+
+```{r}
+collect_predictions(bayes_res) %>%
+  ggplot(aes(.pred_PS)) +
+  geom_histogram(col = "white", bins = 40) +
+  facet_wrap(~ class, ncol = 1) +
+  geom_rug(col = "blue", alpha = 1 / 2) + 
+  labs(x = "Estimativa de Probabilidade de PS")
+```
+
+Quase não há células com estimativas de probabilidade moderadas. Além disso, quando o modelo está errado, ele está "confiantemente errado".
+
+O pacote *probably* tem ferramentas para visualizar e corrigir modelos com propriedades de calibração ruins.
+
+O gráfico mais comum é dividir as previsões em cerca de dez conjuntos de tamanho igual e calcular a taxa de eventos reais dentro de cada um. Por exemplo, se um conjunto captura as amostras previstas como mal segmentadas com probabilidades entre 20% e 30%, deveríamos esperar uma taxa de eventos de cerca de 25% (ou seja, o ponto médio do balde) dentro dessa partição. Aqui está um gráfico com dez conjuntos:
+
+```{r}
+cal_plot_breaks(bayes_res)
+```
+
+As probabilidades não mostram uma acurácia muito boa.
+
+Também existe uma função semelhante que usa janelas móveis com partições sobrepostas. Isso fornece um pouco mais de detalhe:
+
+```{r}
+cal_plot_windowed(bayes_res, step_size = 0.025)
+```
+
+Ruim. Ainda ruim.
+
+Finalmente, para resultados de duas classes, podemos ajustar um modelo aditivo generalizado logístico (GAM) e examinar a tendência.
+
+```{r}
+cal_plot_logistic(bayes_res)
+```
+
+### Correção
+
+#### Logística
+
+A boa notícia é que podemos fazer algo a respeito. Existem ferramentas para "corrigir" as estimativas de probabilidade para que tenham melhores propriedades, como se alinharem às linhas diagonais nos gráficos de diagnóstico mostrados acima. Diferentes métodos melhoram as previsões de maneiras distintas.
+
+A abordagem mais comum é ajustar um modelo de regressão logística aos dados (com as estimativas de probabilidade como preditor). As previsões de probabilidade desse modelo são então usadas como a estimativa calibrada. Por padrão, um modelo aditivo generalizado é usado para esse ajuste, mas o argumento *smooth = FALSE* pode usar efeitos lineares simples.
+
+Na prática, o modelo GAM estima as regiões de probabilidade onde o modelo está errado (como mostrado no gráfico de diagnóstico). Por exemplo, suponha que, quando o modelo prevê uma taxa de eventos de 2%, o modelo GAM estime que ele subestima a probabilidade em 5% (em relação aos dados observados). Com essa diferença, novas previsões são ajustadas para cima, de modo que as estimativas de probabilidade estejam mais alinhadas com os dados.
+
+Como sabemos se isso funciona? Há um conjunto de funções *cal_validate_*() que podem usar dados de validação para reamostrar o modelo com e sem a ferramenta de calibração escolhida. Como já reamostramos o modelo, usaremos esses resultados para estimar mais 10 regressões logísticas e usar os dados fora da amostra para estimar o desempenho.
+
+A função *collect_metrics*() pode ser usada novamente para ver as estatísticas de desempenho. Também usaremos *cal_plot_windowed*() nos dados de validação calibrados para uma avaliação visual:
+
+```{r}
+logit_val <- cal_validate_logistic(bayes_res, metrics = cls_met, save_pred = TRUE)
+collect_metrics(logit_val)
+
+collect_predictions(logit_val) %>%
+  filter(.type == "calibrated") %>%
+  cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
+  ggtitle("Calibração Logística via GAM")
+```
+
+Isso está muito melhor, mas é problemático que as previsões calibradas não alcancem zero ou um.
+
+#### Isotônica
+
+Uma abordagem diferente é usar regressão isotônica. Esse método pode resultar em poucas estimativas de probabilidade únicas. O pacote probably tem uma versão de regressão isotônica que reamostra o processo para produzir mais probabilidades únicas:
+
+```{r}
+set.seed(1212)
+iso_val <- cal_validate_isotonic_boot(bayes_res, metrics = cls_met, 
+                                      save_pred = TRUE, times = 50)
+collect_metrics(iso_val)
+
+collect_predictions(iso_val) %>%
+  filter(.type == "calibrated") %>%
+  cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
+  ggtitle("Calibração por Regressão Isotônica")
+```
+
+Muito melhor. No entanto, há um leve viés, pois os pontos estimados estão consistentemente acima da linha de identidade em um ângulo de 45 graus.
+
+#### Beta
+
+Finalmente, podemos testar a calibração beta:
+
+```{r}
+beta_val <- cal_validate_beta(bayes_res, metrics = cls_met, save_pred = TRUE)
+collect_metrics(beta_val)
+
+collect_predictions(beta_val) %>%
+  filter(.type == "calibrated") %>%
+  cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025) +
+  ggtitle("Calibração Beta")
+```
+
+Também uma grande melhoria, mas performa mal na extremidade inferior da escala.
+
+A calibração beta parece ter os melhores resultados. Vamos salvar um modelo treinado usando todas as previsões fora da amostra dos resultados de reamostragem original do Naive Bayes.
+
+Também podemos ajustar o modelo final de Naive Bayes para prever o conjunto de teste:
+
+```{r}
+cell_cal <- cal_estimate_beta(bayes_res)
+bayes_fit <- bayes_wflow %>% fit(data = cells_tr)
+```
+
+O objeto *cell_cal* pode ser usado para aplicar a calibração a novas previsões (como veremos em um minuto).
+
+### Resultados
+
+Primeiro, fazemos nossas previsões normais:
+
+```{r}
+cell_test_pred <- augment(bayes_fit, new_data = cells_te)
+cell_test_pred %>% cls_met(class, .pred_PS)
+```
+
+Essas estimativas de métricas são muito consistentes com as estimativas de desempenho reamostrado.
+
+Podemos então usar nosso objeto *cell_cal* com a função *cal_apply*():
+
+```{r}
+cell_test_cal_pred <-
+  cell_test_pred %>%
+  cal_apply(cell_cal)
+cell_test_cal_pred %>% dplyr::select(class, starts_with(".pred_"))
+```
+
+Note que *cal_apply*() recalculou as previsões de classe rígida na coluna .pred_class. É possível que as mudanças nas estimativas de probabilidade possam invalidar as estimativas originais de classe rígida.
+
+O que os resultados calibrados do conjunto de teste mostram?
+
+```{r}
+cell_test_cal_pred %>% cls_met(class, .pred_PS)
+
+cell_test_cal_pred %>%
+  cal_plot_windowed(truth = class, estimate = .pred_PS, step_size = 0.025)
+```
+
+Muito melhor. Os resultados do conjunto de teste também concordam com os resultados de *cal_validate_beta*().

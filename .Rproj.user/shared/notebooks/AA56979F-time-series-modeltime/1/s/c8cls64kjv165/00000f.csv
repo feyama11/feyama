@@ -1,0 +1,7 @@
+"0","# calibração"
+"0","submodels_calibrated_tbl <- submodels_tbl %>%"
+"0","  modeltime_calibrate(testing(splits),  id = ""id"")"
+"0",""
+"0","submodels_calibrated_tbl"
+"1","# Modeltime Table
+"

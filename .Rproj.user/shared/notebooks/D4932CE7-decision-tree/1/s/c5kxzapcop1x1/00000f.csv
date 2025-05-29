@@ -1,0 +1,9 @@
+"0","# Plotando a matriz de correlação"
+"0","matriz_correlacao = candy_rankings %>%"
+"0","  select(-competitorname) %>%"
+"0","  cor() %>%"
+"0","  ggcorrplot(method = ""circle"","
+"0","             type = ""l"")"
+"2","Error in ggcorrplot(., method = ""circle"", type = ""l"") : 
+  could not find function ""ggcorrplot""
+"

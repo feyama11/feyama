@@ -1,0 +1,4 @@
+"0","saveRDS(bean_res)
+"
+"2","Error in saveRDS(bean_res) : 'file' deve ser uma string não vazia
+"

@@ -1,0 +1,10 @@
+"0","qui2_boot <-"
+"0","  bootstrapped %>%"
+"0","  calculate(stat = ""chisq"")"
+"2","Warning:"
+"2"," [38;5;255mThe statistic is based on a difference or ratio; by default, for difference-based statistics, the
+explanatory variable is subtracted in the order ""2nd Lt"" - ""Flight Officer"", or divided in the order
+""2nd Lt"" / ""Flight Officer"" for ratio-based statistics. To specify this order yourself, supply
+`order = c(""2nd Lt"", ""Flight Officer"")` to the calculate() function.[39m
+"
+"0","get_ci(qui2_boot)"

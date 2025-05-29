@@ -1,0 +1,8 @@
+"0","permuted %>%"
+"0","  get_p_value(obs_stat = qui2_calc,"
+"0","              direction = ""greater"")"
+"2","Warning:"
+"2"," [38;5;255mPlease be cautious in reporting a p-value of 0. This result is an approximation based on the number
+of `reps` chosen in the `generate()` step.
+[36mℹ[38;5;255m See ]8;;ide:help:infer::get_p_value`get_p_value()`]8;; for more information.[39m
+"

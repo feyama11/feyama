@@ -1,0 +1,10 @@
+"0","submodels_tbl <- modeltime_table("
+"0","  wflw_fit_prophet,"
+"0","  wflw_fit_xgboost,"
+"0","  wflw_fit_rf,"
+"0","  wflw_fit_svm,"
+"0","  wflw_fit_prophet_boost"
+"0",")"
+"0","submodels_tbl"
+"1","# Modeltime Table
+"

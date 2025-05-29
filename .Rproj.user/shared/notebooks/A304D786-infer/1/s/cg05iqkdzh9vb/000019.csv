@@ -1,0 +1,6 @@
+"0","# calcular p valor"
+"0","p_value_1_sample <- null_dist_1_sample %>%"
+"0","  get_p_value(obs_stat = observed_statistic,"
+"0","              direction = ""two-sided"")"
+"0",""
+"0","p_value_1_sample"

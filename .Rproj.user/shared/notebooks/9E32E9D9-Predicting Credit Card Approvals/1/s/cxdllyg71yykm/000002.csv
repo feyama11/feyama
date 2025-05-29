@@ -1,0 +1,74 @@
+"0","```r
+# estatísticas resumidas
+summary(cc_apps)
+```"
+"1","      X1                 X2                  X3              X4                 X5                 X6           
+ Length:690         Length:690         Min.   : 0.000   Length:690         Length:690         Length:690        
+ Class :character   Class :character   1st Qu.: 1.000   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Median : 2.750   Mode  :character   Mode  :character   Mode  :character  
+                                       Mean   : 4.759                                                           
+                                       3rd Qu.: 7.207                                                           
+                                       Max.   :28.000                                                           
+      X7                  X8             X9             X10              X11               X12         
+ Length:690         Min.   : 0.000   Mode :logical   Mode :logical   Length:690         Mode :logical  
+ Class :character   1st Qu.: 0.165   FALSE:329       FALSE:395       Class :character   FALSE:374      
+ Mode  :character   Median : 1.000   TRUE :361       TRUE :295       Mode  :character   TRUE :316      
+                    Mean   : 2.223                                                                     
+                    3rd Qu.: 2.625                                                                     
+                    Max.   :28.500                                                                     
+     X13                X14                 X15               X16           
+ Length:690         Length:690         Min.   :     0.0   Length:690        
+ Class :character   Class :character   1st Qu.:     0.0   Class :character  
+ Mode  :character   Mode  :character   Median :     5.0   Mode  :character  
+                                       Mean   :  1017.4                     
+                                       3rd Qu.:   395.5                     
+                                       Max.   :100000.0                     
+"
+"0","```r
+# informações do DataFrame
+str(cc_apps)
+```"
+"1","spc_tbl_ [690 × 16] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ X1 : chr [1:690] \"b\" \"a\" \"a\" \"b\" ...
+ $ X2 : chr [1:690] \"30.83\" \"58.67\" \"24.50\" \"27.83\" ...
+ $ X3 : num [1:690] 0 4.46 0.5 1.54 5.62 ...
+ $ X4 : chr [1:690] \"u\" \"u\" \"u\" \"u\" ...
+ $ X5 : chr [1:690] \"g\" \"g\" \"g\" \"g\" ...
+ $ X6 : chr [1:690] \"w\" \"q\" \"q\" \"w\" ...
+ $ X7 : chr [1:690] \"v\" \"h\" \"h\" \"v\" ...
+ $ X8 : num [1:690] 1.25 3.04 1.5 3.75 1.71 ...
+ $ X9 : logi [1:690] TRUE TRUE TRUE TRUE TRUE TRUE ...
+ $ X10: logi [1:690] TRUE TRUE FALSE TRUE FALSE FALSE ...
+ $ X11: chr [1:690] \"01\" \"06\" \"0\" \"05\" ...
+ $ X12: logi [1:690] FALSE FALSE FALSE TRUE FALSE TRUE ...
+ $ X13: chr [1:690] \"g\" \"g\" \"g\" \"g\" ...
+ $ X14: chr [1:690] \"00202\" \"00043\" \"00280\" \"00100\" ...
+ $ X15: num [1:690] 0 560 824 3 0 ...
+ $ X16: chr [1:690] \"+\" \"+\" \"+\" \"+\" ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   X1 = col_character(),
+  ..   X2 = col_character(),
+  ..   X3 = col_double(),
+  ..   X4 = col_character(),
+  ..   X5 = col_character(),
+  ..   X6 = col_character(),
+  ..   X7 = col_character(),
+  ..   X8 = col_double(),
+  ..   X9 = col_logical(),
+  ..   X10 = col_logical(),
+  ..   X11 = col_character(),
+  ..   X12 = col_logical(),
+  ..   X13 = col_character(),
+  ..   X14 = col_character(),
+  ..   X15 = col_double(),
+  ..   X16 = col_character()
+  .. )
+ - attr(*, \"problems\")=<externalptr> 
+"
+"0","```r
+library(DataExplorer)
+library(plotly)
+
+graf_barras = plot_bar(cc_apps)
+```"

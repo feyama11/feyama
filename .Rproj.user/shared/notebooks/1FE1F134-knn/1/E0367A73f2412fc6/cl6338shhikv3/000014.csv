@@ -1,0 +1,15 @@
+"0","workflow_results %>% collect_predictions(summarize = T)
+"
+"1","[1m[33mError[39m in `dplyr::mutate()`:[22m
+[38;5;252m[36mℹ[38;5;252m In argument: `predictions = purrr::map(...)`.[39m
+[1mCaused by error in `purrr::map()`:[22m
+[38;5;252m[36mℹ[38;5;252m In index: 1.[39m
+[1mCaused by error in `tune::collect_predictions()`:[22m
+[33m![39m The `.predictions` column does not exist. Refit with the control argument `save_pred = TRUE` to save predictions.
+Backtrace:
+[90m  1. [39mworkflow_results %>% collect_predictions(summarize = T)
+[90m 11. [39m[1m[94mpurrr::map([39m[22mresult, get_bare_predictions, summarize = summarize, parameters = parameters[1m[94m)[39m[22m
+[90m 12. [39mpurrr:::map_(""list"", .x, .f, ..., .progress = .progress)
+[90m 16. [39m[1mworkflowsets[22m (local) .f(.x[[i]], ...)
+[90m 18. [39m[1m[94mtune:::collect_predictions.tune_results([39m[22mx, ...[1m[94m)[39m[22m
+"

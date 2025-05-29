@@ -1,0 +1,949 @@
+---
+title: "Testes de Hipótese"
+description: |
+  O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+preview: images.jpeg
+date: 2023-12-16
+categories:
+  - teste de hipotese
+  - estatistica
+  - R
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Teste de hipótese
+
+### O que é?
+
+Um teste de hipóteses é uma regra de decisão que permite rejeitar ou não
+as hipóteses testadas, com um determinado nível de confiança, baseados
+em valores amostrais.
+
+### Quais são as hipóteses?
+
+-   Hipóteses nula: é o oposto da hipótese alternativa, denotada por
+    $H_{0}$
+
+-   Hipótese alternativa: é uma suposição provisória (de pesquisa)
+    sobreum parâmetro populacional, denotada por $H_{a}$
+
+## Tipos de Hipóteses
+
+### Hipóteses Bilaterais
+
+Se nosso interesse for em avaliar se há uma diferença em relação ao
+valor definido para $H_{0}$, tanto positiva como negativa, o teste será
+chamado de bilateral e suas hipóteses serão definidas, no caso
+paramétrico, como:
+
+$H_{0}$: Parâmetro Populacional = Parâmetro de Teste
+
+```         
+                      VS
+```
+
+$H_{a}$: Parâmetro Populacional $\neq$ Parâmetro de Teste
+
+### Hipóteses Unilaterais
+
+Às vezes, pode-se supor que uma diferença real possa ocorrer somente em
+um sentido, de tal forma que, se ocorrer uma diferença no outro sentido,
+isso é devido ao acaso. Nesse caso, o teste será chamado de unilateral e
+suas hipóteses, no caso paramétrico, serão definidas como:
+
+$H_{0}$: Parâmetro Populacional ≤ (ou ≥) Parâmetro de Teste
+
+```         
+                        VS
+```
+
+$H_{a}$: Parâmetro Populacional \> (ou \<) Parâmetro de Teste
+
+## Tipos de erro
+
+-   Erro do tipo I: é o erro que ocorre quando rejeitamos a hipótese
+    nula e ela é verdadeira, isto é, rejeitar a hipótese nula, neste
+    caso, não é uma decisão correta. Esse tipo de erro é denotado por
+    $\alpha$ e é conhecido como nível de significância do teste de
+    hipóteses.
+
+-   Erro do tipo II: é o erro que ocorre quando não-rejeitamos a
+    hipótese nula quando ela é falsa, isto é, descartamos a hipótese
+    alternativa que é verdadeira, também não é uma decisão correta. Esse
+    é denotado por $\beta$ e não pode ser controlado.
+
+![](images/Sem%20título-05.png)
+
+## Etapas de um Teste de Hipótese
+
+### 1ª Etapa -- Formulação das Hipóteses
+
+-   Objetivo?
+
+Formulação das hipóteses nula e alternativa, de acordo com o objetivo do
+experimento.
+
+-   Exemplo:
+
+Por exemplo, se quisermos testar se a média ($\mu$) de altura de uma
+população é igual a 170 cm, a hipótese nula seria $H_{0}$: μ = 170 e a
+hipótese alternativa seria $H_{a}$: $\mu$ $\neq$ 170 cm.
+
+### 2ª Etapa -- Escolha do Nível de Significância
+
+-   Objetivo?
+
+Definir o nível de significância para o teste.
+
+-   Uso prático:
+
+O nível de significância é a probabilidade de cometer um erro do tipo I
+ao rejeitar a hipótese nula quando ela é verdadeira, sendo comum, na
+prática, o uso do valor de 5% (ou 0,05) para essa probabilidade.
+
+### 3ª Etapa -- Estatística do Teste
+
+-   Objetivo?
+
+Definir e calcular a estatística do teste que será utilizada.
+
+-   Forma da estatística:
+
+Para os testes paramétricos, a estatística do teste é baseada na
+distribuição amostral de interesse, sendo expressa, em geral, por:
+
+$\frac{\large\text{Parâmetro de interesse} \quad - \quad \text{Parâmetro da hipótese}}{\large\text{Erro-padrão do parâmetro de interesse}}$
+
+### 4ª Etapa -- Região Crítica
+
+-   Objetivo?
+
+Definir a região crítica do teste de hipóteses que são os valores
+numéricos da estatística do teste para os quais a hipótese nula será
+rejeitada.
+
+-   Exemplo: Estatística Z
+
+-   **Teste Unilateral à Esquerda**: Rejeita-se $H_{0}$ se o valor
+    calculado da estatística, $Z_{\text{calc}}$, for menor ou igual ao
+    valor crítico, $-Z_{1-\alpha}$, definido para o teste de acordo com
+    o nível significância.
+
+-   **Teste Unilateral à Direita**: Rejeita-se $H_{0}$ se o valor
+    calculado da estatística, $Z_{\text{calc}}$, for maior ou igual ao
+    valor crítico, $Z_{1-\alpha}$, definido para o teste de acordo com o
+    nível significância.
+
+-   **Teste Bilateral**: Rejeita-se $H_{0}$ se o valor calculado da
+    estatística, $-Z_{1-\alpha}$ for menor ou igual ao valor crítico,
+    $-Z_{1-\alpha}$ , ou se o valor calculado da estatística
+    $Z_{\text{calc}}$, for maior ou igual ao valor crítico,
+    $Z_{1-\alpha}$, definido para o teste de acordo com o nível
+    significância.
+
+Figura 2. Região crítica de um teste de hipóteses baseado na estatística
+Z assumindo $\alpha$ = 0,05.
+
+![](images/Sem%20título-04.png)
+
+### 5ª Etapa -- Nível Descritivo do Teste (P-valor)
+
+-   Objetivo?
+
+Definir a regra de decisão pelo critério do nível descritivo do teste
+(p-valor). Tal nível descritivo é definido por
+$p = \inf_{\alpha: X \in R_{\alpha}}$ em que $R_{\alpha}$ é uma região
+de rejeição com nível de significância descrito por $\alpha$
+
+-   Regra de decisão:
+
+Se o p-valor for menor do que $\alpha$, então rejeita-se $H_{0}$
+
+Se o p-valor for maior do que $\alpha$, então não rejeita-se $H_{0}$
+
+### 6ª Etapa -- Conclusão Estatística
+
+-   Objetivo?
+
+Concluir se a hipótese nula, com base na região crítica (Etapa 4) ou no
+nível descritivo do teste (Etapa 5), deve ou não ser rejeitada.
+
+-   Observação:
+
+A não-rejeição ou rejeição de uma hipótese não significa que a hipótese
+seja verdadeira ou falsa, mas apenas que os dados coletados são
+consistentes ou inconsistentes com a hipótese testada.
+
+### 7ª Etapa -- Conclusão Prática
+
+-   Objetivo?
+
+Apresentar o referencial teórico (referente ao experimento,
+naturalmente) para o resultado obtido na 6ª Etapa.
+
+-   Observação:
+
+Em geral, espera-se que a conclusão estatística leve ao resultado
+esperado pela prática. Caso isso não ocorra, deve-se levar em conta que
+a conclusão prática não deve ser baseada exclusivamente no resultado do
+teste, sendo necessário uma avaliação crítica e novos dados.
+
+## Tipos de Teste de Hipótese
+
+-   Paramétricos: baseados em pressupostos sobre a distribuição da
+    população, sendo frequentemente utilizados quando a distribuição dos
+    dados é conhecida ou pode ser assumida como normal.
+
+-   Não-paramétricos: não fazem suposições sobre a distribuição da
+    população, sendo frequentemente utilizados quando a distribuição dos
+    dados é desconhecida ou não pode ser assumida como normal.
+
+## Testes Paramétricos
+
+### Média
+
+-   Utilização?
+
+Este teste, em geral, é utilizado para comprovar se determinada
+população possui ou não o valor da média definida na hipótese nula,
+desde que a população atenda o pressuposto de normalidade.
+
+-   Construção?
+
+Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.
+
+![](images/Sem%20título-06.png)
+
+-   No R?
+
+Uso da função **z.test** do pacote **BSDA**.
+
+**EXEMPLO 1**: Sabendo que na população geral a contagem média de
+glóbulos brancos é de μ = 7250/mm3, um pesquisador clínico deseja
+testar, ao nível de significância de 5%, a hipótese de que as pessoas
+infectadas com E.canis devem ter, em média, contagens mais baixas de
+glóbulos brancos do que a população geral. Sendo assim, para testar tal
+hipótese, ele coletou uma amostra de 45 infectados com E. canis. Com
+base nessa amostra e assumindo que o desvio padrão populacional seja
+$\sigma = 320 \, \text{mm}^3$
+
+Qual é a conclusão do teste de hipótese?
+
+```{r message=FALSE, warning=FALSE}
+## Leitura do pacote library(BSDA)
+library(BSDA)
+
+## Leitura dos dados
+
+db <- read.csv('canis.csv', header = TRUE)
+
+## Teste de hipóteses
+
+z.test(x = db$globulos_brancos, alternative = 'less', mu = 7250,
+conf.level = 0.95, sigma.x = 320)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que as
+pessoas infectadas com E. canis tem, significativamente, contagens mais
+baixas de glóbulos brancos do que a população geral (p-valor \< 0.05),
+isto é, a hipótese do pesquisador é sustentada pela amostra dada.
+
+![](images/Sem%20título-07.png)
+
+-   No R?
+
+Uso da função t.test disponível no R.
+
+**EXEMPLO 2**: uma amostra de 20 pacientes com insuficiência cardíaca
+foi coletada. Sabendo que as medidas de CPK expressa nesta amostra
+provém de uma população normal, um pesquisador clínico sugere que a
+média dos valores de CPK dos pacientes com insuficiência cardíaca é
+superior a 600 UI/L. A amostra fornecida é suficiente para apoiar a
+hipótese do pesquisador, considerando um nível de significância de 5%?
+
+```{r}
+# Leitura dos dados
+db.heart <- read.csv('Heart.csv', header = TRUE, sep = ',')
+
+# Teste de hipóteses
+t.test(x = db.heart$CPK, alternative = 'greater', mu = 600, conf.level = 0.95)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que
+média dos valores de CPK dos pacientes com insuficiência cardíaca é
+inferior a 600 UI/L, isto é, a hipótese do pesquisador não é sustentada
+pela amostra dada.
+
+### Homogeneidade de Variâncias
+
+-   Utilização:
+
+Este teste, , também conhecido como teste F, é um método estatístico
+utilizado para verificar se duas populações possuem variâncias iguais.
+
+-   Construção
+
+Para realizar o teste F, primeiro é necessário calcular a razão entre as
+variâncias das duas amostras. Essa razão é chamada de estatística F e
+tem distribuição F de Fisher-Snedecor com n − 1 (primeira amostra) e m −
+1 (segunda amostra) graus de liberdade.
+
+![](images/Sem%20título-08.png)
+
+-   No R?
+
+Uso da função var.test disponível no R.
+
+**EXEMPLO 1**: Um pesquisador deseja avaliar se há diferença na
+variabilidade dos tempos (em meses) de recuperação de pacientes
+submetidos a dois tipos diferentes de cirurgia cardíaca: cirurgia aberta
+(A) e cirurgia minimamente invasiva (MI). Para o estudo, então, ele
+coleta duas amostras de 20 pacientes que passaram por ambas as cirurgias
+(uma de cada). Os dados são dados abaixo:
+
+• A: 5, 2, 13, 4, 3, 5, 4, 2, 5, 9, 7, 5, 6, 1, 2, 4, 7, 11, 1, 5.
+
+• MI: 2, 1, 12, 3, 5, 12, 3, 5, 7, 5, 8, 11, 13, 10, 8, 7, 5, 2, 10, 1.
+
+Com base nessas amostras, ele calcula a variância dos tempos e obtém os
+seguintes resultados:
+
+• Amostra de cirurgia aberta: $\sigma_{A}^{2}$ = 10,05
+
+• Amostra de cirurgia minimamente invasiva: $\sigma_{\text{MI}}^{2}$ =
+15,11
+
+Qual seria a conclusão do teste de hipóteses para verificar se as
+variâncias são homogêneas, ao nível de significância de 5%?
+
+```{r}
+## Leitura dos dados
+A <- c(5, 2, 13, 4, 3, 5, 4, 2, 5, 9, 7, 5, 6, 1, 2, 4, 7, 11, 1, 5)
+MI <- c(2, 1, 12, 3, 5, 12, 3, 5, 7, 5, 8, 11, 13, 10, 8, 7, 5, 2, 10, 1)
+
+## Teste de hipóteses
+var.test(x = A, y = MI, alternative = 'two.sided')
+```
+
+Conclui-se, ao nível de 5% de significância, que não há evidências
+suficientes para rejeitar a hipótese nula de que não há diferença na
+variabilidade nos tempos de recuperação entre pacientes submetidos a
+cirurgia aberta e pacientes submetidos a cirurgia minimamente invasiva.
+
+### Diferença de Médias (Amostras Independentes)
+
+-   Utilização?
+
+É utilizado para a comparação de grupos independentes, amostrados de
+populações diferentes ou da mesma população, desde que as populações
+atendam o pressuposto de normalidade.
+
+-   Construção?
+
+Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.
+
+![](images/Sem%20título-09.png)
+
+-   No R?
+
+Uso da função z.test do pacote BSDA.
+
+**OBS**: Quando o tamanho amostral é pequeno, uma ressalva sobre este
+tipo de teste de hipóteses deve ser feita, isto é, se as amostras são
+pequenas, devemos levar em consideração a variabilidade das amostras,
+pois ela irá influenciar nosso teste.
+
+Neste caso, a estatística do teste (estatística T) e os graus de
+liberdade assumirão formas diferentes quando as variâncias são
+homogêneas (teste T de Student para amostras independentes) ou
+heterogêneas (teste T de Welch para amostras independentes).
+
+![](images/Sem%20título-10.png)
+
+![](images/Sem%20título-11.png)
+
+**EXEMPLO 1**: O risco de cardiotoxicidade relacionada ao tratamento
+oncológico varia de acordo com o tipo de câncer, mas estima-se que cerca
+de 33% dos homens ao serem diagnosticados com câncer de próstata já
+apresentam doença cardíaca associada, aumentando a possiblidade de
+complicações decorrentes do tratamento. Neste contexto, foi realizado um
+estudo com um total de 28 pacientes diagnosticados com câncer de pulmão
+(14 pacientes), e câncer de próstata (14 pacientes) com o objetivo de
+avaliar se a diferença de frequência cardíaca entre os tipos de câncer
+era significativa. Supondo que os dados populacionais provém de
+populações normais, a amostra fornecida é suficiente para apoiar a
+hipótese de que há uma diferença na média da frequência cardíaca
+considerando entre os pacientes com câncer de pulmão e câncer de
+próstata, considerando um nível de significância de 5%?
+
+```{r}
+## Leitura dos dados
+db.cancer <- read.csv('Oncology.csv', header = TRUE, sep = ',')
+x <- db.cancer[,2]
+y <- db.cancer[,4]
+
+## Como não foi citado nada sobre as variâncias, fazer teste de variância primeiro.
+
+## Teste de hipóteses de homogeneidade de variâncias
+var.test(x = x, y = y, alternative = 'two.sided')
+```
+
+De acordo com o teste de homogeneidade de variâncias, conclui-se que as
+variâncias são homogêneas (p-valor \> 0.05).
+
+Como as amostras são pequenas, será utilizado o teste T para a diferença
+de médias de duas amostras. Como as variâncias são homogêneas, usa-se a
+função t.test com argumento var.equal = TRUE.
+
+```{r}
+## Teste de hipóteses
+t.test(x=x, y=y, alternative = 'two.sided', mu = 0, conf.level = 0.95, var.equal = T)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que há
+diferença significativa entre as médias e, além disso, observa-se que a
+média da frequência cardíaca dos pacientes com câncer de próstata é
+maior do que a média da frequência cardíaca dos pacientes com câncer de
+pulmão visto que a diferença entre as médias é negativa.
+
+### Diferença de Médias (Amostras Pareadas)
+
+-   Utilização?
+
+É utilizado para comprovar se determinado paciente teve melhora após a
+administração do medicamento, ou tratamento. Isto é, define uma
+hipóteses baseada em antes e depois de um acontecimento.
+
+-   Construção?
+
+Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.
+
+![](images/Sem%20título-12.png)
+
+![](images/Sem%20título-13.png)
+
+-   No R?
+
+Uso da função t.test disponível no R.
+
+**EXEMPLO 1**: Com base na amostra apresentada e após uma inspeção
+exploratória dos dados, um pesquisador clínico afima que a diferença do
+número médio de células T-CD4 antes é inferior ao número médio de céluas
+T-CD4 depois da terapia HAART com IL-2, indicando uma eficácia da
+terapia. Sabendo que os dados populacionais provém de uma distribuição
+normal, a amostra fornecida é suficiente para apoiar a hipótese do
+pesquisador, considerando um nível de significância de 5%?
+
+```{r}
+## Leitura dos dados
+db <- read.csv('HAART.csv', header = TRUE, sep = ',')
+x <- db[,2]
+y <- db[,3]
+
+## Teste de hipóteses
+t.test(x=x, y=y, alternative = 'two.sided', mu = 0, conf.level = 0.95, paired = T)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que o
+número médio de células T-CD4 antes é inferior ao número médio de
+células T-CD4 depois da terapia HAART com IL-2.
+
+## Testes Não-Paramétricos
+
+### Teste Qui-Quadrado de aderência
+
+-   Utilização?
+
+Este teste tem por objetivo testar a adequabilidade de um modelo
+probabilístico a um conjunto de dados observados, isto é, testar se a
+frequência observada é igual ou não a frequência esperada pelo modelo em
+cada uma das categorias.
+
+-   Construção?
+
+Para a construção deste teste, considera-se tabelas de frequências, com
+k ≥ 2 categorias de uma variável qualitativa.
+
+Considere a seguinte tabela de frequências, com k ≥ 2 categorias:
+
+![](images/Sem%20título-14.png)
+
+em que $P_{0i}$,i = 1, ... , k é a probabilidade especificada pelo
+modelo probabilístico.
+
+![](images/Sem%20título-15.png)
+
+-   No R?
+
+Uso da função chisq.test disponível no R.
+
+**EXEMPLO 1**: Suponha que, em uma certa população, 100 descendentes
+foram estudados tal que as frequências observadas são ilustradas na
+Tabela abaixo. Podemos afirmar que o modelo genético de Hardy-Weinberg é
+adequado para descrever essa população, ao nível de significância de 5%?
+
+![](images/Sem%20título-16.png)
+
+```{r}
+## Definir o vetor com as frequências observadas:
+f_obs <- c(26, 45, 29)
+
+## Definir o vetor com as probabilidades para cada categoria, isto é
+## P(AA) = 1/4, P(Aa) = 1/2 e P(aa) = 1/4, pois os genótipos originam-se
+## do cruzamento de Aa x Aa. Assim:
+probs <- c(0.25, 0.50, 0.25)
+
+## Teste de hipóteses
+chisq.test(x = f_obs, p = probs)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que o
+modelo genético de Hardy-Weinberg é adequado para descrever essa
+população.
+
+### Teste Qui-Quadrado de Independência
+
+-   Utilização?
+
+Este teste é utilizado para avaliar a dependência ou independência entre
+grupos ou entre duas variáveis categóricas, isto é, testar se há
+igualdade entre a frequência observada e a frequência esperada.
+
+-   Construção?
+
+Para realizar este teste, as variáveis devem estar tabuladas em forma de
+tabelas de contingência de tamanho "k × n", em que "k" representa o nº
+de linhas e "n" o de colunas.
+
+![](images/Sem%20título-17.png)
+
+![](images/Sem%20título-18.png)
+
+-   No R?
+
+Uso da função chisq.test disponível no R.
+
+**EXEMPLO 1**: A infecção do sítio cirúrgico é o processo pelo qual o
+microorganismo penetra, se estabelece e se multiplica na incisão
+operatória. um estudo examinou dois tipos de preparação pré-operatória
+da pele antes da realização de cirurgia cardíaca. Os dados do estudo
+estão dispostos na Tabela abaixo.
+
+Esses dados fornecem evidência suficiente, ao nível de significância de
+5%, para justificar a conclusão de que o tipo de preparação da pele e a
+infecção estão relacionados?
+
+![](images/Sem%20título-19.png)
+
+```{r}
+## Definir a tabela com os dados referente com as frequências observadas:
+f_obs_IA <- c(14, 94)
+f_obs_II <- c(4, 97)
+tab_IA_II <- cbind(f_obs_IA,f_obs_II)
+tab_IA_II
+
+## Teste de hipóteses
+chisq.test(x = tab_IA_II)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que o
+tipo de preparação da pele e a infecção estão relacionados já que não
+são independentes, isto é, os dados fornecem evidência suficiente para
+suportar a hipótese em questão.
+
+### Teste Exato de Fisher
+
+-   Utilização?
+
+Este teste, em geral, é utilizado para analisar dados qualitativos
+(nominais ou ordinais) ou quantitativos discretos, quando os tamanhos
+das duas amostras são pequenos.
+
+-   Construção?
+
+Determinar a probabilidade exata de ocorrência de uma frequência
+observada, ou de valores mais extremos com base em uma tabela de
+contingência 2 × 2 com linhas e colunas fixas.
+
+![](images/Sem%20título-20.png)
+
+![](images/Sem%20título-21.png)
+
+-   No R?
+
+Uso da função fisher.test disponível no R.
+
+**EXEMPLO**: O objetivo de um estudo foi determinar se a salivação em
+crianças com paralisia cerebral é devido à hiper salivação. Um dos
+procedimentos, nesse estudo, foi examinar a capacidade salivar de
+crianças com paralisia cerebral e crianças saudáveis. Os dados do estudo
+estão dispostos na Tabela abaixo. Esses dados fornecem evidência
+suficiente, ao nível de significância de 5%, para concluir que há
+associação entre o tipo de criança em relação a capacidade salivar?
+
+![](images/Sem%20título-22.png)
+
+```{r}
+## Definir a tabela com os dados referente com as frequências observadas:
+f_obs_M <- c(2, 3)
+f_obs_A <- c(8, 7)
+tab_Group <- cbind(f_obs_M,f_obs_A)
+tab_Group
+
+## Teste de hipóteses
+fisher.test(x = tab_Group)
+```
+
+Conclui-se que não há evidências, ao nível de 5% de significância, de
+que há associação entre o tipo de criança em relação a capacidade
+salivar (o intervalo da odds ratio contém o número 1), com base na
+amostra apresentada neste estudo.
+
+### Teste de Mantel-Haenzel
+
+-   Utilização?
+
+Este teste, tem como objetivo de avaliar se há uma associação entre duas
+variáveis categóricas, controlando o efeito de uma terceira variável
+categórica (chamada de efeito de confusão).
+
+-   Construção?
+
+Neste teste, os dados a serem analisados consistem em várias tabelas de
+contingência (a Tabela abaixo, por exemplo, representa a i-ésima tabela
+de contingência ou i-ésimo estrato) em vez de apenas uma.
+
+![](images/Sem%20título-23.png)
+
+-   Pressupostos?
+
+1o pressuposto: as observações devem independentes. 2o pressuposto: as
+observações devem ser identicamente distribuídas.
+
+-   Etapas?
+
+**1ª Etapa**: Fornecer uma estimativa pontual para a odds ratio
+combinada, de acordo com a equação:
+
+$\widehat{\text{OR}}_{\mathcal{MH}} = \frac{\sum_{i=1}^{k} A_i D_i / N_i}{\sum_{i=1}^{k} B_i C_i / N_i}$
+
+E, fornecer também um intervalo de confiança para a odds ratio
+combinada, de acordo com a equação:
+
+$\text{IC}_{\widehat{\text{OR}}_{\mathcal{MH}}} = \exp \left( \ln \widehat{\text{OR}}_{\mathcal{MH}} \pm z_{\frac{1-\alpha}{2}} \sqrt{\text{Var} \left( \ln \widehat{\text{OR}}_{\mathcal{MH}} \right)} \right)$
+
+em que:
+
+$\text{Var}(\ln(\widehat{\text{OR}}_{\mathcal{MH}})) = \frac{\text{Var}(\widehat{\text{OR}}_{\mathcal{MH}})}{(\widehat{\text{OR}}_{\mathcal{MH}})^2}$
+
+e,
+
+$Var(\widehat{OR_{MH}}) = \frac{\sum_{i=1}^k A_iD_i(\frac{A_i+D_i}{N^2_i})}{2(\sum_{i=1}^k \frac{A_iD_i}{N_i})^2} + \frac{\sum_{i=1}^k B_iC_i(\frac{B_i+C_i}{N^2_i})}{2(\sum_{i=1}^k \frac{B_iC_i}{N_i})^2} + \frac{\sum_{i=1}^k (\frac{A_iD_i(B_i+C_i)+B_iC_i(A_i+D_i)}{N^2_i})}{2\sum_{i=1}^k \frac{A_iD_i}{N_i}\sum_{i=1}^k \frac{B_iC_i}{N_i}}$
+
+**2ªEtapa**: combinar a informação de duas ou mais tabelas de
+contingências 2 × 2 e testar se o odds ratio combinado,
+$\widehat{\text{OR}}_{\mathcal{MH}}$, é igual a 1. Neste caso, se
+$\widehat{\text{OR}}_{\mathcal{MH}}$ = 1 significa que não há associação
+entre a doença e o fator de risco. Sendo assim, podemos definir as
+hipóteses:
+
+$H_0: \widehat{\text{OR}}_{\mathcal{MH}} = 1$
+
+```         
+         VS
+```
+
+$H_a: \widehat{\text{OR}}_{\mathcal{MH}} \neq 1$
+
+Agora, para cada combinação das tabelas de contingências, é suficiente
+calcular apenas o estimador do valor esperado da célula superior
+esquerda, isto é,
+
+$\widehat{E}_i = \frac{(A_i + B_i) \cdot (A_i + C_i)}{N_i}$
+
+Tal que a variância de $\widehat{E}_i$ dada por:
+
+$\widehat{S}^2_i = \frac{(A_i + B_i)(A_i + C_i)(B_i + D_i)(C_i + D_i)}{N_i(N_i - 1)}$
+
+![](images/Sem%20título-25.png)
+
+-   No R?
+
+Uso da função mantelhaen.test disponível no R.
+
+**EXEMPLO**: foram coletados dados sobre doença arterial coronariana
+obstrutiva (DACO), hipertensão e idade entre os pacientes identificados
+por um teste de estresse em esteira como estando em risco. Os dados do
+estudo estão dispostos na Tabela abaixo. Esses dados fornecem evidência
+suficiente, ao nível de significância de 5%, para justificar a conclusão
+de que não existe uma associação entre a presença de hipertensão e a
+ocorrência de DACO nos pacientes com idade abaixo ou acima de 55 anos?
+
+![](images/Sem%20título-26.png)
+
+![](images/Sem%20título-27.png)
+
+```{r}
+## Definir o array com os dados dos estratos:
+data_MH <- array(c(21, 16, 11, 6, 50, 18, 14, 6),
+dim = c(2, 2, 2),
+dimnames = list(Hipertensao = c("Presente", "Ausente"),
+DACO = c("Casos", "Controles"),
+Idade = c("< 55_Anos", ">= 55_Anos")))
+
+## Teste de hipóteses
+mantelhaen.test(data_MH, correct = FALSE)
+```
+
+Conclui-se, que não há evidências de que existe uma associação entre a
+presença de hipertensão e a ocorrência de DACO nos pacientes com idade
+abaixo ou acima de 55 anos ao nível de significância de 5% (baseando-se
+nesta amostra).
+
+### Teste de Normalidade de Shapiro-Wilk
+
+-   Utilização?
+
+É um teste para avaliar se os dados de uma amostra (ou de uma população)
+seguem uma distribuição normal. Uma das vantagens deste teste é seu alto
+poder de decisão, mesmo limitado a 3 e 50 observações.
+
+-   Construção?
+
+Estimar a estatística do teste de Shapiro-Wilk, $D_{\text{calc}}$, e
+compará-la com o valor crítico, $D_{\text{crit}}$, obtido da tabela de
+valores críticos (chamada de tabela D), para um determinado nível de
+confiança.
+
+A estatística do teste de Shapiro-Wilk é obtida através da seguinte
+forma:
+
+$D_{\text{calc}} = \frac{b^2}{\sum_{i=1}^{n} (X_i - \bar{X})^2}$
+
+onde $X_i$ é o valor de cada medida independente que foi obtida,
+$\bar{X}$ é a média de todas as medidas obtidas, e b é um parâmetro que
+deve ser calculado e que depende de um outro parâmetro a e, também, da
+quantidade de observações (n) que temos de $X_i$.
+
+Assim, se n for par, o valor de b é obtido da seguinte forma:
+
+$b = \sum_{i=1}^{\frac{n}{2}} a_{ni} (X_{n-i-1} - X_i)$
+
+E caso n seja ímpar, b é obtido desta outra forma:
+
+$b = \sum_{i=1}^{\frac{n+1}{2}} a_{ni} (X_{n-i-1} - X_i)$
+
+![](images/Sem%20título-28.png)
+
+-   No R?
+
+Uso da função shapiro.test disponível no R.
+
+**EXEMPLO**: um estudo foi realizado com um grupo de 10 ratos e as
+medidas dos cérebros dos animais do estudo estão dispostos na planilha
+'Rats'. Ao nível de 5% de significância, pode-se concluir que as
+medições obtidas seguem uma distribuição normal?
+
+```{r}
+## Definir a tabela com os dados referente com as frequências observadas:
+db <- read.csv('Rats.csv', header = TRUE, sep = ',')
+x <- db[,2]
+
+## Teste de normalidade de Shapiro-Wilk
+shapiro.test(x = x)
+```
+
+Conclui-se, ao nível de 5% de significância, que há evidências de que as
+medições obtidas para o tamanho do cérebro dos ratos do estudo seguem
+uma distribuição normal.
+
+### Teste de Mann-Whitney
+
+-   Utilização?
+
+Este teste, em geral, é utilizado para comprovar se dois grupos
+independentes foram ou não extraídos da mesma população, sendo o análogo
+não-paramétrico do teste paramétrico t de Student.
+
+-   Construção?
+
+Para a construção deste teste, considere $n_1$ = número de casos no
+menor dos dois grupos independentes e $n_2$ = número de casos no maior
+grupo.
+
+Primeiramente, combinam-se as observações ou escores de ambos os grupos,
+relacionando-os por ordem ascendente. Nessa ordenação ascendente,
+consideram-se os valores algébricos do grupo $n$ = $n_1$ + $n_2$, isto
+é, os postos mais baixos são atribuídos aos maiores valores (negativos
+se houver).
+
+A estatística teste, U, será dada, então, pelo número de vezes que um
+escore no grupo com $n_2$ casos precede um escore no grupo com $n_1$
+casos no grupo ordenado formado por $n$ = $n_1$ + $n_2$ casos.
+
+No caso em que n ⩽ 20 (amostras pequenas), a estatística do teste de
+Mann-Whitney pode escrita, de modo geral, pelas seguintes expressões:
+
+$U_1 = n_1 \cdot n_2 + \frac{n_1 \cdot (n_1 + 1)}{2} - R_1$ e
+$U_2 = n_1 \cdot n_2 + \frac{n_2 \cdot (n_2 + 1)}{2} - R_2$
+
+em que $R_i$ é a soma dos postos grupo i = 1, 2.
+
+![](images/Sem%20título-29.png)
+
+-   No R?
+
+Uso da função mannwhitney disponível no pacote sjstats.
+
+**EXEMPLO**: Um ensaio constituiu em administrar uma droga para
+depressão a dois grupos de pacientes, compostos de forma aleatória, e
+quantificar a depressão em que os valores maiores indicam maior
+gravidade da depressão.
+
+Os dados do estudo são:
+
+• Placebo: 6, 33, 21, 26, 10, 29, 33, 29.
+
+• Tianeptina: 10, 8, 17, 4, 17, 14, 9, 4.
+
+Ao nível de 5% de significância, com base no teste de
+Mann-Whitney-Wilcoxon, pode-se concluir que há diferença significativa
+entre o uso deplacebo e o uso de tianeptina?
+
+```{r message=FALSE, warning=FALSE}
+## Leitura do pacote
+library(sjstats)
+
+## Leitura dos dados
+obs <- c(6, 33, 21, 26, 10, 29, 33, 29, 10, 8, 17, 4, 17, 14, 9, 4)
+grupos <- c(rep('Placebo', 8), rep('Tianeptina', 8))
+tab <- data.frame(cbind(obs, grupos))
+tab[,1] <- as.numeric(tab[,1])
+names(tab) <- c('Observacoes', 'Grupos')
+
+## Teste de hipóteses
+mannwhitney(tab, x = Observacoes, grp = Grupos, distribution = 'approximate')
+```
+
+Conclui-se que há evidências, ao nível de 5% de significância, de que há
+diferença entre os escores de placebo e tianeptina. Particularmente,
+observa-se ainda que os escores para o grupo de pacientes que tomaram
+tianeptina são menores, indicando menor gravidade de depressão.
+
+### Teste de Wilcoxon
+
+-   Utilização?
+
+Este teste baseia-se nos postos das diferenças intrapares, sendo usado
+para comparar amostras relacionadas, é uma alternativa para o teste t de
+Student pareado.
+
+-   Construção?
+
+Para a construção deste teste, considere que $X_i$ representa os escores
+da amostra 1 e $Y_i$ os escores da amostra 2. Primeiramente, são
+calculadas as diferenças de cada par de escores, $d_i = X_i - Y_i$
+
+Em seguida, atribuem-se postos às diferenças dos escores em valor
+absoluto, ∣$d_i$∣. A menor diferença em valor absoluto receberá o posto
+1, a segunda menor diferença em valor absoluto receberá o posto 2 e
+assim por diante. Depois, acrescenta-se o sinal das diferenças, $d_i$,
+aos postos. Os empates podem ocorrer de duas maneiras: quando a
+diferença dos escores X e Y for zero, retira-se o par da análise. Quando
+houver diferenças em valor absoluto iguais, atribuem-se a média dos
+postos.
+
+Neste caso, tem-se que a estatística do teste é dada por:
+
+$W_{calc} = min(W_+ , W_-)$, em que
+
+$W_+ = \sum_{i=1}^{m}p^+_i \;\; e \;\; W_- = \sum_{i=1}^{m} p^-_i$
+
+Neste caso, m é o número de valores $d^+_i$, k é o número de valores
+$d^-_i$, $p^+i$ é o posto (ordem) positivo de $d^+_i$ e $p^-_i$ é o
+posto (ordem) negativo de $d^-_i$.
+
+A regra de decisão será baseada em uma tabela de valores críticos,
+chamada de tabela W tal que rejeita-se $H_0$ se
+$W_{calc} \leq W_{tabela}$, de acordo com o nível se significância
+estipulado.
+
+![](images/Sem%20título-30.png)
+
+-   No R?
+
+Uso da função wilcox.test disponível no R.
+
+**EXEMPLO**: No estudo, um total de 20 pacientes com pré- hipertensão se
+inscreveram para o teste da droga e suas pressões arteriais sistólicas
+foram medidas. Depois da medição inicial, cada paciente recebeu a droga
+durante 12 semanas. Após 12 semanas, as pressões arteriais sistólicas
+foram medidas novamente.
+
+Os dados do estudo são:
+
+• Antes: 125, 132, 138, 120, 125, 127, 136, 139, 131, 132, 135, 136,
+128, 127, 130.
+
+• Depois: 118, 134, 130, 124, 105, 130, 130, 132, 123, 128, 126, 140,
+135, 126, 132.
+
+Ao nível de 5% de significância, com base no teste de Wilcoxon, pode-se
+afirmar que existe diferença nas pressões arteriais sistólicas após
+participação no programa de exercícios?
+
+```{r}
+## Leitura dos dados
+antes <- c(125,132,138,120,125,127,136,139,131,132,135,136,128,127,130)
+depois <- c(118,134,130,124,105,130,130,132,123,128,126,140,135,126,132)
+## Teste de hipóteses
+wilcox.test(x = antes, y = depois, alternative = 'two.sided', paired = TRUE)
+```
+
+Conclui-se que H0 não deve ser rejeitada, isto é, ao nível de 5% de
+significância, pode-se concluir que não há uma diferença significativa
+nas pressões arteriais sistólicas após a administração da droga
+experimental em um período de 12 semanas, sugerindo-se que, talvez, que
+a administração da droga devesse ser feita em um período maior de tempo.
+
+## Referências
+
+1.  Lehmann, E. L., Romano, J. P., & Casella, G. (2005). Testing
+    Statistical Hypotheses. New York: springer
+
+2.  Casella, G., & Berger, R. L. (2021). Statistical Inference. Cengage
+    Learning.
+
+3.  Matloff, N. (2011). The Art of R Programming: A Tour of Statistical
+    Software Design. No Starch Press.
+
+4.  Montgomery, D. C., & Runger, G. C. (2010). Applied Statistics and
+    Probability for Engineers. John Wiley & Sons.
+
+5.  Taeger, D., & Kuhnt, S. (2014). Statistical Hypothesis Testing with
+    SAS and R. John Wiley & Sons.
+
+6.  Oliveira, R. P. (2023). Notas de Aula: Estatística Computacional.
+    Departamento de Estatística - Universidade Estadual de Maringá.

@@ -1,0 +1,13 @@
+"0","ggplot(gss, aes(x = finrela, fill = college)) +
+  geom_bar(position = ""fill"") +
+  theme_bw() +
+  scale_fill_viridis_d() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = ""Relação entre Renda e Nível Educacional"",
+       x = ""Renda Familiar"",
+       y = ""Proporção"",
+       fill = ""Nível Educacional"")
+"
+"2","Error in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y,  : 
+  entrada inválida 'N�vel Educacional' em 'utf8towcs'
+"

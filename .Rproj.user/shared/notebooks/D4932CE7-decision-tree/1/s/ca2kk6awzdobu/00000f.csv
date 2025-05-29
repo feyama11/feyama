@@ -1,0 +1,8 @@
+"0","#especificações do modelo"
+"0","trees_reg_spec <- decision_tree(cost_complexity = tune(), tree_depth = tune(), min_n = tune()) %>%"
+"0","  set_mode(""regression"") %>%"
+"0","  set_engine(""rpart"")"
+"0",""
+"0","#atualizando o workflow com as especificações"
+"0","workflow_reg <- workflow_reg %>%"
+"0","  add_model(trees_reg_spec)"

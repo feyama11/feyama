@@ -1,0 +1,6 @@
+"0","# # Calcular o valor p a partir da distribuição nula baseada em randomização e da estatística observada"
+"0","p_value <- null_dist %>%"
+"0","  get_p_value(obs_stat = observed_f_statistic,"
+"0","              direction = ""greater"")"
+"0",""
+"0","p_value"

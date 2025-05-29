@@ -1,0 +1,5 @@
+"0","#Tirando uma amostra dos dados"
+"0","amostra <- sample_n(db, size = 99, replace = F)"
+"0",""
+"0","#grafico de dispersão"
+"0","plot(x = amostra$Height, y = amostra$Shell.Weight, xlab = ""Altura da concha"", ylab = ""Peso da concha"", col = ""red"", pch=16)"

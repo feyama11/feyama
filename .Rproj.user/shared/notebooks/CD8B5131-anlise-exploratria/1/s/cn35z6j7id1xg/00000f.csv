@@ -1,0 +1,1 @@
+"0","dados <- drop_columns(dados, c(""dst_origin"", ""tzone_origin"", ""year_flights"", ""tz_origin""))"

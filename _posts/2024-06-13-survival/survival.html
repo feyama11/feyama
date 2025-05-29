@@ -1,0 +1,3254 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Análise de Sobrevivência</title>
+
+  <meta property="description" itemprop="description" content="Post teórico e prático completo sobre análise de sobrevivência e dados censurados"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-06-25"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-06-25"/>
+  <meta name="article:author" content="Felipe Yamamoto Tenedine"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Análise de Sobrevivência"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Post teórico e prático completo sobre análise de sobrevivência e dados censurados"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Análise de Sobrevivência"/>
+  <meta property="twitter:description" content="Post teórico e prático completo sobre análise de sobrevivência e dados censurados"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","preview","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Análise de Sobrevivência"]},{"type":"character","attributes":{},"value":["Post teórico e prático completo sobre análise de sobrevivência e dados censurados\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Felipe Yamamoto Tenedine"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/felipe-yamamoto-tenedine/"]}]}]},{"type":"character","attributes":{},"value":["2024-06-25"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["estatistica","R","machine learning"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","toc_float","toc_collapsed","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["chunk-code-262c7050e7f.log","images/clipboard-103356771.png","images/clipboard-1765851521.png","images/clipboard-1873748326.png","images/clipboard-1926884842.png","images/clipboard-2085289746.png","images/clipboard-2550251497.png","images/clipboard-3407521660.png","images/clipboard-4041401904.png","survival_files/anchor-4.2.2/anchor.min.js","survival_files/bowser-1.9.3/bowser.min.js","survival_files/distill-2.2.21/template.v2.js","survival_files/figure-html5/unnamed-chunk-13-1.png","survival_files/figure-html5/unnamed-chunk-14-1.png","survival_files/figure-html5/unnamed-chunk-23-1.png","survival_files/figure-html5/unnamed-chunk-6-1.png","survival_files/figure-html5/unnamed-chunk-7-1.png","survival_files/header-attrs-2.25/header-attrs.js","survival_files/jquery-3.6.0/jquery-3.6.0.js","survival_files/jquery-3.6.0/jquery-3.6.0.min.js","survival_files/jquery-3.6.0/jquery-3.6.0.min.map","survival_files/kePrint-0.0.1/kePrint.js","survival_files/lightable-0.0.1/lightable.css","survival_files/popper-2.6.0/popper.min.js","survival_files/tippy-6.2.7/tippy-bundle.umd.min.js","survival_files/tippy-6.2.7/tippy-light-border.css","survival_files/tippy-6.2.7/tippy.css","survival_files/tippy-6.2.7/tippy.umd.min.js","survival_files/webcomponents-2.0.0/webcomponents.js","temp_ggplot_0001.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="survival_files/header-attrs-2.25/header-attrs.js"></script>
+  <script src="survival_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="survival_files/popper-2.6.0/popper.min.js"></script>
+  <link href="survival_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="survival_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="survival_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="survival_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="survival_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="survival_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="survival_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Análise de Sobrevivência","description":"Post teórico e prático completo sobre análise de sobrevivência e dados censurados","authors":[{"author":"Felipe Yamamoto Tenedine","authorURL":"https://www.linkedin.com/in/felipe-yamamoto-tenedine/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-06-25T00:00:00.000-03:00","citationText":"Tenedine, 2024"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Análise de Sobrevivência</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">estatistica</div>
+<div class="dt-tag">R</div>
+<div class="dt-tag">machine learning</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Post teórico e prático completo sobre análise de sobrevivência e dados censurados</p></p>
+</div>
+
+<div class="d-byline">
+  Felipe Yamamoto Tenedine <a href="https://www.linkedin.com/in/felipe-yamamoto-tenedine/" class="uri">https://www.linkedin.com/in/felipe-yamamoto-tenedine/</a> 
+  
+<br/>2024-06-25
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#teoria" id="toc-teoria">Teoria</a>
+<ul>
+<li><a href="#introdução" id="toc-introdução">Introdução</a></li>
+<li><a href="#tempos-de-sobrevivência-e-censura" id="toc-tempos-de-sobrevivência-e-censura">Tempos de sobrevivência e censura</a></li>
+<li><a href="#um-olhar-mais-atento-sobre-a-censura" id="toc-um-olhar-mais-atento-sobre-a-censura">Um olhar mais atento sobre a censura</a></li>
+<li><a href="#a-curva-de-sobrevivência-de-kaplan-meier" id="toc-a-curva-de-sobrevivência-de-kaplan-meier">A curva de sobrevivência de Kaplan-Meier</a></li>
+<li><a href="#teste-log-rank" id="toc-teste-log-rank">Teste Log-Rank</a></li>
+<li><a href="#modelos-de-regressão-com-resposta-de-sobrevivência" id="toc-modelos-de-regressão-com-resposta-de-sobrevivência">Modelos de regressão com resposta de sobrevivência</a>
+<ul>
+<li><a href="#a-função-de-risco" id="toc-a-função-de-risco">A Função de Risco</a></li>
+<li><a href="#riscos-proporcionais" id="toc-riscos-proporcionais">Riscos Proporcionais</a></li>
+<li><a href="#exemplo-dados-sobre-câncer-cerebral" id="toc-exemplo-dados-sobre-câncer-cerebral">Exemplo: dados sobre câncer cerebral</a></li>
+<li><a href="#exemplo-publication-data" id="toc-exemplo-publication-data">Exemplo: Publication Data</a></li>
+</ul></li>
+<li><a href="#simplificação-do-modelo-de-cox" id="toc-simplificação-do-modelo-de-cox">Simplificação do Modelo de Cox</a></li>
+<li><a href="#tópicos-adicionais" id="toc-tópicos-adicionais">Tópicos Adicionais</a>
+<ul>
+<li><a href="#área-sob-a-curva-para-análise-de-sobrevivência" id="toc-área-sob-a-curva-para-análise-de-sobrevivência">Área Sob a Curva para Análise de Sobrevivência</a></li>
+<li><a href="#escolha-da-escala-temporal" id="toc-escolha-da-escala-temporal">Escolha da Escala Temporal</a></li>
+<li><a href="#covariáveis-dependentes-do-tempo" id="toc-covariáveis-dependentes-do-tempo">Covariáveis Dependentes do Tempo</a></li>
+<li><a href="#verificação-da-assunção-de-riscos-proporcionais" id="toc-verificação-da-assunção-de-riscos-proporcionais">Verificação da Assunção de Riscos Proporcionais</a></li>
+<li><a href="#árvores-de-sobrevivência" id="toc-árvores-de-sobrevivência">Árvores de Sobrevivência</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#prática" id="toc-prática">Prática</a>
+<ul>
+<li><a href="#dados-braincancer" id="toc-dados-braincancer">Dados <em>BrainCancer</em></a></li>
+<li><a href="#dados-publication" id="toc-dados-publication">Dados <em>Publication</em></a></li>
+<li><a href="#dados-callcenter" id="toc-dados-callcenter">Dados <em>CallCenter</em></a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h1 id="teoria">Teoria</h1>
+<h2 id="introdução">Introdução</h2>
+<p>Neste artigo, discutiremos análise de sobrevivência e dados de sobrevivência censurados. Esses temas surgem na análise de um tipo específico de variável de resultado: o tempo até que um evento ocorra.</p>
+<p>Por exemplo, em um estudo médico de cinco anos com pacientes tratados para câncer, queremos ajustar um modelo para prever o tempo de sobrevivência dos pacientes, utilizando características como medidas de saúde inicial ou tipo de tratamento. No entanto, muitos pacientes podem ter sobrevivido até o final do estudo, resultando em tempos de sobrevivência censurados, onde sabemos que é pelo menos cinco anos, mas não seu valor real.</p>
+<p>A análise de sobrevivência é relevante não apenas em estudos médicos, mas também em outras áreas, como prever a perda de clientes em uma empresa ou mesmo modelar dados onde medições estão limitadas por um certo valor. Apesar de ser amplamente estudada em estatística, a análise de sobrevivência recebeu relativamente pouca atenção na comunidade de aprendizado de máquina.</p>
+<h2 id="tempos-de-sobrevivência-e-censura">Tempos de sobrevivência e censura</h2>
+<p>Para cada indivíduo, supomos que existe um tempo verdadeiro de sobrevivência, <span class="math inline">\(T\)</span>, bem como um tempo verdadeiro de censura, <span class="math inline">\(C\)</span>. O tempo de sobrevivência também é conhecido como tempo de censura por falha ou tempo de evento. O tempo de sobrevivência representa o momento em que ocorre o evento de interesse, como a morte do paciente ou o cancelamento da assinatura do cliente. Em contraste, o tempo de censura é o momento em que ocorre a censura, como quando o paciente sai do estudo ou quando o estudo é encerrado.</p>
+<p>Observamos ou o tempo de sobrevivência <span class="math inline">\(T\)</span> ou o tempo de censura <span class="math inline">\(C\)</span>. Especificamente, observamos a variável aleatória <span class="math display">\[Y = \min(T,C)\quad \text{(1)}\]</span> Em outras palavras, se o evento ocorrer antes da censura (ou seja, <span class="math inline">\(T &lt; C\)</span>), então observamos o tempo de sobrevivência verdadeiro <span class="math inline">\(T\)</span>; no entanto, se a censura ocorrer antes do evento (<span class="math inline">\(T &gt; C\)</span>), então observamos o tempo de censura. Também observamos um indicador de status, onde é 1 se observamos o tempo de sobrevivência verdadeiro e 0 se observamos o tempo de censura.</p>
+<p>Suponha agora que observamos pares <span class="math inline">\((Y, \delta)\)</span> para <span class="math inline">\(n\)</span> indivíduos, que denotamos como <span class="math inline">\((y_1, \delta_1), \ldots, (y_n, \delta_n)\)</span>. A Figura 1 mostra um exemplo de um estudo médico fictício onde observamos <span class="math inline">\(n = 4\)</span> pacientes ao longo de um período de acompanhamento de 365 dias. Para os pacientes 1 e 3, observamos o tempo até o evento (como morte ou recidiva da doença) <span class="math inline">\(T = t_i\)</span>. O paciente 2 estava vivo quando o estudo terminou, e o paciente 4 saiu do estudo ou foi “perdido para acompanhamento”; para esses pacientes, observamos <span class="math inline">\(C = c_i\)</span>. Portanto, <span class="math inline">\(y_1 = t_1\)</span>, <span class="math inline">\(y_3 = t_3\)</span>, <span class="math inline">\(y_2 = c_2\)</span>, <span class="math inline">\(y_4 = c_4\)</span>, <span class="math inline">\(\delta_1 = \delta_3 = 1\)</span> e <span class="math inline">\(\delta_2 = \delta_4 = 0\)</span>.</p>
+<figure>
+<img src="images/clipboard-4041401904.png" alt="Figura 1 - Ilustração de dados de sobrevivência censurados. Para os pacientes 1 e 3, o evento foi observado. O paciente 2 estava vivo quando o estudo terminou. O paciente 4 saiu do estudo." />
+<figcaption aria-hidden="true"><strong>Figura 1</strong> - Ilustração de dados de sobrevivência censurados. Para os pacientes 1 e 3, o evento foi observado. O paciente 2 estava vivo quando o estudo terminou. O paciente 4 saiu do estudo.</figcaption>
+</figure>
+<h2 id="um-olhar-mais-atento-sobre-a-censura">Um olhar mais atento sobre a censura</h2>
+<p>Para analisar dados de sobrevivência, precisamos fazer algumas suposições sobre o motivo pelo qual ocorreu a censura. Por exemplo, suponha que vários pacientes abandonem um estudo sobre câncer precocemente devido a doença grave. Uma análise que não leve em consideração o motivo pelo qual os pacientes abandonaram o estudo provavelmente superestimará o verdadeiro tempo médio de sobrevivência. Da mesma forma, suponha que homens gravemente doentes sejam mais propensos a abandonar o estudo do que mulheres gravemente doentes. Nesse caso, uma comparação dos tempos de sobrevivência entre homens e mulheres pode erroneamente sugerir que os homens sobrevivem mais do que as mulheres.</p>
+<p>Em geral, precisamos assumir que o mecanismo de censura é independente: condicional às características, o tempo do evento T é independente do tempo de censura C. Os dois exemplos acima violam a suposição de censura independente. Tipicamente, não é possível determinar a independência do mecanismo de censura apenas a partir dos dados. Em vez disso, é necessário considerar cuidadosamente o processo de coleta de dados para determinar se a censura independente é uma suposição razoável.</p>
+<p>Aqui, focamos na censura à direita, que ocorre quando <span class="math inline">\(T \geq Y\)</span>, ou seja, o tempo verdadeiro do evento T é pelo menos tão grande quanto o tempo observado Y. A censura à direita deriva seu nome do fato de que o tempo é tipicamente exibido da esquerda para a direita, como na Figura 1. No entanto, outros tipos de censura são possíveis. Por exemplo, na censura à esquerda, o tempo verdadeiro do evento T é menor ou igual ao tempo observado Y. Um exemplo seria um estudo sobre a duração da gravidez, onde supomos que investigamos os pacientes 250 dias após a concepção, quando alguns já tiveram seus bebês. Então, sabemos que para esses pacientes, a duração da gravidez é inferior a 250 dias.</p>
+<p>Mais genericamente, a censura por intervalo se refere à situação em que não conhecemos o tempo exato do evento, mas sabemos que ele ocorre em algum intervalo. Por exemplo, isso ocorre se investigarmos os pacientes semanalmente para determinar se o evento ocorreu. Embora a censura à esquerda e a censura por intervalo possam ser tratadas utilizando variantes das ideias apresentadas aqui, a seguir focaremos especificamente na censura à direita.</p>
+<h2 id="a-curva-de-sobrevivência-de-kaplan-meier">A curva de sobrevivência de Kaplan-Meier</h2>
+<p>A curva de sobrevivência, ou função de sobrevivência, é definida como <span class="math display">\[ S(t) = \Pr(T &gt; t) \quad \text{(2)} \]</span> Esta função decrescente quantifica a probabilidade de sobreviver além do tempo <span class="math inline">\(t\)</span>. Por exemplo, suponha que uma empresa esteja interessada em modelar a rotatividade de clientes. Seja <span class="math inline">\(T\)</span> o tempo em que um cliente cancela a assinatura do serviço da empresa. Então, <span class="math inline">\(S(t)\)</span> representa a probabilidade de um cliente cancelar depois do tempo <span class="math inline">\(t\)</span>. Quanto maior o valor de <span class="math inline">\(S(t)\)</span>, menos provável é que o cliente cancele antes do tempo <span class="math inline">\(t\)</span>.</p>
+<p>Consideraremos a tarefa de estimar a curva de sobrevivência. Nossa investigação é motivada pelo conjunto de dados <em>BrainCancer</em>, que contém os tempos de sobrevivência de pacientes com tumores cerebrais primários submetidos a tratamento com métodos de radioterapia estereotáxica. Os preditores incluem o volume do tumor bruto (<strong>gtv</strong>, em centímetros cúbicos), <strong>sexo</strong> (masculino ou feminino), <strong>diagnóstico</strong> (meningioma, glioma de baixo grau, glioma de alto grau ou outro), <strong>localização do tumor</strong> (infratentorial ou supratentorial), <strong>índice de Karnofsky (ki)</strong> e <strong>método estereotáxico</strong> (radiocirurgia estereotáxica ou radioterapia estereotáxica fracionada, abreviados como SRS e SRT, respectivamente). Apenas 53 dos 88 pacientes estavam vivos ao final do estudo.</p>
+<p>Agora, consideramos a tarefa de estimar a curva de sobrevivência (2) para esses dados. Para estimar <span class="math inline">\(S(20) = \Pr(T &gt; 20)\)</span>, a probabilidade de um paciente sobreviver pelo menos <span class="math inline">\(t = 20\)</span> meses, é tentador simplesmente calcular a proporção de pacientes que sabemos ter sobrevivido além de 20 meses, ou seja, a proporção de pacientes para os quais <span class="math inline">\(Y &gt; 20\)</span>. Isso resulta em 48/88, ou aproximadamente 55%. No entanto, isso não parece estar completamente correto, já que <span class="math inline">\(Y\)</span> e <span class="math inline">\(T\)</span> representam quantidades diferentes. Em particular, 17 dos 40 pacientes que não sobreviveram aos 20 meses foram censurados, e essa análise assume implicitamente que <span class="math inline">\(T &lt; 20\)</span> para todos esses pacientes censurados; obviamente, não sabemos se isso é verdadeiro.</p>
+<p>Alternativamente, para estimar <span class="math inline">\(S(20)\)</span>, poderíamos considerar calcular a proporção de pacientes para os quais <span class="math inline">\(Y &gt; 20\)</span>, dos 71 pacientes que não foram censurados até o tempo <span class="math inline">\(t = 20\)</span>; isso resulta em 48/71, ou aproximadamente 68%. No entanto, isso também não está completamente correto, pois significa ignorar completamente os pacientes que foram censurados antes do tempo <span class="math inline">\(t = 20\)</span>, embora o momento em que foram censurados possa ser informativo. Por exemplo, um paciente censurado no tempo <span class="math inline">\(t = 19.9\)</span> provavelmente teria sobrevivido além de <span class="math inline">\(t = 20\)</span> se não tivesse sido censurado.</p>
+<p>Vimos que a estimativa de <span class="math inline">\(S(t)\)</span> é complicada pela presença de censura. Agora apresentamos uma abordagem para superar esses desafios. Deixamos <span class="math inline">\(d_1 &lt; d_2 &lt; \ldots &lt; d_K\)</span> denotar os <span class="math inline">\(K\)</span> tempos de morte únicos entre os pacientes não censurados, e deixamos <span class="math inline">\(q_k\)</span> denotar o número de pacientes que morreram no tempo <span class="math inline">\(d_k\)</span>. Para <span class="math inline">\(k = 1, \ldots, K\)</span>, deixamos <span class="math inline">\(r_k\)</span> denotar o número de pacientes vivos e no estudo imediatamente antes de <span class="math inline">\(d_k\)</span>; estes são os pacientes em risco. O conjunto de pacientes que estão em risco em um dado momento é conhecido como o conjunto de risco.</p>
+<p>Pela lei da probabilidade total, <span class="math display">\[ \Pr(T &gt; d_k) = \Pr(T &gt; d_k \mid T &gt; d_{k-1}) \Pr(T &gt; d_{k-1}) + \Pr(T &gt; d_k \mid T \leq d_{k-1}) \Pr(T \leq d_{k-1}). \]</span> O fato de <span class="math inline">\(d_{k-1} &lt; d_k\)</span> implica que <span class="math inline">\(\Pr(T &gt; d_k \mid T \leq d_{k-1}) = 0\)</span> (é impossível para um paciente sobreviver além do tempo <span class="math inline">\(d_k\)</span> se ele ou ela não sobreviveu até um tempo anterior <span class="math inline">\(d_{k-1}\)</span>). Portanto, <span class="math display">\[ S(d_k) = \Pr(T &gt; d_k) = \Pr(T &gt; d_k \mid T &gt; d_{k-1}) \Pr(T &gt; d_{k-1}). \]</span> Substituindo novamente (2), vemos que <span class="math display">\[ S(d_k) = \Pr(T &gt; d_k \mid T &gt; d_{k-1}) S(d_{k-1}). \]</span> Isso implica que <span class="math display">\[ S(d_k) = \Pr(T &gt; d_k \mid T &gt; d_{k-1}) \cdot \ldots \cdot \Pr(T &gt; d_2 \mid T &gt; d_1) \Pr(T &gt; d_1). \]</span> Agora, basta substituir as estimativas de cada um dos termos no lado direito da equação anterior. É natural usar o estimador <span class="math display">\[ \Pr(T &gt; d_j \mid T &gt; d_{j-1}) = \frac{r_j - q_j}{r_j}, \]</span> que é a fração do conjunto de risco no tempo <span class="math inline">\(d_j\)</span> que sobreviveu além do tempo <span class="math inline">\(d_j\)</span>. Isso leva ao estimador de Kaplan-Meier da curva de sobrevivência: <span class="math display">\[ S(d_k) = \prod_{j=1}^{k} \left( 1 - \frac{q_j}{r_j} \right). \quad \text{(3)} \]</span> Para tempos <span class="math inline">\(t\)</span> entre <span class="math inline">\(d_k\)</span> e <span class="math inline">\(d_{k+1}\)</span>, definimos <span class="math inline">\(S(t) = S(d_k)\)</span>. Consequentemente, a curva de sobrevivência de Kaplan-Meier tem uma forma escalonada.</p>
+<p>A curva de sobrevivência de Kaplan-Meier para os dados <em>BrainCancer</em> é mostrada na Figura 2. Cada ponto na curva sólida e escalonada mostra a probabilidade estimada de sobreviver além do tempo indicado no eixo horizontal. A probabilidade estimada de sobrevivência além de 20 meses é de 71%, o que é significativamente maior do que as estimativas ingênuas de 55% e 68% apresentadas anteriormente.</p>
+<figure>
+<img src="images/clipboard-2085289746.png" alt="Figura 2 - Para os dados do BrainCancer, exibimos a sobrevivência de Kaplan-Meier curva (curva sólida), juntamente com faixas de erro padrão (curvas tracejadas)." />
+<figcaption aria-hidden="true"><strong>Figura 2</strong> - Para os dados do BrainCancer, exibimos a sobrevivência de Kaplan-Meier curva (curva sólida), juntamente com faixas de erro padrão (curvas tracejadas).</figcaption>
+</figure>
+<p>A construção sequencial do estimador de Kaplan-Meier - começando no tempo zero e mapeando os eventos observados conforme eles se desenrolam no tempo - é fundamental para muitas das técnicas chave na análise de sobrevivência. Estas incluem o teste de <em>log-rank</em> e o modelo de risco proporcional de <em>Cox</em>.</p>
+<h2 id="teste-log-rank">Teste Log-Rank</h2>
+<p>Agora continuamos nossa análise dos dados do <em>BrainCancer</em>. Queremos comparar a sobrevivência de homens e mulheres.</p>
+<figure>
+<img src="images/clipboard-2550251497.png" alt="Figura 3 - Para os dados do BrainCancer, curvas de sobrevivência de Kaplan-Meier para homens e mulheres são exibidos." />
+<figcaption aria-hidden="true"><strong>Figura 3</strong> - Para os dados do BrainCancer, curvas de sobrevivência de Kaplan-Meier para homens e mulheres são exibidos.</figcaption>
+</figure>
+<p>A Figura 3 mostra as curvas de sobrevivência de Kaplan-Meier para os dois grupos. As mulheres parecem se sair um pouco melhor até cerca de 50 meses, mas depois as duas curvas se estabilizam em cerca de 50%. Como podemos realizar um teste formal de igualdade das duas curvas de sobrevivência?</p>
+<p>À primeira vista, um teste t de duas amostras parece uma escolha óbvia: poderíamos testar se o tempo médio de sobrevivência entre as mulheres é igual ao tempo médio de sobrevivência entre os homens. Mas a presença de censura cria uma complicação. Para superar esse desafio, realizaremos um teste de <em>log-rank</em>, que examina como os eventos em cada grupo se desenrolam sequencialmente no tempo.</p>
+<p>Lembre-se que <span class="math inline">\(d_1 &lt; d_2 &lt; \cdots &lt; d_K\)</span> são os tempos de morte únicos entre os pacientes não censurados, <span class="math inline">\(r_k\)</span> é o número de pacientes em risco no tempo <span class="math inline">\(d_k\)</span>, e <span class="math inline">\(q_k\)</span> é o número de pacientes que morreram no tempo <span class="math inline">\(d_k\)</span>. Definimos ainda <span class="math inline">\(r_{1k}\)</span> e <span class="math inline">\(r_{2k}\)</span> como o número de pacientes nos grupos 1 e 2, respectivamente, que estão em risco no tempo <span class="math inline">\(d_k\)</span>. Da mesma forma, definimos <span class="math inline">\(q_{1k}\)</span> e <span class="math inline">\(q_{2k}\)</span> como o número de pacientes nos grupos 1 e 2, respectivamente, que morreram no tempo <span class="math inline">\(d_k\)</span>. Note que <span class="math inline">\(r_{1k} + r_{2k} = r_k\)</span> e <span class="math inline">\(q_{1k} + q_{2k} = q_k\)</span>.</p>
+<p>Em cada tempo de morte <span class="math inline">\(d_k\)</span>, construímos uma tabela <span class="math inline">\(2 \times 2\)</span> de contagens na forma mostrada na Tabela 1. Observe que, se os tempos de morte são únicos (ou seja, nenhum dos dois indivíduos morre ao mesmo tempo), então um dos <span class="math inline">\(q_{1k}\)</span> e <span class="math inline">\(q_{2k}\)</span> é igual a um, e o outro é igual a zero.</p>
+<p><span class="math display">\[
+\begin{array}{|c|c|c|c|}
+\hline
+              &amp; \textbf{Grupo 1}      &amp; \textbf{Grupo 2}     &amp; \textbf{Total}      \\ \hline
+\textbf{Morreram}     &amp; q_{1k} &amp; q_{2k} &amp; q_k \\ \hline
+\textbf{Sobreviveram} &amp; r_{1k} - q_{1k} &amp; r_{2k} - q_{2k} &amp; r_k - q_k \\ \hline
+\textbf{Total}        &amp; r_{1k} &amp; r_{2k} &amp; r_k \\ \hline
+\end{array}
+\]</span></p>
+<p>A ideia principal por trás da estatística do teste de log-rank é a seguinte. Para testar <span class="math inline">\(H_0: E(X) = \mu\)</span> para alguma variável aleatória <span class="math inline">\(X\)</span>, uma abordagem é construir uma estatística de teste da forma <span class="math display">\[ W = \frac{X - \mu}{\text{Var}(X)}. \quad \text{(4)} \]</span> Para construir a estatística do teste de <em>log-rank</em>, calculamos uma quantidade que assume exatamente a forma (4), com <span class="math inline">\(X = \sum_{k=1}^{K} q_{1k}\)</span>, onde <span class="math inline">\(q_{1k}\)</span> está no canto superior esquerdo da Tabela 1.</p>
+<p>Em maiores detalhes, se não houver diferença na sobrevivência entre os dois grupos, e condicionando os totais das linhas e colunas na Tabela 11.1, o valor esperado de <span class="math inline">\(q_{1k}\)</span> é <span class="math display">\[ \mu_k = \frac{r_{1k}}{r_k} q_k. \quad \text{(5)} \]</span> Então, o valor esperado de <span class="math inline">\(X = \sum_{k=1}^{K} q_{1k}\)</span> é <span class="math inline">\(\mu = \sum_{k=1}^{K} \frac{r_{1k}}{r_k} q_k\)</span>. Além disso, pode-se mostrar que a variância de <span class="math inline">\(q_{1k}\)</span> é <span class="math display">\[ \text{Var}(q_{1k}) = \frac{q_k (r_{1k} / r_k) (1 - r_{1k} / r_k) (r_k - q_k)}{r_k - 1}. \quad \text{(6)} \]</span> Embora <span class="math inline">\(q_{11}, \ldots, q_{1K}\)</span> possam ser correlacionados, ainda assim estimamos <span class="math display">\[ \text{Var} \left( \sum_{k=1}^{K} q_{1k} \right) = \sum_{k=1}^{K} \text{Var}(q_{1k}) = \sum_{k=1}^{K} \frac{q_k (r_{1k} / r_k) (1 - r_{1k} / r_k) (r_k - q_k)}{r_k - 1}. \quad \text{(7)} \]</span> Portanto, para calcular a estatística do teste de log-rank, procedemos como em (4), com <span class="math inline">\(X = \sum_{k=1}^{K} q_{1k}\)</span>, utilizando (5) e (7). Ou seja, calculamos <span class="math display">\[ W = \frac{\sum_{k=1}^{K} (q_{1k} - \mu_k)}{\sqrt{\sum_{k=1}^{K} \text{Var}(q_{1k})}} = \frac{\sum_{k=1}^{K} \left( q_{1k} - \frac{r_{1k}}{r_k} q_k \right)}{\sqrt{\sum_{k=1}^{K} \frac{q_k (r_{1k} / r_k) (1 - r_{1k} / r_k) (r_k - q_k)}{r_k - 1}}}. \quad \text{(8)} \]</span></p>
+<p>Quando o tamanho da amostra é grande, a estatística do teste de <em>log-rank</em> <span class="math inline">\(W\)</span> tem aproximadamente uma distribuição normal padrão; isso pode ser usado para calcular um valor-p para a hipótese nula de que não há diferença entre as curvas de sobrevivência nos dois grupos.</p>
+<p>Comparando os tempos de sobrevivência de mulheres e homens nos dados do <em>BrainCancer</em>, obtemos uma estatística do teste de log-rank de <span class="math inline">\(W = 1.2\)</span>, que corresponde a um valor-p bilateral de 0.2 usando a distribuição nula teórica, e um valor-p de 0.25 usando a distribuição nula por permutação com 1.000 permutações. Portanto, não podemos rejeitar a hipótese nula de que não há diferença nas curvas de sobrevivência entre mulheres e homens.</p>
+<p>O teste de <em>log-rank</em> está intimamente relacionado ao modelo de riscos proporcionais de Cox.</p>
+<h2 id="modelos-de-regressão-com-resposta-de-sobrevivência">Modelos de regressão com resposta de sobrevivência</h2>
+<p>Agora consideramos a tarefa de ajustar um modelo de regressão aos dados de sobrevivência. As observações são da forma <span class="math inline">\((Y, \delta)\)</span>, onde <span class="math inline">\(Y = \min(T,C)\)</span> é o tempo de sobrevivência (possivelmente censurado), e <span class="math inline">\(\delta\)</span> é uma variável indicadora que é igual a 1 se <span class="math inline">\(T \leq C\)</span>. Além disso, <span class="math inline">\(\mathbf{X} \in \mathbb{R}^p\)</span> é um vetor de <span class="math inline">\(p\)</span> características. Desejamos prever o verdadeiro tempo de sobrevivência <span class="math inline">\(T\)</span>.</p>
+<p>Como a quantidade observada <span class="math inline">\(Y\)</span> é positiva e pode ter uma longa cauda à direita, podemos ser tentados a ajustar uma regressão linear de <span class="math inline">\(\log(Y)\)</span> em <span class="math inline">\(\mathbf{X}\)</span>. Mas, como você pode imaginar, a censura cria novamente um problema, pois estamos realmente interessados em prever <span class="math inline">\(T\)</span> e não <span class="math inline">\(Y\)</span>. Para superar essa dificuldade, em vez disso, fazemos uso de uma construção sequencial, similar às construções da curva de sobrevivência de Kaplan-Meier e o teste log-rank.</p>
+<h3 id="a-função-de-risco">A Função de Risco</h3>
+<p>A função de risco ou taxa de risco — também conhecida como força de mortalidade — é formalmente definida como <span class="math display">\[
+h(t) = \lim_{\Delta t \to 0} \frac{\Pr(t &lt; T \leq t + \Delta t \mid T &gt; t)}{\Delta t}, \quad \text{(9)}
+\]</span> onde <span class="math inline">\(T\)</span> é o tempo de sobrevivência (não observado). É a taxa de mortalidade no instante após o tempo <span class="math inline">\(t\)</span>, dado que a sobrevivência passou desse tempo. Na equação acima, tomamos o limite conforme <span class="math inline">\(\Delta t\)</span> se aproxima de zero, então podemos pensar em <span class="math inline">\(\Delta t\)</span> como sendo um número extremamente pequeno. Assim, mais informalmente, isso implica que <span class="math display">\[
+h(t) \approx \frac{\Pr(t &lt; T \leq t + \Delta t \mid T &gt; t)}{\Delta t}
+\]</span> para algum <span class="math inline">\(\Delta t\)</span> arbitrariamente pequeno.</p>
+<p>Por que deveríamos nos importar com a função de risco? Em primeiro lugar, ela está intimamente relacionada com a curva de sobrevivência, como veremos a seguir. Em segundo lugar, acontece que uma abordagem chave para modelar dados de sobrevivência como uma função de covariáveis depende fortemente da função de risco; apresentaremos essa abordagem — o modelo de riscos proporcionais de Cox — em seguida.</p>
+<p>Agora consideramos a função de risco <span class="math inline">\(h(t)\)</span> em mais detalhes. Recorde que para dois eventos <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>, a probabilidade de <span class="math inline">\(A\)</span> dado <span class="math inline">\(B\)</span> pode ser expressa como <span class="math inline">\(\Pr(A \mid B) = \Pr(A \cap B) / \Pr(B)\)</span>, ou seja, a probabilidade de que <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span> ocorram dividida pela probabilidade de que <span class="math inline">\(B\)</span> ocorra. Além disso, recorde que <span class="math inline">\(S(t) = \Pr(T &gt; t)\)</span>. Assim, <span class="math display">\[
+h(t) = \lim_{\Delta t \to 0} \frac{\Pr((t &lt; T \leq t + \Delta t) \cap (T &gt; t)) / \Delta t}{\Pr(T &gt; t)}  \\
+=  \lim_{\Delta t \to 0} \frac{\Pr(t &lt; T \leq t + \Delta t) / \Delta t}{\Pr(T &gt; t)} \\
+= \frac{f(t)}{S(t)}, \quad \text{(10)}
+\]</span> onde <span class="math display">\[
+f(t) = \lim_{\Delta t \to 0} \frac{\Pr(t &lt; T \leq t + \Delta t)}{\Delta t} \quad \text{(11)}
+\]</span> é a função de densidade de probabilidade associada a <span class="math inline">\(T\)</span>, ou seja, é a taxa instantânea de morte no tempo <span class="math inline">\(t\)</span>. A segunda igualdade na equação acima fez uso do fato de que se <span class="math inline">\(t &lt; T \leq t + \Delta t\)</span>, então deve ser o caso de <span class="math inline">\(T &gt; t\)</span>.</p>
+<p>A equação acima implica uma relação entre a função de risco <span class="math inline">\(h(t)\)</span>, a função de sobrevivência <span class="math inline">\(S(t)\)</span> e a função de densidade de probabilidade <span class="math inline">\(f(t)\)</span>. Na verdade, estas são três maneiras equivalentes de descrever a distribuição de <span class="math inline">\(T\)</span>.</p>
+<p>A verossimilhança associada à <span class="math inline">\(i\)</span>-ésima observação é <span class="math display">\[
+L_i = \begin{cases}
+f(y_i) &amp; \text{se a } i\text{-ésima observação não está censurada} \\
+S(y_i) &amp; \text{se a } i\text{-ésima observação está censurada}
+\end{cases} \\
+= f(y_i)^{\delta_i} S(y_i)^{1 - \delta_i}. \quad \text{(12)}
+\]</span> A intuição por trás desta equação é a seguinte: se <span class="math inline">\(Y = y_i\)</span> e a <span class="math inline">\(i\)</span>-ésima observação não está censurada, então a verossimilhança é a probabilidade de morrer em um pequeno intervalo em torno do tempo <span class="math inline">\(y_i\)</span>. Se a <span class="math inline">\(i\)</span>-ésima observação está censurada, então a verossimilhança é a probabilidade de sobreviver pelo menos até o tempo <span class="math inline">\(y_i\)</span>. Assumindo que as <span class="math inline">\(n\)</span> observações são independentes, a verossimilhança para os dados toma a forma <span class="math display">\[
+L = \prod_{i=1}^n f(y_i)^{\delta_i} S(y_i)^{1 - \delta_i} = \prod_{i=1}^n h(y_i)^{\delta_i} S(y_i), \quad \text{(13)}
+\]</span> onde a segunda igualdade decorre da equação acima.</p>
+<p>Agora consideramos a tarefa de modelar os tempos de sobrevivência. Se assumirmos uma sobrevivência exponencial, ou seja, que a função de densidade de probabilidade do tempo de sobrevivência <span class="math inline">\(T\)</span> tem a forma <span class="math inline">\(f(t) = \lambda e^{-\lambda t}\)</span>, então estimar o parâmetro <span class="math inline">\(\lambda\)</span> maximizando a verossimilhança é direto. Alternativamente, poderíamos assumir que os tempos de sobrevivência são extraídos de uma família de distribuições mais flexível, como a família Gamma ou Weibull. Outra possibilidade é modelar os tempos de sobrevivência não parametricamente, como foi feito usando o estimador de Kaplan-Meier.</p>
+<p>No entanto, o que realmente gostaríamos de fazer é modelar o tempo de sobrevivência como uma função das covariáveis. Para fazer isso, é conveniente trabalhar diretamente com a função de risco, em vez da função de densidade de probabilidade. Uma abordagem possível é assumir uma forma funcional para a função de risco <span class="math inline">\(h(t \mid \mathbf{x}_i)\)</span>, como <span class="math inline">\(h(t \mid \mathbf{x}_i) = \exp(\beta_0 + \sum_{j=1}^p \beta_j x_{ij})\)</span>, onde a função exponencial garante que a função de risco seja não negativa. Note que a função de risco exponencial é especial, pois não varia com o tempo. Dada <span class="math inline">\(h(t \mid \mathbf{x}_i)\)</span>, poderíamos calcular <span class="math inline">\(S(t \mid \mathbf{x}_i)\)</span>. Substituindo essas equações na verossimilhança, poderíamos então maximizar a verossimilhança para estimar o parâmetro <span class="math inline">\(\beta = (\beta_0, \beta_1, \ldots, \beta_p)^T\)</span>. No entanto, essa abordagem é bastante restritiva, no sentido de que nos obriga a fazer uma suposição muito rígida sobre a forma da função de risco <span class="math inline">\(h(t \mid \mathbf{x}_i)\)</span>. Na próxima seção, consideraremos uma abordagem muito mais flexível.</p>
+<h3 id="riscos-proporcionais">Riscos Proporcionais</h3>
+<h4 id="a-suposição-de-riscos-proporcionais">A suposição de riscos proporcionais</h4>
+<p>A suposição de riscos proporcionais afirma que <span class="math display">\[
+h(t \mid \mathbf{x}_i) = h_0(t) \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right), \quad \text{(14)}
+\]</span> onde <span class="math inline">\(h_0(t) \geq 0\)</span> é uma função não especificada, conhecida como risco basal. É a função de risco para um indivíduo cujas características são <span class="math inline">\(x_{i1} = \cdots = x_{ip} = 0\)</span>. O nome “riscos proporcionais” surge do fato de que a função de risco para um indivíduo com o vetor de características <span class="math inline">\(\mathbf{x}_i\)</span> é alguma função desconhecida <span class="math inline">\(h_0(t)\)</span> vezes o fator <span class="math inline">\(\exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)\)</span>. A quantidade <span class="math inline">\(\exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)\)</span> é chamada de risco relativo para o vetor de características <span class="math inline">\(\mathbf{x}_i = (x_{i1}, \ldots, x_{ip})^T\)</span>, em relação ao vetor de características <span class="math inline">\(\mathbf{x}_i = (0, \ldots, 0)^T\)</span>.</p>
+<p>O que significa que a função de risco basal <span class="math inline">\(h_0(t)\)</span> em (14) não é especificada? Basicamente, não fazemos suposições sobre sua forma funcional. Permitimos que a probabilidade instantânea de morte no tempo <span class="math inline">\(t\)</span>, dado que o indivíduo sobreviveu pelo menos até o tempo <span class="math inline">\(t\)</span>, assuma qualquer forma. Isso significa que a função de risco é muito flexível e pode modelar uma ampla gama de relações entre as covariáveis e o tempo de sobrevivência. Nossa única suposição é que um aumento de uma unidade em <span class="math inline">\(x_{ij}\)</span> corresponde a um aumento em <span class="math inline">\(h(t \mid \mathbf{x}_i)\)</span> por um fator de <span class="math inline">\(\exp(\beta_j)\)</span>.</p>
+<p>Uma ilustração da suposição de riscos proporcionais (14) é mostrada na Figura 4, em um cenário simples com uma única covariável binária <span class="math inline">\(x_i \in \{0, 1\}\)</span> (de modo que <span class="math inline">\(p = 1\)</span>). Na linha superior, a suposição de riscos proporcionais (14) é válida. Assim, as funções de risco dos dois grupos são um múltiplo constante uma da outra, de modo que, na escala logarítmica, a diferença entre elas é constante. Além disso, as curvas de sobrevivência nunca se cruzam e, de fato, a diferença entre as curvas de sobrevivência tende a aumentar (inicialmente) ao longo do tempo. Em contraste, na linha inferior, (14) não é válida. Vemos que as funções de risco logarítmico para os dois grupos se cruzam, assim como as curvas de sobrevivência.</p>
+<figure>
+<img src="images/clipboard-1765851521.png" alt="Figura 4 - No topo: Em um exemplo simples com \( p = 1 \) e uma covariável binária \( x_i \in \{0, 1\} \), as funções de risco logarítmico e de sobrevivência sob o modelo (14) são mostradas (verde para \( x_i = 0 \) e preto para \( x_i = 1 \)). Devido à suposição de riscos proporcionais (14), as funções de risco logarítmico diferem por uma constante, e as funções de sobrevivência não se cruzam. Na parte inferior: Novamente, temos uma única covariável binária \( x_i \in \{0, 1\} \). No entanto, a suposição de riscos proporcionais (14) não se mantém. As funções de risco logarítmico se cruzam, assim como as funções de sobrevivência." />
+<figcaption aria-hidden="true"><strong>Figura 4</strong> - No topo: Em um exemplo simples com \( p = 1 \) e uma covariável binária \( x_i \in \{0, 1\} \), as funções de risco logarítmico e de sobrevivência sob o modelo (14) são mostradas (verde para \( x_i = 0 \) e preto para \( x_i = 1 \)). Devido à suposição de riscos proporcionais (14), as funções de risco logarítmico diferem por uma constante, e as funções de sobrevivência não se cruzam. Na parte inferior: Novamente, temos uma única covariável binária \( x_i \in \{0, 1\} \). No entanto, a suposição de riscos proporcionais (14) não se mantém. As funções de risco logarítmico se cruzam, assim como as funções de sobrevivência.</figcaption>
+</figure>
+<h4 id="modelo-de-riscos-proporcionais-de-cox">Modelo de Riscos Proporcionais de Cox</h4>
+<p>Como a forma de <span class="math inline">\(h_0(t)\)</span> na suposição de riscos proporcionais (14) é desconhecida, não podemos simplesmente substituir <span class="math inline">\(h(t|x_i)\)</span> na verossimilhança (13) e então estimar <span class="math inline">\(\beta = (\beta_1, \ldots, \beta_p)^T\)</span> por máxima verossimilhança. A mágica do modelo de riscos proporcionais de Cox reside no fato de que é possível estimar <span class="math inline">\(\beta\)</span> sem ter que especificar a forma de <span class="math inline">\(h_0(t)\)</span>.</p>
+<p>Para realizar isso, utilizamos a mesma lógica “sequencial no tempo” que usamos para derivar a curva de sobrevivência de Kaplan-Meier e o teste log-rank. Para simplificar, assumimos que não há empates entre os tempos de falha, ou morte: ou seja, cada falha ocorre em um tempo distinto. Assumimos que <span class="math inline">\(\delta_i = 1\)</span>, ou seja, a <span class="math inline">\(i\)</span>-ésima observação não é censurada, e assim <span class="math inline">\(y_i\)</span> é seu tempo de falha.</p>
+<p>Então, a função de risco para a <span class="math inline">\(i\)</span>-ésima observação no tempo <span class="math inline">\(y_i\)</span> é <span class="math inline">\(h(y_i | x_i) = h_0(y_i) \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)\)</span>, e o risco total no tempo <span class="math inline">\(y_i\)</span> para as observações em risco é</p>
+<p><span class="math display">\[ \sum_{i : y_i \geq y_i} h_0(y_i) \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right). \]</span></p>
+<p>Portanto, a probabilidade de que a <span class="math inline">\(i\)</span>-ésima observação seja a que falhe no tempo <span class="math inline">\(y_i\)</span> (em oposição a uma das outras observações no conjunto de risco) é</p>
+<p><span class="math display">\[ \frac{h_0(y_i) \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)}{\sum_{i : y_i \geq y_i} h_0(y_i) \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)} = \frac{\exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)}{\sum_{i : y_i \geq y_i} \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)}. \quad \text{(15)}\]</span></p>
+<p>Note que a função de risco basal não especificada <span class="math inline">\(h_0(y_i)\)</span> cancela-se no numerador e denominador!</p>
+<p>A verossimilhança parcial é simplesmente o produto dessas probabilidades em todas as observações não censuradas,</p>
+<p><span class="math display">\[ \text{PL}(\beta) = \prod_{i : \delta_i = 1} \frac{\exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)}{\sum_{i : y_i \geq y_i} \exp \left( \sum_{j=1}^{p} x_{ij} \beta_j \right)}. \quad \text{(14)}\quad \text{(16)}\]</span></p>
+<p>Criticamente, a verossimilhança parcial é válida independentemente do valor verdadeiro de <span class="math inline">\(h_0(t)\)</span>, tornando o modelo muito flexível e robusto.</p>
+<p>Para estimar <span class="math inline">\(\beta\)</span>, simplesmente maximizamos a verossimilhança parcial (16) com respeito a <span class="math inline">\(\beta\)</span>. Como é o caso da regressão logística, não existe uma solução em forma fechada, e assim são necessários algoritmos iterativos.</p>
+<p>Além de estimar <span class="math inline">\(\beta\)</span>, também podemos obter outras saídas do modelo, como no contexto da regressão dos mínimos quadrados e na regressão logística. Por exemplo, podemos obter valores p correspondentes a hipóteses nulas específicas (por exemplo, <span class="math inline">\(H_0 : \beta_j = 0\)</span>), bem como intervalos de confiança associados aos coeficientes.</p>
+<h4 id="conexão-com-o-teste-log-rank">Conexão com o teste Log-Rank</h4>
+<p>Suponha que temos apenas um único preditor (<span class="math inline">\(p = 1\)</span>), que assumimos ser binário, ou seja, <span class="math inline">\(x_i \in \{0,1\}\)</span>. Para determinar se há uma diferença entre os tempos de sobrevivência das observações no grupo <span class="math inline">\(\{i : x_i = 0\}\)</span> e no grupo <span class="math inline">\(\{i : x_i = 1\}\)</span>, podemos considerar duas abordagens possíveis:</p>
+<p><span class="math inline">\(\textbf{Abordagem \#1:}\)</span> Ajustar um modelo de riscos proporcionais de Cox e testar a hipótese nula <span class="math inline">\(H_0 : \beta = 0\)</span>. (Como <span class="math inline">\(p = 1\)</span>, <span class="math inline">\(\beta\)</span> é um escalar.)</p>
+<p><span class="math inline">\(\textbf{Abordagem \#2:}\)</span> Realizar um teste log-rank para comparar os dois grupos.</p>
+<p>Qual devemos preferir?</p>
+<p>Na verdade, há uma relação estreita entre essas duas abordagens. Em particular, ao seguir a Abordagem #1, há várias maneiras possíveis de testar <span class="math inline">\(H_0\)</span>. Uma maneira é conhecida como teste de escore. Acontece que, no caso de um único covariável binário, o teste de escore para <span class="math inline">\(H_0 : \beta = 0\)</span> no modelo de riscos proporcionais de Cox é exatamente igual ao teste log-rank. Em outras palavras, não importa se seguimos a Abordagem #1 ou a Abordagem #2!</p>
+<h4 id="detalhes-adicionais">Detalhes Adicionais</h4>
+<p>A discussão do modelo de riscos proporcionais de Cox passou por cima de algumas sutilezas:</p>
+<ul>
+<li>Não há intercepto em (14) nem nas equações que se seguem, porque um intercepto pode ser absorvido no risco basal <span class="math inline">\(h_0(t)\)</span>.</li>
+<li>Assumimos que não há tempos de falha empatados. No caso de empates, a forma exata da verossimilhança parcial (16) é um pouco mais complicada e várias aproximações computacionais devem ser usadas.</li>
+<li><ol start="16" type="1">
+<li>é conhecida como verossimilhança parcial porque não é exatamente uma verossimilhança. Ou seja, não corresponde exatamente à probabilidade dos dados sob a suposição (14). No entanto, é uma aproximação muito boa.</li>
+</ol></li>
+<li>Focamos apenas na estimação dos coeficientes <span class="math inline">\(\beta = (\beta_1, ..., \beta_p)^T\)</span>. No entanto, às vezes também podemos querer estimar o risco basal <span class="math inline">\(h_0(t)\)</span>, por exemplo, para que possamos estimar a curva de sobrevivência <span class="math inline">\(S(t|x)\)</span> para um indivíduo com vetor de características <span class="math inline">\(x\)</span>.</li>
+</ul>
+<h3 id="exemplo-dados-sobre-câncer-cerebral">Exemplo: dados sobre câncer cerebral</h3>
+<p>A Tabela abaixo mostra o resultado do ajuste do modelo de riscos proporcionais aos dados de <em>BrainCancer</em>, descritos anteriormente. A coluna de coeficientes exibe <span class="math inline">\(\hat{\beta}_j\)</span>. Os resultados indicam, por exemplo, que o risco estimado para um paciente do sexo masculino é <span class="math inline">\(e^{0.18} = 1.2\)</span> vezes maior do que para uma paciente do sexo feminino: em outras palavras, mantendo todas as outras características constantes, os homens têm 1.2 vezes mais chances de morrer do que as mulheres, em qualquer momento. No entanto, o valor de <span class="math inline">\(p\)</span> é 0.61, o que indica que essa diferença entre homens e mulheres não é significativa.</p>
+<p>Como outro exemplo, vemos também que cada aumento de uma unidade no índice Karnofsky corresponde a um multiplicador de <span class="math inline">\(\exp(-0.05) = 0.95\)</span> na chance instantânea de morrer. Em outras palavras, quanto maior o índice Karnofsky, menor a chance de morrer em qualquer ponto do tempo. Esse efeito é altamente significativo, com um valor de <span class="math inline">\(p\)</span> de 0.0027.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div id="qzuxckuoul" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qzuxckuoul table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qzuxckuoul thead, #qzuxckuoul tbody, #qzuxckuoul tfoot, #qzuxckuoul tr, #qzuxckuoul td, #qzuxckuoul th {
+  border-style: none;
+}
+
+#qzuxckuoul p {
+  margin: 0;
+  padding: 0;
+}
+
+#qzuxckuoul .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qzuxckuoul .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qzuxckuoul .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qzuxckuoul .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qzuxckuoul .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qzuxckuoul .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qzuxckuoul .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qzuxckuoul .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qzuxckuoul .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qzuxckuoul .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qzuxckuoul .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qzuxckuoul .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qzuxckuoul .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qzuxckuoul .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qzuxckuoul .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzuxckuoul .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qzuxckuoul .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qzuxckuoul .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qzuxckuoul .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzuxckuoul .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qzuxckuoul .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzuxckuoul .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qzuxckuoul .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzuxckuoul .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qzuxckuoul .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzuxckuoul .gt_left {
+  text-align: left;
+}
+
+#qzuxckuoul .gt_center {
+  text-align: center;
+}
+
+#qzuxckuoul .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qzuxckuoul .gt_font_normal {
+  font-weight: normal;
+}
+
+#qzuxckuoul .gt_font_bold {
+  font-weight: bold;
+}
+
+#qzuxckuoul .gt_font_italic {
+  font-style: italic;
+}
+
+#qzuxckuoul .gt_super {
+  font-size: 65%;
+}
+
+#qzuxckuoul .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qzuxckuoul .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qzuxckuoul .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qzuxckuoul .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qzuxckuoul .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qzuxckuoul .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qzuxckuoul .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style>Resultados do modelo de riscos proporcionais de Cox ajustados aos dados do BrainCancer.</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>A variável diagnóstico é qualitativa com quatro níveis: meningioma, glioma LG, glioma HG, ou outro. As variáveis sexo, loc, e estéreo são binárias.</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variavel">Variavel</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Coeficiente">Coeficiente</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="std.Error">std.Error</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="z.statistic">z.statistic</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="p.valor">p.valor</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Variavel" class="gt_row gt_left">sex[Male]</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.18</td>
+<td headers="std.Error" class="gt_row gt_right">0.36</td>
+<td headers="z.statistic" class="gt_row gt_right">0.51</td>
+<td headers="p.valor" class="gt_row gt_left">0.61</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">diagnosis[LG Glioma]</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.92</td>
+<td headers="std.Error" class="gt_row gt_right">0.64</td>
+<td headers="z.statistic" class="gt_row gt_right">1.43</td>
+<td headers="p.valor" class="gt_row gt_left">0.15</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">diagnosis[HG Glioma]</td>
+<td headers="Coeficiente" class="gt_row gt_right">2.15</td>
+<td headers="std.Error" class="gt_row gt_right">0.45</td>
+<td headers="z.statistic" class="gt_row gt_right">4.78</td>
+<td headers="p.valor" class="gt_row gt_left">0</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">diagnosis[Other]</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.89</td>
+<td headers="std.Error" class="gt_row gt_right">0.66</td>
+<td headers="z.statistic" class="gt_row gt_right">1.35</td>
+<td headers="p.valor" class="gt_row gt_left">0.18</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">loc[Supratentorial]</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.41</td>
+<td headers="std.Error" class="gt_row gt_right">0.70</td>
+<td headers="z.statistic" class="gt_row gt_right">0.63</td>
+<td headers="p.valor" class="gt_row gt_left">0.53</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">ki</td>
+<td headers="Coeficiente" class="gt_row gt_right">-0.05</td>
+<td headers="std.Error" class="gt_row gt_right">0.02</td>
+<td headers="z.statistic" class="gt_row gt_right">-3.00</td>
+<td headers="p.valor" class="gt_row gt_left">&lt;0.01</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">gtv</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.03</td>
+<td headers="std.Error" class="gt_row gt_right">0.02</td>
+<td headers="z.statistic" class="gt_row gt_right">1.54</td>
+<td headers="p.valor" class="gt_row gt_left">0.12</td></tr>
+    <tr><td headers="Variavel" class="gt_row gt_left">stereo[SRT]</td>
+<td headers="Coeficiente" class="gt_row gt_right">0.18</td>
+<td headers="std.Error" class="gt_row gt_right">0.60</td>
+<td headers="z.statistic" class="gt_row gt_right">0.30</td>
+<td headers="p.valor" class="gt_row gt_left">0.77</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<h3 id="exemplo-publication-data">Exemplo: Publication Data</h3>
+<p>Agora, consideramos o conjunto de dados da Publicação envolvendo o tempo até a publicação de artigos de periódicos que relatam os resultados de ensaios clínicos financiados pelo National Heart, Lung, and Blood Institute. Para 244 ensaios, o tempo em meses até a publicação é registrado. Dos 244 ensaios, apenas 156 foram publicados durante o período do estudo; os estudos restantes foram censurados. As covariáveis incluem se o ensaio focou em um desfecho clínico (clinend), se o ensaio envolveu múltiplos centros (multi), o mecanismo de financiamento dentro dos Institutos Nacionais de Saúde (mech), tamanho da amostra do ensaio (sampsize), orçamento (budget), impacto (impacto, relacionado ao número de citações) e se o ensaio produziu um resultado positivo (posres). Esta última covariável é especialmente interessante, pois vários estudos sugeriram que ensaios positivos têm uma taxa de publicação mais alta.</p>
+<p>A Figura 5 mostra as curvas de Kaplan-Meier para o tempo até a publicação, estratificadas pelo resultado positivo ou negativo do estudo. Observamos uma evidência leve de que o tempo até a publicação é menor para estudos com resultado positivo. No entanto, o teste de log-rank resultou em um valor-p muito pouco impressionante de 0,36.</p>
+<figure>
+<img src="images/clipboard-1926884842.png" alt="Figura 5 - Curvas de sobrevivência para o tempo até a publicação dos dados da Publicação, estratificadas pelo resultado positivo ou não do estudo." />
+<figcaption aria-hidden="true"><strong>Figura 5</strong> - Curvas de sobrevivência para o tempo até a publicação dos dados da Publicação, estratificadas pelo resultado positivo ou não do estudo.</figcaption>
+</figure>
+<p>Agora consideramos uma análise mais cuidadosa que utiliza todos os preditores disponíveis. Os resultados do ajuste do modelo de riscos proporcionais de Cox usando todos os recursos disponíveis são mostrados na Tabela 3. Descobrimos que a chance de publicação de um estudo com resultado positivo é <span class="math inline">\(e^{0.55} = 1,74\)</span> vezes maior do que a chance de publicação de um estudo com resultado negativo em qualquer momento, mantendo todas as outras covariáveis fixas. O valor-p muito pequeno associado a posres na Tabela 3 indica que este resultado é altamente significativo. Isso é notável, especialmente à luz de nossa descoberta anterior de que um teste de log-rank comparando o tempo até a publicação para estudos com resultados positivos versus negativos resultou em um valor-p de 0,36.</p>
+<p>Como podemos explicar essa discrepância? A resposta vem do fato de que o teste de log-rank não considerou nenhuma outra covariável, enquanto os resultados na Tabela 3 são baseados em um modelo de Cox que utiliza todas as covariáveis disponíveis. Em outras palavras, após ajustarmos todas as outras covariáveis, então se o estudo produziu ou não um resultado positivo é altamente preditivo do tempo até a publicação.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div id="exkbzlayqe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#exkbzlayqe table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#exkbzlayqe thead, #exkbzlayqe tbody, #exkbzlayqe tfoot, #exkbzlayqe tr, #exkbzlayqe td, #exkbzlayqe th {
+  border-style: none;
+}
+
+#exkbzlayqe p {
+  margin: 0;
+  padding: 0;
+}
+
+#exkbzlayqe .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#exkbzlayqe .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#exkbzlayqe .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#exkbzlayqe .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#exkbzlayqe .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#exkbzlayqe .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#exkbzlayqe .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#exkbzlayqe .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#exkbzlayqe .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#exkbzlayqe .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#exkbzlayqe .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#exkbzlayqe .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#exkbzlayqe .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#exkbzlayqe .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#exkbzlayqe .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#exkbzlayqe .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#exkbzlayqe .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#exkbzlayqe .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#exkbzlayqe .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#exkbzlayqe .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#exkbzlayqe .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#exkbzlayqe .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#exkbzlayqe .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#exkbzlayqe .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#exkbzlayqe .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#exkbzlayqe .gt_left {
+  text-align: left;
+}
+
+#exkbzlayqe .gt_center {
+  text-align: center;
+}
+
+#exkbzlayqe .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#exkbzlayqe .gt_font_normal {
+  font-weight: normal;
+}
+
+#exkbzlayqe .gt_font_bold {
+  font-weight: bold;
+}
+
+#exkbzlayqe .gt_font_italic {
+  font-style: italic;
+}
+
+#exkbzlayqe .gt_super {
+  font-size: 65%;
+}
+
+#exkbzlayqe .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#exkbzlayqe .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#exkbzlayqe .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#exkbzlayqe .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#exkbzlayqe .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#exkbzlayqe .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#exkbzlayqe .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style>Tabela 3: Coeficientes do Modelo</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Resultados da análise de Cox utilizando todos os preditores disponíveis</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Variável">Variável</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Coeficiente">Coeficiente</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Erro Padrão">Erro Padrão</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Estatística Z">Estatística Z</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Valor-p">Valor-p</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Variable" class="gt_row gt_left">posres[Yes]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.55</td>
+<td headers="Std.error" class="gt_row gt_right">0.18</td>
+<td headers="z_statistic" class="gt_row gt_right">3.02</td>
+<td headers="p_value" class="gt_row gt_right">0.00</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">multi[Yes]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.15</td>
+<td headers="Std.error" class="gt_row gt_right">0.31</td>
+<td headers="z_statistic" class="gt_row gt_right">0.47</td>
+<td headers="p_value" class="gt_row gt_right">0.64</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">clinend[Yes]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.51</td>
+<td headers="Std.error" class="gt_row gt_right">0.27</td>
+<td headers="z_statistic" class="gt_row gt_right">1.89</td>
+<td headers="p_value" class="gt_row gt_right">0.06</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[K01]</td>
+<td headers="Coefficient" class="gt_row gt_right">1.05</td>
+<td headers="Std.error" class="gt_row gt_right">1.06</td>
+<td headers="z_statistic" class="gt_row gt_right">1.00</td>
+<td headers="p_value" class="gt_row gt_right">0.32</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[K23]</td>
+<td headers="Coefficient" class="gt_row gt_right">−0.48</td>
+<td headers="Std.error" class="gt_row gt_right">1.05</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.45</td>
+<td headers="p_value" class="gt_row gt_right">0.65</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[P01]</td>
+<td headers="Coefficient" class="gt_row gt_right">−0.31</td>
+<td headers="Std.error" class="gt_row gt_right">0.78</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.40</td>
+<td headers="p_value" class="gt_row gt_right">0.69</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[P50]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.60</td>
+<td headers="Std.error" class="gt_row gt_right">1.06</td>
+<td headers="z_statistic" class="gt_row gt_right">0.57</td>
+<td headers="p_value" class="gt_row gt_right">0.57</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R01]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.10</td>
+<td headers="Std.error" class="gt_row gt_right">0.32</td>
+<td headers="z_statistic" class="gt_row gt_right">0.30</td>
+<td headers="p_value" class="gt_row gt_right">0.76</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R18]</td>
+<td headers="Coefficient" class="gt_row gt_right">1.05</td>
+<td headers="Std.error" class="gt_row gt_right">1.05</td>
+<td headers="z_statistic" class="gt_row gt_right">0.99</td>
+<td headers="p_value" class="gt_row gt_right">0.32</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R21]</td>
+<td headers="Coefficient" class="gt_row gt_right">−0.05</td>
+<td headers="Std.error" class="gt_row gt_right">1.06</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.04</td>
+<td headers="p_value" class="gt_row gt_right">0.97</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R24,K24]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.81</td>
+<td headers="Std.error" class="gt_row gt_right">1.05</td>
+<td headers="z_statistic" class="gt_row gt_right">0.77</td>
+<td headers="p_value" class="gt_row gt_right">0.44</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R42]</td>
+<td headers="Coefficient" class="gt_row gt_right">−14.78</td>
+<td headers="Std.error" class="gt_row gt_right">3,414.38</td>
+<td headers="z_statistic" class="gt_row gt_right">0.00</td>
+<td headers="p_value" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[R44]</td>
+<td headers="Coefficient" class="gt_row gt_right">−0.57</td>
+<td headers="Std.error" class="gt_row gt_right">0.77</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.73</td>
+<td headers="p_value" class="gt_row gt_right">0.46</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[RC2]</td>
+<td headers="Coefficient" class="gt_row gt_right">−14.92</td>
+<td headers="Std.error" class="gt_row gt_right">2,243.60</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.01</td>
+<td headers="p_value" class="gt_row gt_right">0.99</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[U01]</td>
+<td headers="Coefficient" class="gt_row gt_right">−0.22</td>
+<td headers="Std.error" class="gt_row gt_right">0.32</td>
+<td headers="z_statistic" class="gt_row gt_right">−0.70</td>
+<td headers="p_value" class="gt_row gt_right">0.48</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">mech[U54]</td>
+<td headers="Coefficient" class="gt_row gt_right">0.47</td>
+<td headers="Std.error" class="gt_row gt_right">1.07</td>
+<td headers="z_statistic" class="gt_row gt_right">0.44</td>
+<td headers="p_value" class="gt_row gt_right">0.66</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">sampsize</td>
+<td headers="Coefficient" class="gt_row gt_right">0.00</td>
+<td headers="Std.error" class="gt_row gt_right">0.00</td>
+<td headers="z_statistic" class="gt_row gt_right">0.19</td>
+<td headers="p_value" class="gt_row gt_right">0.85</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">budget</td>
+<td headers="Coefficient" class="gt_row gt_right">0.00</td>
+<td headers="Std.error" class="gt_row gt_right">0.00</td>
+<td headers="z_statistic" class="gt_row gt_right">1.67</td>
+<td headers="p_value" class="gt_row gt_right">0.09</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left">impact</td>
+<td headers="Coefficient" class="gt_row gt_right">0.06</td>
+<td headers="Std.error" class="gt_row gt_right">0.01</td>
+<td headers="z_statistic" class="gt_row gt_right">8.23</td>
+<td headers="p_value" class="gt_row gt_right">0.00</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<p>Para obter mais insights sobre esse resultado, na Figura 6 exibimos estimativas das curvas de sobrevivência associadas a resultados positivos e negativos, ajustando para os outros preditores. Para produzir essas curvas de sobrevivência, estimamos a função de risco basal subjacente <span class="math inline">\(h_0(t)\)</span>. Também precisamos selecionar valores representativos para os outros preditores; utilizamos o valor médio para cada preditor, exceto para o preditor categórico mech, para o qual usamos a categoria mais prevalente (R01). Ajustando para os outros preditores, agora observamos uma clara diferença nas curvas de sobrevivência entre estudos com resultados positivos versus negativos.</p>
+<p>Outras insights interessantes podem ser obtidos a partir da Tabela 3. Por exemplo, estudos com um desfecho clínico são mais propensos a serem publicados em qualquer momento do que aqueles com um desfecho não clínico. O mecanismo de financiamento não parece estar significativamente associado ao tempo até a publicação.</p>
+<figure>
+<img src="images/clipboard-103356771.png" alt="Figura 6 - Curvas de sobrevivência por tempo até a publicação, estratificado pelo fato de o estudo ter produzido ou não um resultado positivo, após ajuste para todas as outras covariáveis." />
+<figcaption aria-hidden="true"><strong>Figura 6</strong> - Curvas de sobrevivência por tempo até a publicação, estratificado pelo fato de o estudo ter produzido ou não um resultado positivo, após ajuste para todas as outras covariáveis.</figcaption>
+</figure>
+<h2 id="simplificação-do-modelo-de-cox">Simplificação do Modelo de Cox</h2>
+<p>Nesta seção, ilustramos que os métodos de encolhimento podem ser aplicados ao contexto de dados de sobrevivência. Em particular, motivados pela formulação “perda + penalidade”, consideramos a minimização de uma versão penalizada do log parcial negativo da verossimilhança em (16),</p>
+<p><span class="math display">\[
+-\log \left( \prod_{i:\delta_i=1}^{I} \frac{\exp \left( \sum_{j=1}^{p} x_{ij}\beta_j \right)}{\sum_{y&#39;: y_i&#39;\geq y_i} \exp \left( \sum_{j=1}^{p} x_{i&#39;j}\beta_j \right)}\right) + \lambda P(\beta) \quad \text{(17)},
+\]</span></p>
+<p>com relação a <span class="math inline">\(\beta = (\beta_1, \ldots, \beta_p)^T\)</span>. Podemos tomar <span class="math inline">\(P(\beta) = \sum_{j=1}^{p} |\beta_j|\)</span>, que corresponde a uma penalidade lasso, ou <span class="math inline">\(P(\beta) = \sum_{j=1}^{p} \beta_j^2\)</span>, que corresponde a uma penalidade ridge.</p>
+<p>Em (17), <span class="math inline">\(\lambda\)</span> é um parâmetro de ajuste não negativo; tipicamente, o minimizamos ao longo de uma faixa de valores de <span class="math inline">\(\lambda\)</span>. Quando <span class="math inline">\(\lambda = 0\)</span>, então minimizar (17) é equivalente a simplesmente maximizar a verossimilhança parcial usual de Cox (16). No entanto, quando <span class="math inline">\(\lambda &gt; 0\)</span>, então minimizar (17) produz estimativas de coeficientes encolhidas. Quando <span class="math inline">\(\lambda\)</span> é grande, usar uma penalidade ridge resultará em coeficientes pequenos que não são exatamente iguais a zero. Em contraste, para um valor suficientemente grande de <span class="math inline">\(\lambda\)</span>, usar uma penalidade lasso resultará em alguns coeficientes que são exatamente iguais a zero.</p>
+<p>Agora aplicamos o modelo de Cox penalizado por lasso aos dados da Publicação. Primeiro, dividimos aleatoriamente os 244 ensaios em conjuntos de treinamento e teste de tamanho igual. Os resultados da validação cruzada no conjunto de treinamento são mostrados na Figura 7. O “desvio da deviance da verossimilhança parcial”, mostrado no eixo y, é o dobro do log negativo da verossimilhança parcial validada cruzadamente; ele desempenha o papel do erro de validação cruzada. Note a forma em “U” do desvio da deviance da verossimilhança parcial: o erro de validação cruzada é minimizado para um nível intermediário de complexidade do modelo. Especificamente, isso ocorre quando apenas dois preditores, <span class="math inline">\(\texttt{budget}\)</span> e <span class="math inline">\(\texttt{impact}\)</span>, têm coeficientes estimados não nulos.</p>
+<figure>
+<img src="images/clipboard-3407521660.png" alt="Figura 7 - Os resultados da validação cruzada para o modelo de Cox penalizado por lasso são mostrados. O eixo y exibe o desvio da deviance da verossimilhança parcial, que desempenha o papel do erro de validação cruzada. O eixo x exibe a norma \(1\) (ou seja, a soma dos valores absolutos) dos coeficientes do modelo de Cox penalizado por lasso com parâmetro de ajuste \( \lambda \), dividida pela norma \(1\) dos coeficientes do modelo de Cox não penalizado. A linha tracejada indica o mínimo erro de validação cruzada." />
+<figcaption aria-hidden="true"><strong>Figura 7</strong> - Os resultados da validação cruzada para o modelo de Cox penalizado por lasso são mostrados. O eixo y exibe o desvio da deviance da verossimilhança parcial, que desempenha o papel do erro de validação cruzada. O eixo x exibe a norma \(1\) (ou seja, a soma dos valores absolutos) dos coeficientes do modelo de Cox penalizado por lasso com parâmetro de ajuste \( \lambda \), dividida pela norma \(1\) dos coeficientes do modelo de Cox não penalizado. A linha tracejada indica o mínimo erro de validação cruzada.</figcaption>
+</figure>
+<p>Agora, como aplicamos este modelo ao conjunto de teste? Isso levanta um ponto conceitual importante: essencialmente, não há uma maneira simples de comparar os tempos de sobrevivência previstos e os tempos de sobrevivência reais no conjunto de teste. O primeiro problema é que algumas das observações estão censuradas, então os tempos de sobrevivência reais para essas observações são não observados. O segundo problema surge do fato de que no modelo de Cox, ao invés de prever um único tempo de sobrevivência dado um vetor de covariáveis <span class="math inline">\(x\)</span>, estimamos uma curva de sobrevivência inteira, <span class="math inline">\(S(t|x)\)</span>, como função de <span class="math inline">\(t\)</span>.</p>
+<p>Portanto, para avaliar o ajuste do modelo, devemos adotar uma abordagem diferente, que envolve estratificar as observações usando as estimativas dos coeficientes. Em particular, para cada observação de teste, calculamos o escore de “risco” <span class="math display">\[
+\text{budget}_i \cdot \hat{\beta}_{\text{budget}} + \text{impact}_i \cdot \hat{\beta}_{\text{impact}},
+\]</span> onde <span class="math inline">\(\hat{\beta}_{\text{budget}}\)</span> e <span class="math inline">\(\hat{\beta}_{\text{impact}}\)</span> são as estimativas dos coeficientes para esses dois recursos no conjunto de treinamento. Então, usamos esses escores de risco para categorizar as observações com base em seu “risco”. Por exemplo, o grupo de alto risco consiste nas observações para as quais <span class="math inline">\(\text{budget}_i \cdot \hat{\beta}_{\text{budget}} + \text{impact}_i \cdot \hat{\beta}_{\text{impact}}\)</span> é maior; pela (14), vemos que essas são as observações para as quais a probabilidade instantânea de ser publicado a qualquer momento no tempo é maior. Em outras palavras, o grupo de alto risco consiste nos ensaios que provavelmente serão publicados mais cedo. Nos dados da Publicação, estratificamos as observações em tercis de baixo, médio e alto risco. As curvas de sobrevivência resultantes para cada um dos três estratos são exibidas na Figura 8. Observamos que há uma separação clara entre os três estratos e que os estratos estão corretamente ordenados em termos de baixo, médio e alto risco de publicação.</p>
+<figure>
+<img src="images/clipboard-1873748326.png" alt="Figura 8 - tercis de “risco” no conjunto de teste usando os coeficientes estimados no conjunto de treinamento. Há uma clara separação entre as curvas de sobrevivência resultantes." />
+<figcaption aria-hidden="true"><strong>Figura 8</strong> - tercis de “risco” no conjunto de teste usando os coeficientes estimados no conjunto de treinamento. Há uma clara separação entre as curvas de sobrevivência resultantes.</figcaption>
+</figure>
+<h2 id="tópicos-adicionais">Tópicos Adicionais</h2>
+<h3 id="área-sob-a-curva-para-análise-de-sobrevivência">Área Sob a Curva para Análise de Sobrevivência</h3>
+<p>A área sob a curva ROC — frequentemente referida como “AUC” — é uma forma de quantificar o desempenho de um classificador de duas classes. Defina o escore para a i-ésima observação como a estimativa do classificador de Pr(Y = 1 | X = x_i). Descobre-se que se considerarmos todos os pares consistindo de uma observação na Classe 1 e uma observação na Classe 2, então o AUC é a fração de pares para os quais o escore da observação na Classe 1 excede o escore da observação na Classe 2.</p>
+<p>Isso sugere uma maneira de generalizar a noção de AUC para análise de sobrevivência. Calculamos um escore de risco estimado, <span class="math inline">\(\hat{y}_i = \hat{\beta}_1 x_{i1} + \ldots + \hat{\beta}_p x_{ip}\)</span>, para <span class="math inline">\(i = 1, \ldots, n\)</span>, usando os coeficientes do modelo de Cox. Se <span class="math inline">\(\hat{y}_i &gt; \hat{y}_j\)</span>, então o modelo prevê que a i-ésima observação tem um risco maior do que a j-ésima observação, e assim o tempo de sobrevivência <span class="math inline">\(t_i\)</span> será maior do que <span class="math inline">\(t_j\)</span>. Portanto, é tentador tentar generalizar o AUC calculando a proporção de observações para as quais <span class="math inline">\(t_i &gt; t_j\)</span> e <span class="math inline">\(\hat{y}_i &gt; \hat{y}_j\)</span>.</p>
+<p>No entanto, as coisas não são tão simples, porque lembramos que não observamos <span class="math inline">\(( t_1, \ldots, t_n \}\)</span>; em vez disso, observamos os tempos (possivelmente censurados) <span class="math inline">\(y_1, \ldots, y_n\)</span>, bem como os indicadores de censura <span class="math inline">\(\delta_1, \ldots, \delta_n\)</span>.</p>
+<p>Portanto, o índice de concordância de Harrell (ou C-index) calcula a proporção de pares de observações para as quais <span class="math inline">\(\hat{y}_i &gt; \hat{y}_j\)</span> e <span class="math inline">\(y_i &gt; y_j\)</span>:</p>
+<p><span class="math display">\[
+C = \frac{\sum_{i,j : y_i &gt; y_j} I(\hat{y}_i &gt; \hat{y}_j)\delta{i&#39;}}{\sum_{i,j} I(\hat{y}_i &gt; \hat{y}_j)\delta{i&#39;}},
+\]</span></p>
+<p>onde a variável indicadora <span class="math inline">\(I(\hat{y}_i &gt; \hat{y}_j)\)</span> é igual a um se <span class="math inline">\(\hat{y}_i &gt; \hat{y}_j\)</span>, e zero caso contrário. O numerador e o denominador são multiplicados pelo indicador de status <span class="math inline">\(\delta_i\)</span>, já que se a i-ésima observação não está censurada (ou seja, <span class="math inline">\(\delta_i = 1\)</span>), então <span class="math inline">\(y_i &gt; y_j\)</span> implica que <span class="math inline">\(t_i &gt; t_j\)</span>. Por outro lado, se <span class="math inline">\(\delta_i = 0\)</span>, então <span class="math inline">\(y_i &gt; y_j\)</span> não implica necessariamente que <span class="math inline">\(t_i &gt; t_j\)</span>.</p>
+<p>Ajustamos um modelo de riscos proporcionais de Cox no conjunto de treinamento dos dados de Publicação e calculamos o C-index no conjunto de teste. Isso resultou em <span class="math inline">\(C = 0.733\)</span>. Em termos simples, dado dois artigos aleatórios do conjunto de teste, o modelo pode prever com 73.3% de precisão qual será publicado primeiro.</p>
+<h3 id="escolha-da-escala-temporal">Escolha da Escala Temporal</h3>
+<p>Nos exemplos considerados até agorao, tem sido bastante claro como definir o tempo. Por exemplo, no exemplo de Publicação, o tempo zero para cada artigo foi definido como o tempo calendário no final do estudo, e o tempo de falha foi definido como o número de meses que se passaram desde o final do estudo até a publicação do artigo.</p>
+<p>No entanto, em outros contextos, as definições de tempo zero e tempo de falha podem ser mais sutis. Por exemplo, ao examinar a associação entre fatores de risco e ocorrência de doenças em um estudo epidemiológico, pode-se usar a idade do paciente para definir o tempo, de modo que o tempo zero seja a data de nascimento do paciente. Com essa escolha, a associação entre idade e sobrevivência não pode ser medida; no entanto, não há necessidade de ajustar para idade na análise.</p>
+<p>Ao examinar covariáveis associadas à sobrevivência livre de doença (ou seja, o tempo decorrido entre o tratamento e a recorrência da doença), pode-se usar a data do tratamento como tempo zero.</p>
+<h3 id="covariáveis-dependentes-do-tempo">Covariáveis Dependentes do Tempo</h3>
+<p>Uma característica poderosa do modelo de riscos proporcionais é sua capacidade de lidar com covariáveis dependentes do tempo, ou seja, preditores cujo valor pode mudar ao longo do tempo. Por exemplo, suponha que medimos a pressão arterial de um paciente a cada semana durante o curso de um estudo médico. Nesse caso, podemos pensar na pressão arterial para a i-ésima observação não como xi, mas sim como <span class="math inline">\(x_i(t)\)</span> no tempo <span class="math inline">\(t\)</span>.</p>
+<p>Como a verossimilhança parcial em (16) é construída sequencialmente no tempo, lidar com covariáveis dependentes do tempo é direto. Em particular, substituímos simplesmente <span class="math inline">\(x_{ij}\)</span> e <span class="math inline">\(x_{i&#39;j}\)</span> em (16) por <span class="math inline">\(x_{ij}(y_i)\)</span> e <span class="math inline">\(x_{i&#39;j}(y_i)\)</span>, respectivamente; esses são os valores atuais dos preditores no tempo <span class="math inline">\(y_i\)</span>. Por outro lado, covariáveis dependentes do tempo representariam um desafio muito maior dentro do contexto de uma abordagem paramétrica tradicional, como em (13).</p>
+<p>Um exemplo de covariáveis dependentes do tempo aparece na análise de dados do Programa de Transplante de Coração de Stanford. Pacientes que precisavam de um transplante cardíaco foram colocados em uma lista de espera. Alguns pacientes receberam um transplante, enquanto outros morreram ainda na lista de espera. O objetivo principal da análise era determinar se um transplante estava associado a uma maior sobrevida dos pacientes.</p>
+<p>Uma abordagem ingênua usaria uma covariável fixa para representar o status de transplante: ou seja, <span class="math inline">\(x_i = 1\)</span> se o paciente <span class="math inline">\(i\)</span> já recebeu um transplante, e <span class="math inline">\(x_i = 0\)</span> caso contrário. Mas essa abordagem ignora o fato de que os pacientes precisaram viver tempo suficiente para receber um transplante, e, portanto, em média, pacientes mais saudáveis receberam transplantes. Esse problema pode ser resolvido usando uma covariável dependente do tempo para o transplante: <span class="math inline">\(x_i(t) = 1\)</span> se o paciente recebeu um transplante até o tempo <span class="math inline">\(t\)</span>, e <span class="math inline">\(x_i(t) = 0\)</span> caso contrário.</p>
+<h3 id="verificação-da-assunção-de-riscos-proporcionais">Verificação da Assunção de Riscos Proporcionais</h3>
+<p>Vimos que o modelo de riscos proporcionais de Cox depende da suposição de riscos proporcionais (14). Embora os resultados do modelo de Cox sejam geralmente robustos contra violações dessa suposição, ainda é uma boa ideia verificar se ela é válida. No caso de uma característica qualitativa, podemos plotar a função log-hazard para cada nível da característica. Se (14) for válida, então as funções log-hazard devem diferir apenas por uma constante, como visto no painel superior esquerdo da Figura 4. No caso de uma característica quantitativa, podemos adotar uma abordagem semelhante ao estratificar a característica.</p>
+<h3 id="árvores-de-sobrevivência">Árvores de Sobrevivência</h3>
+<p>Já discutimos procedimentos de aprendizado flexíveis e adaptativos, como árvores, florestas aleatórias e boosting, que aplicamos tanto em configurações de regressão quanto de classificação. A maioria dessas abordagens pode ser generalizada para o contexto da análise de sobrevivência.</p>
+<p>Por exemplo, árvores de sobrevivência são uma modificação das árvores de classificação e regressão que utilizam um critério de divisão que maximiza a diferença entre as curvas de sobrevivência nos nós filhos resultantes. Posteriormente, as árvores de sobrevivência podem ser usadas para criar florestas aleatórias de sobrevivência.</p>
+<h1 id="prática">Prática</h1>
+<p>Realizaremos análises de sobrevivência em três conjuntos de dados separados. Analisaremos os dados do <em>BrainCancer</em>, os dados da Publicação, e finalmente, um conjunto de dados simulado de um centro de chamadas.</p>
+<h2 id="dados-braincancer">Dados <em>BrainCancer</em></h2>
+<p>Começamos com o conjunto de dados <em>BrainCancer</em>, que faz parte do pacote ISLR2.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.statlearning.com'>ISLR2</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>As linhas indexam os 88 pacientes, enquanto as colunas contêm os 8 preditores.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;sex&quot;       &quot;diagnosis&quot; &quot;loc&quot;       &quot;ki&quot;        &quot;gtv&quot;      
+[6] &quot;stereo&quot;    &quot;status&quot;    &quot;time&quot;     </code></pre>
+</div>
+<p>Primeiramente, examinamos brevemente os dados.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Female   Male 
+    45     43 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>diagnosis</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Meningioma  LG glioma  HG glioma      Other 
+        42          9         22         14 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>status</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+ 0  1 
+53 35 </code></pre>
+</div>
+<p>Antes de iniciar uma análise, é importante saber como a variável de status foi codificada. A maioria dos softwares, incluindo o R, utiliza a convenção em que status = 1 indica uma observação não censurada, e status = 0 indica uma observação censurada.</p>
+<p>No entanto, alguns cientistas podem usar a codificação oposta. No conjunto de dados BrainCancer, 35 pacientes morreram antes do final do estudo. Para iniciar a análise, recriamos a curva de sobrevivência de Kaplan-Meier mostrada na Figura 2, utilizando a função survfit() da biblioteca survival do R. Aqui, o tempo corresponde a <span class="math inline">\(y_i\)</span>, o tempo até o evento i (seja censura ou morte).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit.surv</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>1</span>, data <span class='op'>=</span> <span class='va'>BrainCancer</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fit.surv</span>, xlab <span class='op'>=</span> <span class='st'>"Meses"</span>,  ylab <span class='op'>=</span> <span class='st'>"Probabilidade Estimada de Sobrevivência"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+<p>A seguir, criamos curvas de sobrevivência de Kaplan-Meier estratificadas por sexo, com o objetivo de reproduzir a Figura 3.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.sex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>sex</span>, data <span class='op'>=</span> <span class='va'>BrainCancer</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fit.sex</span>, xlab <span class='op'>=</span> <span class='st'>"Meses"</span>, ylab <span class='op'>=</span> <span class='st'>"Probabilidade Estimada de Sobrevivência"</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"bottomleft"</span>, <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>sex</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>)</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_files/figure-html5/unnamed-chunk-7-1.png" width="624" /></p>
+</div>
+<p>Conforme discutido, podemos realizar um teste de log-rank para comparar a sobrevivência entre homens e mulheres, utilizando a função survdiff().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>logrank.test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>sex</span>, data <span class='op'>=</span> <span class='va'>BrainCancer</span><span class='op'>)</span> ; <span class='va'>logrank.test</span></span></code></pre>
+</div>
+<pre><code>Call:
+survdiff(formula = Surv(time, status) ~ sex, data = BrainCancer)
+
+            N Observed Expected (O-E)^2/E (O-E)^2/V
+sex=Female 45       15     18.5     0.676      1.44
+sex=Male   43       20     16.5     0.761      1.44
+
+ Chisq= 1.4  on 1 degrees of freedom, p= 0.2 </code></pre>
+</div>
+<p>O valor de p resultante é 0.2, indicando falta de evidências de diferença na sobrevivência entre os dois sexos.
+Em seguida, ajustamos modelos de riscos proporcionais de Cox usando a função <span class="math inline">\(\texttt{coxph()}\)</span>. Para começar, consideramos um modelo que utiliza o sexo como único preditor.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.cox</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>sex</span>, data <span class='op'>=</span> <span class='va'>BrainCancer</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>fit.cox</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ sex, data = BrainCancer)
+
+  n= 88, number of events= 35 
+
+          coef exp(coef) se(coef)     z Pr(&gt;|z|)
+sexMale 0.4077    1.5033   0.3420 1.192    0.233
+
+        exp(coef) exp(-coef) lower .95 upper .95
+sexMale     1.503     0.6652     0.769     2.939
+
+Concordance= 0.565  (se = 0.045 )
+Likelihood ratio test= 1.44  on 1 df,   p=0.2
+Wald test            = 1.42  on 1 df,   p=0.2
+Score (logrank) test = 1.44  on 1 df,   p=0.2</code></pre>
+</div>
+<p>Note que os valores das razões de verossimilhança, Wald e teste de escore foram arredondados. É possível exibir mais dígitos adicionais.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>fit.cox</span><span class='op'>)</span><span class='op'>$</span><span class='va'>logtest</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span></code></pre>
+</div>
+<pre><code>    test 
+1.438822 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>fit.cox</span><span class='op'>)</span><span class='op'>$</span><span class='va'>waldtest</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span></code></pre>
+</div>
+<pre><code>test 
+1.42 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>fit.cox</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sctest</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span></code></pre>
+</div>
+<pre><code>    test 
+1.440495 </code></pre>
+</div>
+<p>Independentemente do teste que utilizamos, não há evidência clara de diferença na sobrevivência entre homens e mulheres.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>logrank.test</span><span class='op'>$</span><span class='va'>chisq</span></span></code></pre>
+</div>
+<pre><code>[1] 1.440495</code></pre>
+</div>
+<p>Como aprendemos, o teste de escore do modelo de Cox é exatamente igual à estatística do teste de log-rank!
+Agora ajustamos um modelo que utiliza preditores adicionais.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.all</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>sex</span> <span class='op'>+</span> <span class='va'>diagnosis</span> <span class='op'>+</span> <span class='va'>loc</span> <span class='op'>+</span> <span class='va'>ki</span> <span class='op'>+</span> <span class='va'>gtv</span> <span class='op'>+</span></span>
+<span> <span class='va'>stereo</span>, data <span class='op'>=</span> <span class='va'>BrainCancer</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit.all</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ sex + diagnosis + loc + 
+    ki + gtv + stereo, data = BrainCancer)
+
+                       coef exp(coef) se(coef)      z        p
+sexMale             0.18375   1.20171  0.36036  0.510  0.61012
+diagnosisLG glioma  0.91502   2.49683  0.63816  1.434  0.15161
+diagnosisHG glioma  2.15457   8.62414  0.45052  4.782 1.73e-06
+diagnosisOther      0.88570   2.42467  0.65787  1.346  0.17821
+locSupratentorial   0.44119   1.55456  0.70367  0.627  0.53066
+ki                 -0.05496   0.94653  0.01831 -3.001  0.00269
+gtv                 0.03429   1.03489  0.02233  1.536  0.12466
+stereoSRT           0.17778   1.19456  0.60158  0.296  0.76760
+
+Likelihood ratio test=41.37  on 8 df, p=1.776e-06
+n= 87, number of events= 35 
+   (1 observation deleted due to missingness)</code></pre>
+</div>
+<p>A variável de diagnóstico foi codificada de modo que o basal corresponda ao meningioma. Os resultados indicam que o risco associado ao glioma de alto grau (HG) é mais de oito vezes maior (ou seja, <span class="math inline">\(e^{2.15} = 8.62\)</span>) do que o risco associado ao meningioma. Em outras palavras, após ajuste para os outros preditores, os pacientes com glioma de alto grau têm uma sobrevida muito pior em comparação com aqueles com meningioma. Além disso, valores mais altos do índice de Karnofsky (KI) estão associados a um menor risco, ou seja, a uma sobrevivência mais longa.</p>
+<p>Finalmente, plotamos curvas de sobrevivência para cada categoria de diagnóstico, ajustando para os outros preditores. Para criar esses gráficos, configuramos os valores dos outros preditores iguais à média para variáveis quantitativas e ao valor modal para fatores. Primeiro, criamos um dataframe com quatro linhas, uma para cada nível de diagnóstico. A função <span class="math inline">\(\texttt{survfit()}\)</span> produzirá uma curva para cada uma das linhas neste dataframe, e uma chamada para <span class="math inline">\(\texttt{plot()}\)</span> as exibirá todas no mesmo gráfico.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>modaldata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span> diagnosis <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>diagnosis</span><span class='op'>)</span>,</span>
+<span> sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Female"</span>, <span class='fl'>4</span><span class='op'>)</span>,</span>
+<span> loc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Supratentorial"</span>, <span class='fl'>4</span><span class='op'>)</span>,</span>
+<span> ki <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>ki</span><span class='op'>)</span>, <span class='fl'>4</span><span class='op'>)</span>,</span>
+<span> gtv <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>gtv</span><span class='op'>)</span>, <span class='fl'>4</span><span class='op'>)</span>,</span>
+<span> stereo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"SRT"</span>, <span class='fl'>4</span><span class='op'>)</span></span>
+<span> <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>survplots</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='va'>fit.all</span>, newdata <span class='op'>=</span> <span class='va'>modaldata</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>survplots</span>, xlab <span class='op'>=</span> <span class='st'>"Meses"</span>,</span>
+<span> ylab <span class='op'>=</span> <span class='st'>"Probabilidade de Sobrevivência"</span>, col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"bottomleft"</span>, <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>BrainCancer</span><span class='op'>$</span><span class='va'>diagnosis</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<h2 id="dados-publication">Dados <em>Publication</em></h2>
+<p>A base de dados <em>Publication</em> pode ser encontrada na biblioteca ISLR2. Primeiramente, reproduzimos a Figura 5 plotando as curvas de Kaplan-Meier estratificadas pela variável posres, que registra se o estudo teve um resultado positivo ou negativo.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.posres</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>posres</span>, data <span class='op'>=</span> <span class='va'>Publication</span></span>
+<span> <span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fit.posres</span>, xlab <span class='op'>=</span> <span class='st'>"Meses"</span>,</span>
+<span> ylab <span class='op'>=</span> <span class='st'>"Probabilidade de Não Ser Publicado"</span>, col <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"topright"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Resultado Negativo"</span>, <span class='st'>"Resultado Positivo"</span><span class='op'>)</span>,</span>
+<span> col <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<p>Como discutido anteriormente, os valores de p obtidos ao ajustar o modelo de riscos proporcionais de Cox para a variável posres são bastante altos, não fornecendo evidências de diferença no tempo até a publicação entre estudos com resultados positivos versus negativos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.pub</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span><span class='op'>~</span> <span class='va'>posres</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>Publication</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit.pub</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ posres, data = Publication)
+
+         coef exp(coef) se(coef)     z    p
+posres 0.1481    1.1596   0.1616 0.916 0.36
+
+Likelihood ratio test=0.83  on 1 df, p=0.3611
+n= 244, number of events= 156 </code></pre>
+</div>
+<p>Como esperado, o teste de log-rank fornece uma conclusão idêntica.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>logrank.test</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>posres</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>Publication</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>logrank.test</span></span></code></pre>
+</div>
+<pre><code>Call:
+survdiff(formula = Surv(time, status) ~ posres, data = Publication)
+
+           N Observed Expected (O-E)^2/E (O-E)^2/V
+posres=0 146       87     92.6     0.341     0.844
+posres=1  98       69     63.4     0.498     0.844
+
+ Chisq= 0.8  on 1 degrees of freedom, p= 0.4 </code></pre>
+</div>
+<p>No entanto, os resultados mudaram drasticamente quando incluímos outros preditores no modelo. Aqui, excluímos a variável mecanismo de financiamento.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.pub2</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>.</span><span class='op'>-</span> <span class='va'>mech</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>Publication</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit.pub2</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ . - mech, data = Publication)
+
+               coef  exp(coef)   se(coef)      z       p
+posres    5.708e-01  1.770e+00  1.760e-01  3.244 0.00118
+multi    -4.086e-02  9.600e-01  2.512e-01 -0.163 0.87079
+clinend   5.462e-01  1.727e+00  2.620e-01  2.085 0.03710
+sampsize  4.678e-06  1.000e+00  1.472e-05  0.318 0.75070
+budget    4.385e-03  1.004e+00  2.465e-03  1.779 0.07518
+impact    5.832e-02  1.060e+00  6.676e-03  8.735 &lt; 2e-16
+
+Likelihood ratio test=149.2  on 6 df, p=&lt; 2.2e-16
+n= 244, number of events= 156 </code></pre>
+</div>
+<p>Observamos que há várias variáveis estatisticamente significativas, incluindo se o ensaio clínico focou em um desfecho clínico, o impacto do estudo e se o estudo teve resultados positivos ou negativos.</p>
+<h2 id="dados-callcenter">Dados <em>CallCenter</em></h2>
+<p>Nesta seção, vamos simular dados de sobrevivência utilizando a função <code>sim.survdata()</code> do pacote <code>coxed</code>, que faz parte da biblioteca <code>coxed</code>. Os dados simulados representarão os tempos de espera observados (em segundos) de 2.000 clientes que ligaram para um centro de atendimento. Neste contexto, ocorre censura se um cliente desligar antes que sua chamada seja atendida.</p>
+<p>Existem três covariáveis:</p>
+<ul>
+<li><strong>Operadores</strong>: Número de operadores disponíveis no centro de atendimento no momento da ligação, variando de 5 a 15.</li>
+<li><strong>Centro</strong>: Localização do centro de atendimento (A, B ou C).</li>
+<li><strong>Hora do dia</strong>: Manhã, Tarde ou Noite.</li>
+</ul>
+<p>Geramos os dados para essas covariáveis de modo que todas as possibilidades sejam igualmente prováveis: por exemplo, chamadas de manhã, tarde e noite têm a mesma probabilidade, assim como qualquer número de operadores de 5 a 15 é igualmente provável.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span></span>
+<span><span class='va'>N</span> <span class='op'>&lt;-</span> <span class='fl'>2000</span></span>
+<span><span class='va'>Operators</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>15</span>, <span class='va'>N</span>, replace <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span><span class='va'>Center</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span><span class='op'>)</span>, <span class='va'>N</span>, replace <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span><span class='va'>Time</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Morn."</span>, <span class='st'>"After."</span>, <span class='st'>"Even."</span><span class='op'>)</span>, <span class='va'>N</span>, replace <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span>
+<span><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Operators</span> <span class='op'>+</span> <span class='va'>Center</span> <span class='op'>+</span> <span class='va'>Time</span><span class='op'>)</span><span class='op'>[</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span></span></code></pre>
+</div>
+</div>
+<p>É válido dar uma olhada na matriz de design 𝑋, para garantir que entendemos como as variáveis foram codificadas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>X</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span></span></code></pre>
+</div>
+<pre><code>  Operators CenterB CenterC TimeEven. TimeMorn.
+1        12       1       0         0         1
+2        15       0       0         0         0
+3         7       0       1         1         0
+4         7       0       0         0         0
+5        11       0       1         0         1</code></pre>
+</div>
+<p>Próximo passo, especificamos os coeficientes e a função de risco.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>true.beta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.04</span>,<span class='op'>-</span><span class='fl'>0.3</span>, <span class='fl'>0</span>, <span class='fl'>0.2</span>,<span class='op'>-</span><span class='fl'>0.2</span><span class='op'>)</span></span>
+<span><span class='va'>h.fn</span> <span class='op'>&lt;-</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>0.00001</span> <span class='op'>*</span> <span class='va'>x</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Aqui, definimos o coeficiente associado aos Operadores como 0.04; em outras palavras, cada operador adicional leva a um aumento de 1.041 vezes no “risco” de que a ligação seja atendida, dado os covariáveis Centro e Hora. Isso faz sentido: quanto maior o número de operadores disponíveis, menor é o tempo de espera! O coeficiente associado ao Centro=B é 0.3, sendo que o Centro=A é tratado como linha de base. Isso significa que o risco de uma chamada ser atendida no Centro B é 0.74 vezes o risco de ser atendida no Centro A; em outras palavras, os tempos de espera são um pouco mais longos no Centro B.</p>
+<p>Agora estamos prontos para gerar dados sob o modelo de riscos proporcionais de Cox. A função sim.survdata() nos permite especificar o tempo máximo possível de falha, que neste caso corresponde ao tempo máximo de espera possível para um cliente; aqui, definimos isso como igual a 1.000 segundos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jkropko/coxed'>coxed</a></span><span class='op'>)</span></span>
+<span><span class='va'>queuing</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/coxed/man/sim.survdata.html'>sim.survdata</a></span><span class='op'>(</span>N <span class='op'>=</span> <span class='va'>N</span>, T <span class='op'>=</span> <span class='fl'>1000</span>, X <span class='op'>=</span> <span class='va'>X</span>,</span>
+<span> beta <span class='op'>=</span> <span class='va'>true.beta</span>, hazard.fun <span class='op'>=</span> <span class='va'>h.fn</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>queuing</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] &quot;data&quot;             &quot;xdata&quot;            &quot;baseline&quot;        
+[4] &quot;xb&quot;               &quot;exp.xb&quot;           &quot;betas&quot;           
+[7] &quot;ind.survive&quot;      &quot;marg.effect&quot;      &quot;marg.effect.data&quot;</code></pre>
+</div>
+<p>Os dados “observados” são armazenados em queuing$data, onde y corresponde ao tempo do evento e failed é um indicador se a ligação foi atendida (failed = T) ou se o cliente desligou antes da ligação ser atendida (failed = F). Observamos que quase 90% das chamadas foram atendidas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>  Operators CenterB CenterC TimeEven. TimeMorn.   y failed
+1        12       1       0         0         1 344   TRUE
+2        15       0       0         0         0 241   TRUE
+3         7       0       1         1         0 187   TRUE
+4         7       0       0         0         0 279   TRUE
+5        11       0       1         0         1 954   TRUE
+6         7       1       0         0         1 455   TRUE</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>failed</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 0.89</code></pre>
+</div>
+<p>Agora, plotamos as curvas de sobrevivência de Kaplan-Meier. Primeiro, estratificamos por Center, depois por tempo</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>fit.Center</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>failed</span><span class='op'>)</span><span class='op'>~</span> <span class='va'>Center</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fit.Center</span>, xlab <span class='op'>=</span> <span class='st'>"Segundos"</span>,</span>
+<span> ylab <span class='op'>=</span> <span class='st'>"Probabilidade de Ainda Estar em Espera"</span>,</span>
+<span> col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"topright"</span>,</span>
+<span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Call Center A"</span>, <span class='st'>"Call Center B"</span>, <span class='st'>"Call Center C"</span><span class='op'>)</span>,</span>
+<span> col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span> </span>
+<span><span class='va'>fit.Time</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>failed</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>Time</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fit.Time</span>, xlab <span class='op'>=</span> <span class='st'>"Segundos"</span>,</span>
+<span> ylab <span class='op'>=</span> <span class='st'>"Probabilidade de Ainda Estar em Espera"</span>,</span>
+<span> col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span> <span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"topright"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Manhã"</span>, <span class='st'>"Tarde"</span>, <span class='st'>"Noite"</span><span class='op'>)</span>,</span>
+<span> col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>4</span><span class='op'>)</span>, lty <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_files/figure-html5/unnamed-chunk-23-1.png" width="624" /></p>
+</div>
+<p>Parece que as chamadas no Centro de Atendimento B levam mais tempo para serem atendidas do que as chamadas nos Centros A e C. Da mesma forma, parece que os tempos de espera são mais longos de manhã e mais curtos nas horas da noite. Podemos usar um teste de log-rank para determinar se essas diferenças são estatisticamente significativas</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>failed</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>Center</span>, data <span class='op'>=</span> <span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Call:
+survdiff(formula = Surv(y, failed) ~ Center, data = queuing$data)
+
+           N Observed Expected (O-E)^2/E (O-E)^2/V
+Center=A 683      603      579     0.971      1.45
+Center=B 667      600      701    14.641     24.64
+Center=C 650      577      499    12.062     17.05
+
+ Chisq= 28.3  on 2 degrees of freedom, p= 7e-07 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>failed</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>Time</span>, data <span class='op'>=</span> <span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Call:
+survdiff(formula = Surv(y, failed) ~ Time, data = queuing$data)
+
+              N Observed Expected (O-E)^2/E (O-E)^2/V
+Time=After. 688      616      619    0.0135     0.021
+Time=Even.  653      582      468   27.6353    38.353
+Time=Morn.  659      582      693   17.7381    29.893
+
+ Chisq= 46.8  on 2 degrees of freedom, p= 7e-11 </code></pre>
+</div>
+<p>Descobrimos que as diferenças entre os centros são altamente significativas, assim como as diferenças entre os horários do dia. Finalmente, ajustamos o modelo de riscos proporcionais de Cox aos dados.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit.queuing</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>failed</span><span class='op'>)</span><span class='op'>~</span> <span class='va'>.</span>,</span>
+<span> data <span class='op'>=</span> <span class='va'>queuing</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>fit.queuing</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = Surv(y, failed) ~ ., data = queuing$data)
+
+              coef exp(coef) se(coef)      z        p
+Operators  0.04174   1.04263  0.00759  5.500  3.8e-08
+CenterB   -0.21879   0.80349  0.05793 -3.777 0.000159
+CenterC    0.07930   1.08253  0.05850  1.356 0.175256
+TimeEven.  0.20904   1.23249  0.05820  3.592 0.000328
+TimeMorn. -0.17352   0.84070  0.05811 -2.986 0.002828
+
+Likelihood ratio test=102.8  on 5 df, p=&lt; 2.2e-16
+n= 2000, number of events= 1780 </code></pre>
+</div>
+<p>Os p-valores para Centro = B, Tempo = Noite e Tempo = Manhã são muito pequenos. Também é evidente que o risco — isto é, o risco instantâneo de que uma chamada seja atendida — aumenta com o número de operadores. Como geramos os dados nós mesmos, sabemos que os coeficientes verdadeiros para Operadores, Centro = B, Centro = C, Tempo = Noite e Tempo = Manhã são 0,04, 0,3, 0, 0,2 e 0,2, respectivamente. As estimativas dos coeficientes resultantes do modelo de Cox são bastante precisas.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

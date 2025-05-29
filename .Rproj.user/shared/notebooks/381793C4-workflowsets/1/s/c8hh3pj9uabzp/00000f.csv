@@ -1,0 +1,19 @@
+"0","# Registra um backend paralelo para processamento mais rápido"
+"0","doParallel::registerDoParallel()"
+"0",""
+"0","# Define a semente para reprodutibilidade"
+"0","set.seed(2024)"
+"0",""
+"0","# Ajusta os workflows às reamostragens"
+"0","pumpkin_rs <- "
+"0","  workflow_map("
+"0","    pumpkin_set,            # Conjunto de workflows criado anteriormente"
+"0","    ""fit_resamples"",        # Método para ajustar o modelo às reamostragens"
+"0","    resamples = pumpkin_folds  # Dados de validação cruzada (folds)"
+"0","  )"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"0","# Exibe os resultados dos ajustes"
+"0","pumpkin_rs"

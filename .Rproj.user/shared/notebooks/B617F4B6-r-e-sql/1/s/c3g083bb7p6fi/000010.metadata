@@ -1,0 +1,1 @@
+{"classes":["tbl_PqConnection","tbl_dbi","tbl_sql","tbl_lazy","tbl"],"nrow":null,"ncol":5,"summary":{"Source":["SQL [?? x 5]"],"Database":["postgres  [feyama@localhost:5432/kaggle]"]}}

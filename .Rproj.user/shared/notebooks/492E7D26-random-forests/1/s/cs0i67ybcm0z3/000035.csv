@@ -1,0 +1,4 @@
+"0","plot_boxplot(pokedex[, c('is_legendary', 'attack', 'sp_attack', 'defense', 'sp_defense', 'hp', 'speed')], "
+"0","             by = 'is_legendary', , "
+"0","             ncol=3, "
+"0","             title = 'Estatísticas de luta do Pokémon')"

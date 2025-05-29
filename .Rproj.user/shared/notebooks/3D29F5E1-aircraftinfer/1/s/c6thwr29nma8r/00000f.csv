@@ -1,0 +1,4 @@
+"0","library(magick)"
+"0","img <- image_read(""infer.png"")"
+"0","img_resized <- image_resize(img, ""200x150"")"
+"0","image_write(img_resized, ""infer.png"")"

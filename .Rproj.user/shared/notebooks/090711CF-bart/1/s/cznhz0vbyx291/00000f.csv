@@ -1,0 +1,85 @@
+"0","#ajuste final BART"
+"0","bart_last <- finalize_workflow(x = bart_wflow, "
+"0","                              parameters = select_best(bart_tune_results)) %>%"
+"0","  last_fit(ames_split)"
+"2","Warning: No value of `metric` was given; metric 'rmse' will be used."
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 21 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 20 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 19 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 18 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 17 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 16 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 15 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 14 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 13 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 12 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 11 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 10 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 9 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 8 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 7 (<-DESKTOP-8S3VGRP:11570)
+"
+"2","Warning in for (pair in pairs) { :"
+"2","
+ "
+"2"," encerrando conexão não utilizada 6 (<-DESKTOP-8S3VGRP:11570)
+"

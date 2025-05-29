@@ -1,0 +1,37 @@
+"0","\begin{table}[ht]
+\centering
+\caption{Algoritmo 8.3 Árvores de Regressão Aditiva Bayesiana}
+\begin{tabular}{|>{\raggedright}p{0.9\linewidth}|}
+\hline
+\textbf{Algoritmo 8.3 Árvores de Regressão Aditiva Bayesiana} \\ \hline
+1. Deixe $\hat{f}^1_1(x) = \hat{f}^1_2(x) = \cdots = \hat{f}^1_K(x) = \frac{1}{nK} \sum_{i=1}^{n} y_i$. \\ \hline
+2. Calcule $\hat{f}^1(x) = \sum_{k=1}^{K} \hat{f}^1_k(x) = \frac{1}{n} \sum_{i=1}^{n} y_i$. \\ \hline
+3. Para $b = 2, \ldots, B$: \\
+\hspace{1em} (a) Para $k = 1, 2, \ldots, K$: \\
+\hspace{2em} i. Para $i = 1, \ldots, n$, calcule o resíduo parcial atual \\
+\hspace{4em} $r_i = y_i - \hat{f}^{b-1}_k(x_i) + \sum_{k' \neq k} \hat{f}^{b-1}_{k'}(x_i)$. \\
+\hspace{2em} ii. Ajuste uma nova árvore, $\hat{f}^b_k(x)$, a $r_i$, perturbando aleatoriamente a \\
+\hspace{4em} $k$-ésima árvore da iteração anterior, $\hat{f}^{b-1}_k(x)$. Perturbações \\
+\hspace{4em} que melhoram o ajuste são favorecidas. \\
+\hspace{1em} (b) Calcule $\hat{f}^b(x) = \sum_{k=1}^{K} \hat{f}^b_k(x)$. \\ \hline
+4. Calcule a média após $L$ amostras de burn-in, \\
+\hspace{1em} $\hat{f}(x) = \frac{1}{B-L} \sum_{b=L+1}^{B} \hat{f}^b(x)$. \\ \hline
+\end{tabular}
+\end{table}"
+"1","This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=latex)
+ restricted \write18 enabled.
+"
+"1","entering extended mode
+(c:/Users/admin/AppData/Local/Temp/RtmpczocSi/chunk-code-33f8de65487.txt
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-04-11>
+
+! LaTeX Error: Environment table undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 \begin{table}
+                 [ht]
+? "

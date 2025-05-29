@@ -1,0 +1,2 @@
+"0","logit_val <- cal_validate_logistic(bayes_res, metrics = cls_met, save_pred = TRUE)"
+"0","collect_metrics(logit_val)"

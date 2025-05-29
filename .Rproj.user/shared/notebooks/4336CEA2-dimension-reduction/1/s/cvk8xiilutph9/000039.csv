@@ -1,0 +1,13 @@
+"0","# Carregar a biblioteca para plotagem de matrizes de correlação"
+"0","library(corrplot)"
+"2","corrplot 0.92 loaded
+"
+"0","# Definir uma paleta de cores para a matriz de correlação"
+"0","tmwr_cols <- colorRampPalette(c(""#91CBD765"", ""#CA225E""))"
+"0",""
+"0","# Criar a matriz de correlação para os dados de treino dos feijões, excluindo a coluna 'class'"
+"0","bean_train %>% "
+"0","  select(-class) %>% "
+"0","  cor() %>% "
+"0","  corrplot(col = tmwr_cols(200), tl.col = ""black"", method = ""ellipse"",  type = ""upper"", tl.srt = 45)"
+"0",""

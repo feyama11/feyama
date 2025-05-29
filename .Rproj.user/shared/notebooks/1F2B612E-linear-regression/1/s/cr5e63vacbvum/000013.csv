@@ -1,0 +1,1 @@
+"0","boxplot(db$Viscera.Weight, main = ""Boxplot: Peso das visceras"", pch = 19)"

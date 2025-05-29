@@ -1,0 +1,6 @@
+"0","```r
+plot_intro(ames)
+```"
+"1","Error in showtext_begin_internal(record = FALSE) : 
+  no active graphics device
+"

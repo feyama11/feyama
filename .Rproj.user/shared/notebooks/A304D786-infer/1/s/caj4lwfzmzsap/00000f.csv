@@ -1,0 +1,6 @@
+"0","# Calcule o valor p a partir da estatística observada e da distribuição nula."
+"0","p_value_independence <- null_dist_sim %>%"
+"0","  get_p_value(obs_stat = observed_indep_statistic,"
+"0","              direction = ""greater"")"
+"2","Warning: Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step. See `?get_p_value()` for more information."
+"0","p_value_independence"

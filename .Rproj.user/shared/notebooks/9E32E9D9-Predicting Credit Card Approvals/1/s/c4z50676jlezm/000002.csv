@@ -1,0 +1,11 @@
+"0","```r
+# Carregando tidymodels
+library(tidymodels)
+
+# Dividindo em conjuntos de treinamento e teste
+set.seed(1)
+divisao = initial_split(cc_apps, prop = 0.8)
+cc_apps_trainamento = training(divisao)
+cc_apps_teste = testing(divisao)
+  
+```"

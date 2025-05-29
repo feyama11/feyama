@@ -1,0 +1,13 @@
+"0","#estamos ignorando variaveis que contenham mais de 5 categorias"
+"0","plot_correlation(na.omit(dados), maxcat = 5L)"
+"2","7 features with more than 5 categories ignored!
+dest: 20 categories
+tailnum: 23 categories
+flight: 211 categories
+time_hour: 848 categories
+manufacturer: 7 categories
+model: 15 categories
+name: 20 categories
+
+"
+"2","Warning: o desvio padrão é zero"

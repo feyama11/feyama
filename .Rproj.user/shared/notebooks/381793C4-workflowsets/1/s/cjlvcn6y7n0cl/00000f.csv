@@ -1,0 +1,8 @@
+"0","pumpkin_set <-"
+"0","  workflow_set("
+"0","    list(base_rec, ind_rec, spline_rec, spline_rec),"
+"0","    list(rf_spec, mars_spec, lm=lm_spec, lm_bayes=bayes_lm_spec),"
+"0","    cross = FALSE"
+"0","  )"
+"0",""
+"0","pumpkin_set"

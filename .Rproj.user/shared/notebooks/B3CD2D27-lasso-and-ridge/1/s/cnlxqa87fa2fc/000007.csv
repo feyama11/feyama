@@ -1,0 +1,2 @@
+"0","ggplot(office, aes(x = episode, y = imdb_rating, fill = as.factor(episode))) +"
+"0","  geom_boxplot(show.legend = F)"

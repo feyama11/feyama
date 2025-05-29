@@ -1,0 +1,7 @@
+"0",""
+"0","# Verificar o resumo dos dados futuros"
+"0","future_tbl %>% "
+"0","  group_by(id) %>%               # Agrupar por 'id' (cada série futura)"
+"0","  tk_summary_diagnostics()       # Resumir diagnósticos para os períodos futuros"
+"2","tk_augment_timeseries_signature(): Using the following .date_var variable: Date
+"

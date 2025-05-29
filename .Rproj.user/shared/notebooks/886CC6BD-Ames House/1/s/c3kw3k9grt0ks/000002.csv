@@ -1,0 +1,33 @@
+"0","```r
+#mudança de escala
+ames <- ames %>% mutate(Sale_Price = log(Sale_Price))
+```"
+"1","Error in exists(cacheKey, where = .rs.WorkingDataEnv, inherits = FALSE) : 
+  invalid first argument
+Error in assign(cacheKey, frame, .rs.CachedDataEnv) : 
+  attempt to use zero-length variable name
+"
+"0","```r
+#Graficos
+# hist
+g1 <- ggplot(ames, aes(x=Sale_Price)) + 
+ geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+
+ geom_density(alpha=.2, fill=\"#FF6666\")+ 
+  labs(x = \"\", y = \"\")
+
+# boxplot
+g2 <- ggplot(ames, aes(y=Sale_Price)) + 
+ geom_boxplot(aes(x=\"\"), colour=\"black\", fill=\"white\")+
+  coord_flip()+ 
+  labs(x = \"\", y = \"\")
+
+# qqplot
+g3 <- ggplot(ames, aes(sample = Sale_Price))+ 
+  stat_qq()+
+  stat_qq_line()+ 
+  labs(x = \"\", y = \"\")
+  
+ggplotly(g1)
+```"
+"1","`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+"

@@ -1,0 +1,3 @@
+"0","ggplot(oes_long, aes(x = year, y = mean_sallary, color = hclust))+"
+"0","  geom_line(aes(group = occupation)) +"
+"0","  labs(x = ""Ano"", y=""Salário"", title = ""Agrupamento hierárquico"", subtitle = ""Com base no dendrograma com distância euclidiana e ligação média"")"

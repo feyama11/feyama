@@ -1,0 +1,7 @@
+"0","knn_spec <- nearest_neighbor() %>%"
+"0","  set_engine(""kknn"") %>%"
+"0","  set_mode(""classification"")"
+"0",""
+"0","tree_spec <- decision_tree() %>%"
+"0","  set_engine(""rpart"") %>%"
+"0","  set_mode(""classification"")"

@@ -1,0 +1,5 @@
+"0",""
+"0","# Preparar o conjunto de dados futuros (períodos que precisam ser previstos)"
+"0","future_tbl <- vendas_full %>% "
+"0","  filter(is.na(Weekly_Sales))    # Filtrar apenas as linhas com valores ausentes em 'Weekly_Sales' (dados futuros)"
+"0","future_tbl                      # Exibir os dados futuros"

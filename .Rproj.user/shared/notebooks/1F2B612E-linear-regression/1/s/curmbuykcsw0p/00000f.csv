@@ -1,0 +1,5 @@
+"0","## Leitura dos Dados (Dataset: Abalone)"
+"0","db <- read.table('Abalone.data', header = TRUE, sep = ',')"
+"0",""
+"0","#Adicionando coluna 'Age' de acordo com nº de 'Rings'"
+"0","db$Age <- db$Rings + 1.5"

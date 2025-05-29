@@ -1,0 +1,8 @@
+"0",""
+"0","library(factoextra)"
+"0","fviz_cluster(kmeans_6, "
+"0","             data = customer_data[, 3:5], "
+"0","             geom = ""point"","
+"0","             ellipse.type = ""convex"", "
+"0","             ggtheme = theme_bw()"
+"0","             )"

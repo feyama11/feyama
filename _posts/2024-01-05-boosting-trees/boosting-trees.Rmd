@@ -1,0 +1,520 @@
+---
+title: "Boosting Trees"
+description: |
+  O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito.
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+preview: boost.jpg
+date: 2024-01-08
+categories:
+  - boosting trees
+  - machine learning
+  - R
+  - tidymodels
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Teoria
+
+## Boosting
+
+*Boosting* é outra abordagem para melhorar as previsões de uma árvore de decisão. Similar ao *bagging*, é uma abordagem geral que pode ser aplicada a muitos métodos de aprendizado estatístico para regressão ou classificação. No entanto, no contexto das árvores de decisão, a discussão de hoje se restringe ao boosting.
+
+Enquanto o *bagging* envolve criar múltiplas cópias do conjunto de dados de treinamento original usando a técnica de *bootstrap*, ajustar uma árvore de decisão separada para cada cópia e então combinar todas as árvores para criar um único modelo preditivo, o boosting funciona de forma semelhante, mas com uma abordagem sequencial. Cada árvore é construída usando informações das árvores previamente criadas. No boosting, não há amostragem de *bootstrap*; em vez disso, cada árvore é treinada em uma versão modificada do conjunto de dados original. Essa abordagem sequencial no *boosting* geralmente leva a modelos mais poderosos, focados em corrigir áreas onde os modelos anteriores falharam, resultando em melhor desempenho preditivo.
+
+No contexto da regressão, assim como no *bagging*, o *boosting* envolve combinar um grande número de árvores de decisão $\hat{f}^1,...,\hat{f}^B$. O *boosting* é descrito no Algoritmo 1.
+
+—————————————————————————————————————————————— **Algoritmo 1.** Boosting para Árvores de Regressão: ——————————————————————————————————————————————
+
+-   Defina $\hat{f}(x) = 0$ e $r_i = y_i$ para todos os $i$ no conjunto de treinamento.
+-   Para $b = 1, 2,...,B$, repita:
+
+(a) Ajuste uma árvore $\hat{f}^b$ com $d$ divisões ($d + 1$ nós terminais) aos dados de treinamento $(X, r)$.
+
+(b) Atualize $\hat{f}$ adicionando uma versão encolhida da nova árvore:
+
+$\hat{f}(x) ← \hat{f}(x) + λ \hat{f}^ b(x).$
+
+(c) Atualize os resíduos,
+
+$r_i ← r_i − λ \hat{f}^b (x_i).$
+
+-   Produza o modelo com *boost*,
+
+$\hat{f}(x) = \sum_{b=1}^Bλ \hat{f}^ b(x).$
+
+——————————————————————————————————————————————
+
+A ideia por trás desse procedimento difere da abordagem de ajustar uma única árvore grande aos dados, que pode levar ao overfitting ao ajustar os dados de maneira rígida. O *boosting*, por outro lado, aprende lentamente. Dado o modelo atual, ajustamos uma árvore de decisão aos resíduos do modelo. Ou seja, ajustamos uma árvore usando os resíduos atuais, em vez do resultado $Y$, como resposta. Em seguida, adicionamos esta nova árvore de decisão à função ajustada para atualizar os resíduos. Cada uma dessas árvores pode ser relativamente pequena, com apenas alguns nós terminais, determinados pelo parâmetro $d$ no algoritmo. Ao ajustar árvores pequenas aos resíduos, melhoramos gradualmente $\hat{f}$ em áreas onde não performa bem.
+
+O parâmetro de encolhimento $λ$ diminui ainda mais o processo, permitindo que mais árvores de formas diferentes ataquem os resíduos. Em geral, abordagens de aprendizado estatístico que aprendem lentamente tendem a ter um bom desempenho. No *boosting*, ao contrário do *bagging*, a construção de cada árvore depende fortemente das árvores já criadas.
+
+Esse processo descreve o *boosting* de árvores de regressão. O *boosting* de árvores de classificação segue de maneira similar, mas de um modo ligeiramente mais complexo.
+
+O *boosting* clássico possui três parâmetros de ajuste:
+
+-   O número de árvores $B$. Diferentemente do bagging e das florestas aleatórias, o boosting pode ter overfitting se $B$ for muito grande, embora isso ocorra lentamente, se ocorrer. Usamos validação cruzada para selecionar $B$.
+-   O parâmetro de encolhimento $λ$, um número positivo pequeno. Ele controla a taxa de aprendizado do boosting. Valores típicos são 0.01 ou 0.001, e a escolha correta pode depender do problema. $λ$ muito pequeno pode exigir um valor muito grande de $B$ para obter bom desempenho.
+-   O número d de divisões em cada árvore, que controla a complexidade do conjunto de árvores. Muitas vezes, $d = 1$ funciona bem, o que significa que cada árvore é um "stump", consistindo de uma única divisão. Nesse caso, o conjunto de *stumps* do *boosting* está ajustando um modelo aditivo, já que cada termo envolve apenas uma variável. Geralmente, $d$ é a profundidade da interação e controla a ordem de interação do modelo *boost*, já que $d$ divisões podem envolver no máximo $d$ variáveis.
+
+Na Figura 1, o boosting foi aplicado a um conjunto de dados de expressão genética de câncer de 15 classes, para desenvolver um classificador que distingue a classe normal das 14 classes de câncer. O erro de teste é exibido em função do número total de árvores e da profundidade de interação $d$.
+
+Observamos que "stumps" simples com profundidade de interação 1 têm bom desempenho se incluídos em número suficiente. Esse modelo supera o modelo de profundidade 2 e ambos superam uma floresta aleatória. Isso destaca uma diferença entre boosting e florestas aleatórias: no boosting, porque o crescimento de uma árvore específica leva em consideração as outras árvores já criadas, árvores menores são geralmente suficientes. O uso de árvores menores pode auxiliar na interpretabilidade; por exemplo, o uso de "stumps" leva a um modelo aditivo.
+
+![**Figura 1.** Resultados da realização de *boosting* e florestas aleatórias no conjunto de dados de expressão genética de 15 classes para prever câncer versus normal. O erro de teste é exibido como uma função do número de árvores. Para os dois modelos de *boost*, $λ = 0.01$. Árvores de profundidade 1 têm um desempenho ligeiramente melhor do que árvores de profundidade 2, e ambas superam a floresta aleatória, embora os erros padrão sejam em torno de 0.02, o que torna nenhuma dessas diferenças significativas. A taxa de erro de teste para uma única árvore é de 24%.](images/clipboard-3817179683.png)
+
+### XGBoost
+
+*XGBoost* é um sistema de aprendizado de máquina de código aberto que implementa um algoritmo de *boosting* de árvores gradiente. O *boosting* de árvores é uma técnica de aprendizado de máquina que combina várias árvores de decisão para melhorar a precisão de predição.
+
+O XGBoost é um sistema escalável por vários motivos. Primeiro, ele usa um algoritmo de aprendizado de árvore específico para dados esparsos. Dados esparsos são dados em que muitos dos valores são zeros. O algoritmo de aprendizado de árvore do XGBoost é projetado para lidar com dados esparsos de forma eficiente.
+
+Segundo, o XGBoost usa uma técnica de amostragem de quantis ponderada para aprendizado de árvore aproximado. Essa técnica amostra aleatoriamente os dados e as árvores para reduzir o tempo de treinamento.
+
+O XGBoost também é flexível e fácil de usar. Ele suporta uma variedade de funções de perda e funções de penalidade, o que permite que seja adaptado a diferentes problemas de aprendizado de máquina. O XGBoost também oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo.
+
+**Algoritmo**
+
+O algoritmo funciona adicionando árvores de decisão à um modelo de aprendizado de máquina sequencialmente. Cada árvore é projetada para reduzir o erro do modelo em relação aos dados de treinamento.
+
+O algoritmo de boosting de árvores gradiente pode ser expresso matematicamente da seguinte forma:
+
+$$f(x) = \sum_{t=1}^T \beta_t h_t(x)$$ Onde:
+
+$f(x)$ é o modelo de aprendizado de máquina resultante
+
+$T$ é o número de árvores no modelo
+
+$β_t$ é o peso da t-ésima árvore
+
+$h_t(x)$ é a função de predição da t-ésima árvore
+
+O peso da t-ésima árvore é calculado usando o gradiente da função de perda do modelo em relação aos dados de treinamento. A função de perda é uma medida da diferença entre as previsões do modelo e os valores reais dos dados.
+
+**Funções de perda e funções de penalidade**
+
+O XGBoost suporta uma variedade de funções de perda e funções de penalidade. A função de perda é usada para medir o erro do modelo em relação aos dados de treinamento. A função de penalidade é usada para evitar o sobreajuste do modelo.
+
+Algumas funções de perda comuns incluem:
+
+Erro quadrático médio $(MSE): L(y,f(x))=(y−f(x))^ 2$
+
+Erro de erro médio $(MAE): L(y,f(x))=∣y−f(x)∣$
+
+Erro de entropia cruzada $(CE): L(y,f(x))=−∑_y ylogf(x)+(1−y)log(1−f(x))$
+
+Algumas funções de penalidade comuns incluem:
+
+Regularização $L1: λ∑_ tβ_t$
+
+Regularização $L2: λ∑_ tβ_ t^2$
+
+Regularização $Elastic Net: λ_ 1∑_ tβ_ t+λ_ 2∑_ tβ_ t^2$
+
+**Mecanismos de regularização**
+
+O XGBoost oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo. Os mecanismos de regularização mais comuns incluem:
+
+-   Subamostragem de dados: o XGBoost pode subamostrar os dados de treinamento para reduzir o tamanho do modelo.
+-   Subamostragem de árvores: o XGBoost pode subamostrar as árvores de decisão para reduzir o tamanho do modelo.
+-   Regularização L1 e L2: o XGBoost pode usar regularização L1 ou L2 para reduzir o tamanho do modelo.
+
+**Hiperparâmetros**
+
+-   tree_depth: Profundidade da Árvore (tipo: inteiro, padrão: 6L)
+-   trees: Número de Árvores (tipo: inteiro, padrão: 15L)
+-   learn_rate: Taxa de Aprendizado (tipo: duplo, padrão: 0.3)
+-   mtry: Número de Preditores Selecionados Aleatoriamente (tipo: inteiro, padrão: ver abaixo)
+-   min_n: Tamanho Mínimo do Nó (tipo: inteiro, padrão: 1L)
+-   loss_reduction: Redução Mínima da Perda (tipo: duplo, padrão: 0.0)
+-   sample_size: Proporção de Observações Amostradas (tipo: duplo, padrão: 1.0)
+-   stop_iter: Número de Iterações Antes da Parada (tipo: inteiro, padrão: Inf)
+
+### LightGBM
+
+LightGBM é um sistema de boosting de árvores altamente eficiente que foi apresentado por Guolin Ke, Qihang Wang, Wei Chen, Wei Hu, and Tie-Yan Liu em 2017. O sistema é amplamente utilizado por cientistas de dados para alcançar resultados de última geração em muitos desafios de aprendizado de máquina.
+
+O LightGBM apresenta várias inovações que o tornam um sistema altamente eficiente. Uma inovação é o uso de um algoritmo de crescimento de árvore *greedy*. O algoritmo de crescimento de árvore *greedy* do LightGBM é projetado para reduzir o número de folhas de uma árvore, o que melhora a eficiência do treinamento.
+
+Outra inovação é o uso de uma técnica de amostragem de gradientes ponderada. A técnica de amostragem de gradientes ponderada do LightGBM amostra aleatoriamente os dados e os gradientes para reduzir o tempo de treinamento.
+
+O LightGBM também oferece vários recursos que o tornam flexível e fácil de usar. O sistema suporta uma variedade de funções de perda e funções de penalidade, o que permite que seja adaptado a diferentes problemas de aprendizado de máquina. O LightGBM também oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo.
+
+**Algoritmo de crescimento de árvore greedy**
+
+O algoritmo de crescimento de árvore greedy do LightGBM funciona adicionando folhas à um árvore de decisão sequencialmente. Em cada iteração, o algoritmo escolhe a folha que tem o maior ganho de ganho, que é calculado usando a seguinte fórmula:
+
+$Gain = \sum_{i \in L} G_i$
+
+Onde:
+
+$L$ é o conjunto de dados da folha
+
+$G_i$ é o ganho de informação da i-ésima instância
+
+O ganho de informação é uma medida da diferença entre a distribuição de probabilidade dos dados antes e depois de a instância ser adicionada à folha.
+
+**Amostragem de gradientes ponderada**
+
+A técnica de amostragem de gradientes ponderada do LightGBM funciona amostrando aleatoriamente os dados e os gradientes para reduzir o tempo de treinamento. A técnica funciona da seguinte forma:
+
+-   Calcule os gradientes dos dados de treinamento.
+-   Atribua pesos aos dados de treinamento com base nos seus gradientes.
+-   Amostre os dados de treinamento com base nos pesos.
+
+A técnica de amostragem de gradientes ponderada reduz o tempo de treinamento do LightGBM em até 20 vezes sem afetar a precisão do modelo.
+
+**HiperParâmetros**
+
+-   tree_depth: Profundidade da Árvore (tipo: inteiro, padrão: -1)
+-   trees: Número de Árvores (tipo: inteiro, padrão: 100)
+-   learn_rate: Taxa de Aprendizado (tipo: duplo, padrão: 0.1)
+-   mtry: Número de Preditores Selecionados Aleatoriamente (tipo: inteiro, padrão: ver abaixo)
+-   min_n: Tamanho Mínimo do Nó (tipo: inteiro, padrão: 20)
+-   loss_reduction: Redução Mínima da Perda (tipo: duplo, padrão: 0)
+
+# Prática
+
+## Aplicações de cartão de crédito
+
+Os bancos comerciais recebem muitos pedidos de cartões de crédito. Muitos deles são rejeitados por vários motivos, como altos saldos de empréstimos, baixos níveis de renda ou muitas consultas no relatório de crédito de um indivíduo, por exemplo. Analisar manualmente essas aplicações é mundano, sujeito a erros e demorado (e tempo é dinheiro!). Felizmente, essa tarefa pode ser automatizada com o poder do aprendizado de máquina e praticamente todos os bancos comerciais o fazem hoje em dia. Neste projeto, construiremos um preditor automático de aprovação de cartão de crédito usando *boosted trees*.
+
+![](images/clipboard-4052902041.png)
+
+## Dados
+
+Usaremos o conjunto de dados de aprovação de cartão de crédito do *UCI Machine Learning Repository*.
+
+-   Primeiro, começaremos carregando e visualizando o conjunto de dados.
+-   Veremos que o conjunto de dados tem uma mistura de características numéricas e não numéricas, que contém valores de diferentes intervalos, além de conter várias entradas ausentes. - Teremos que pré-processar o conjunto de dados para garantir que o modelo de aprendizado de máquina escolhido possa fazer boas previsões.
+-   Depois que nossos dados estiverem em boa forma, faremos algumas análises exploratórias de dados para construir nossas intuições.
+-   Finalmente, construiremos um modelo de aprendizado de máquina que pode prever se o pedido de cartão de crédito de um indivíduo será aceito.
+
+Primeiro, carregando e visualizando o conjunto de dados. Descobrimos que, como esses dados são confidenciais, o colaborador do conjunto de dados anonimizou os nomes dos recursos.
+
+```{r}
+# Carregando tidyverse
+library(tidyverse)
+
+# Carregando dados
+cc_apps = read_csv("cc_approvals.data.csv", col_names = F)
+
+cc_apps
+```
+
+## Inspecionando as aplicações
+
+Os dados podem parecer um pouco confusos à primeira vista, mas vamos tentar descobrir os recursos mais importantes de uma aplicação de cartão de crédito. Os recursos deste conjunto de dados foram anonimizados para proteger a privacidade.
+
+Os recursos prováveis em uma aplicação de cartão de crédito típico são Sexo, Idade, Dívida, Casado, Banco, Cliente, Nível de Educação, Etnia, Anos Empregados, Inadimplência anterior, Empregado, Pontuação de crédito, Carteira de motorista, Cidadania, Codigo postal, Renda e, finalmente, o Status de aprovação. Isso nos dá um bom ponto de partida e podemos mapear esses recursos em relação às colunas no output.
+
+Como podemos ver em nossa primeira olhada nos dados, o conjunto de dados tem uma mistura de características numéricas e não numéricas. Isso pode ser corrigido com algum pré-processamento, mas antes de fazermos isso, vamos aprender um pouco mais sobre o conjunto de dados para ver se há outros problemas de conjunto de dados que precisam ser corrigidos.
+
+```{r}
+library(skimr)
+skim(cc_apps)
+```
+
+Nosso conjunto de dados contém dados numéricos e não numéricos. Especificamente, os recursos 3, 8, 11 e 15 contêm valores numéricos e todos os outros recursos contêm valores não numéricos.
+
+O conjunto de dados também contém valores de vários intervalos. Alguns recursos têm um intervalo de valores de 0 a 28, alguns têm um intervalo de 2 a 67 e alguns têm um intervalo de 1017 a 100000. Além disso, podemos obter informações estatísticas úteis (como média, máximo e mínimo) sobre os recursos que possuem valores numéricos.
+
+Por fim, o conjunto de dados possui valores ausentes, mas que não aparecem na análise exploratória, dos quais cuidaremos nesta tarefa. Os valores ausentes no conjunto de dados são rotulados com ‘?’
+
+Agora, vamos substituir temporariamente esses pontos de interrogação de valores ausentes por NA e transformar caracteres e variáveis lógicas em fatores. Além disso, recursos como Carteira de motorista e Código postal não são tão importantes quanto os outros recursos no conjunto de dados para prever aprovações de cartão de crédito.
+
+Para ter uma noção melhor, podemos medir sua correlação estatística com as variáveis do conjunto de dados. Devemos abandoná-los para criar nosso modelo de aprendizado de máquina com o melhor conjunto de variaveis. Na literatura de Ciência de Dados, isso costuma ser chamado de seleção de variaveis.
+
+```{r, fig.height=8}
+#correlação estatística
+DataExplorer::plot_correlation(cc_apps, type = "all")
+```
+
+Podemos ver pelo gráfico de correlação que a variável X12 (se a pessoa possui carteira de motorista) não está correlacionadas com a variável de resultado, ou qualquer outra variável. Além dela, a variável X14 (códigos postais) possui 171 diferentes tipos de observações, e não é uma informação útil para o modelo.
+
+```{r}
+# Substituindo os '?'s por NA
+cc_apps = cc_apps %>% mutate_all(~ifelse(. == "?", NA, .))
+
+#Mudando algumas variáveis que estão com a classe errada
+cc_apps = cc_apps %>% 
+  mutate(X2 = as.numeric(X2),
+         X11 = as.numeric(X11))
+```
+
+Vamos visualizar como ficaram nossos dados:
+
+```{r, fig.height=7}
+library(DataExplorer)
+plot_bar(cc_apps, nrow = 4)
+plot_histogram(cc_apps)
+```
+
+Ok! Só precisamosa antes converter as variáveis nominais e logicas para fator:
+
+```{r}
+cc_apps <-  cc_apps %>% 
+  mutate_if(is.character, factor) %>%
+  mutate_if(is.logical, factor)
+```
+
+## Separação dos dados
+
+Parece que está tudo ok. Vamos separar os dados em teste e treinamento para depois fazer o pré-processamento.
+
+```{r}
+# Carregando tidymodels
+library(tidymodels)
+
+# Dividindo em conjuntos de treinamento e teste
+set.seed(12345)
+cc_split = initial_split(cc_apps, prop = 0.75)
+cc_train = training(cc_split)
+cc_test = testing(cc_split)
+```
+
+## Pré-Processamento
+
+Substituímos todos os pontos de interrogação por NA’s. Isso vai nos ajudar no próximo tratamento de valores ausentes que vamos realizar. Uma questão importante levantada aqui é por que estamos dando tanta importância aos valores ausentes? Eles não podem ser simplesmente ignorados? Ignorar os valores ausentes pode afetar fortemente o desempenho de um modelo de aprendizado de máquina. Ao ignorar os valores ausentes, nosso modelo de aprendizado de máquina pode perder informações sobre o conjunto de dados que podem ser úteis para seu treinamento.
+
+Além disso, existem muitos modelos que não podem lidar com valores ausentes implicitamente, como a Análise Discriminante Linear (LDA). Então, para evitar esse problema, vamos imputar os valores faltantes com uma estratégia chamada imputação mediana.
+
+Ainda faltam alguns valores a serem imputados para as colunas 0, 1, 3, 4, 5, 6 e 13. Todas essas colunas contêm dados não numéricos e é por isso que a estratégia de imputação média não funcionaria aqui. Isso precisa de um tratamento diferente. Vamos imputar esses valores ausentes com os valores mais frequentes presentes nas respectivas colunas. Essa é uma boa prática quando se trata de imputar valores ausentes para dados categóricos em geral.
+
+Ainda há algum pré-processamento de dados menor, mas essencial e necessário antes de prosseguirmos para a construção de nosso modelo de aprendizado de máquina:
+
+-   Remover variáveis com 0 de variância, se houver
+-   Remover variáveis X12 e X14, com mencionado anteriormente
+-   Dimensionar os valores das variáveis para um intervalo uniforme
+-   Converter os dados não numéricos em numéricos: fazemos isso porque não apenas resulta em uma computação mais eficiente, mas também muitos modelos de aprendizado de máquina (como XGBoost) exigem que os dados estejam em um formato estritamente numérico
+
+```{r}
+#receita com a fómula e pré-processamentos necessários
+receita = recipe(X16~., cc_train) %>%
+  step_rm(X14, X12) %>%
+  step_zv(all_numeric_predictors()) %>%
+  step_impute_median(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  step_impute_mode(all_factor_predictors()) %>%
+  step_dummy(all_factor_predictors())
+
+#Dados depois do pré-processamento
+receita %>% prep() %>% juice()
+```
+
+## Modelos
+
+Essencialmente, prever se um pedido de cartão de crédito será aprovado ou não é uma tarefa de classificação. De acordo com a UCI, nosso conjunto de dados contém mais instâncias que correspondem ao status “Negado” do que instâncias correspondentes ao status “Aprovado”. Especificamente, de 690 casos, 383 (55,5%) dos pedidos foram negados e 307 (44,5%) foram aprovados. Isso nos dá uma boa referência.
+
+Um bom modelo de aprendizado de máquina deve ser capaz de prever com precisão o status dos pedidos em relação a essas estatísticas.
+
+Primeiro vamos criar as especificações dos nossos 2 modelos:
+
+```{r}
+#especificações XGBoost
+xgboost_spec <- boost_tree(mtry = tune(), 
+                           trees = tune(), 
+                           min_n = tune(),
+                           tree_depth = tune(), 
+                           learn_rate = tune(), 
+                           loss_reduction = tune(),
+                           sample_size = tune(), 
+                           stop_iter = tune(), 
+                           mode = "classification", 
+                           engine = "xgboost")
+
+#especificações LightGBM
+light_spec <- boost_tree(tree_depth = tune(),
+                         trees = tune(), 
+                         learn_rate = tune(),
+                         mtry = tune(), 
+                         min_n = tune(), 
+                         loss_reduction = tune(), 
+                         mode = "classification", 
+                         engine = "lightgbm")
+```
+
+Agora, vamos criar os dados para validação, que serão usados para otimizar os hiperparâmetros e criar um workflow para cada modelo
+
+```{r}
+#dados para validação cruzada, por bootstrap
+set.seed(12345)
+resample <- bootstraps(cc_train, times = 10, strata = X16)
+
+#workflow XGBoost
+xgb_wflow <- workflow() %>%
+  add_recipe(receita) %>%
+  add_model(xgboost_spec)
+
+#workflow lightGBM
+library(bonsai)
+light_wflow <- workflow() %>%
+  add_recipe(receita) %>%
+  add_model(light_spec)
+```
+
+Precisamos, ainda, definir os parâmetros de cada modelo e criar um grid com várias combinações de parâmetros para podemos otimizá-los
+
+```{r}
+#parametros xgboost
+xgb_params <- extract_parameter_set_dials(xgboost_spec) %>%
+  finalize(cc_train)
+
+#parametros lightGBM
+light_params <- extract_parameter_set_dials(light_spec) %>%
+  finalize(cc_train)
+
+#grid de parâmetros (30 combinações para cada)
+xgb_grid <- grid_latin_hypercube(x = xgb_params, size = 30)
+light_grid <- grid_latin_hypercube(x = light_params, size = 30)
+```
+
+Podemos otimizar os parâmetros com o pacote tune. Vou utilizar um método de racing, que depois que um número inicial de reamostragens é avaliado, o processo elimina combinações de parâmetros de ajuste que são improváveis de resultar nos melhores resultados usando um modelo de ANOVA de medidas repetidas.
+
+```{r}
+#biblioteca para processamento em paralelo
+library(doParallel)
+cores <- parallel::detectCores()
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+#otimização com tune_race_anova
+library(finetune)
+xgb_tune_results <- tune_race_anova(object = xgb_wflow, 
+                                    resamples = resample, 
+                                    grid = xgb_grid,
+                                    metrics = metric_set(roc_auc, accuracy))
+
+light_tune_results <- tune_race_anova(object = light_wflow, 
+                                    resamples = resample, 
+                                    grid = light_grid,
+                                    metrics = metric_set(roc_auc, accuracy))
+```
+
+Podemos visualizar como as possíveis combinações de parâmetros que tentamos se saíram durante a "corrida". Note como economizamos MUITO tempo ao não avaliar as combinações de parâmetros que estavam claramente se saindo mal em todas as reamostragens; só continuamos com as boas combinações de parâmetros.
+
+```{r}
+plot_race(xgb_tune_results)
+plot_race(light_tune_results)
+```
+
+Também podemos ver os melhores resultados
+
+```{r}
+show_best(xgb_tune_results)
+show_best(light_tune_results)
+```
+
+Os dois modelos se saíram muito bem e tiveram resultados parecidos nos dados de validação. Vamos ver a performance nos dados de teste, finalizando o workflow com os melhores parâmetros e ajustando ao split inicial.
+
+```{r}
+#ajuste final xgboost
+xgb_last <- finalize_workflow(x = xgb_wflow, 
+                              parameters = select_best(xgb_tune_results)) %>%
+  last_fit(cc_split)
+
+#ajuste final LightGBM
+light_last <- finalize_workflow(x = light_wflow,
+                                parameters = select_best(light_tune_results)) %>%
+  last_fit(cc_split)
+```
+
+Podemos coletar as previsões no conjunto de teste e fazer o que quisermos, como criar uma curva ROC e métricas de desempenho
+
+```{r}
+xgb_last %>% collect_metrics()
+light_last %>% collect_metrics()
+```
+
+Os dois modelos têm uma performance muito parecida:
+
+```{r}
+library(pROC)
+#roc xgboost
+xgb_roc <- xgb_last %>%
+  collect_predictions() %>%
+  roc(X16, `.pred_-`)
+
+#roc lgbm
+light_roc <- light_last %>%
+  collect_predictions() %>%
+  roc(X16, `.pred_-`)
+
+#grafico conjunto
+plot(xgb_roc, col = "red", main = "Curvas ROC")
+plot(light_roc, col = "blue",add=T)
+legend("bottomright", legend = c("XGBoost", "LightGBM"), col = c("red", "blue"), lty=1)
+```
+
+Esses resultados são bastante bons para um modelo inicial.
+
+Também podemos calcular pontuações de importância de variáveis usando o pacote vip.
+
+```{r}
+library(vip)
+xgb_last %>%
+  extract_fit_parsnip() %>%
+  vip() + theme_minimal()
+
+light_last  %>%
+  extract_fit_parsnip() %>%
+  vip() + theme_minimal()
+```
+
+Observamos que nos dois modelos as duas variáveis mais importantes são as mesmas, provavelmente inadimplência anterior e renda.
+
+## Otimização Bayesiana
+
+Vamos tentar otimizar ainda mais nosso modelo LightGBM utilizando métodos bayesianos. Podemos usar nosso resultado anterior para servir como passo inicial para o modelo.
+
+```{r}
+light_bayes <- tune_bayes(object = light_wflow, 
+           resamples = resample, 
+           iter = 30, 
+           metrics = metric_set(accuracy, roc_auc), 
+           initial = light_tune_results, 
+           param_info = light_params,
+           control = control_bayes(verbose = T, no_improve = 10, seed = 12345))
+```
+
+```{r}
+#visualizar resultado
+autoplot(light_bayes, type="performance")
+light_bayes %>% show_best()
+```
+
+Vemos acima a performance de cada iteração e está parecido com o modelo anterior. Vamos selecionar o melhor e avaliar nos dados de teste
+
+```{r}
+#finalizar modelo
+light_bayes_final <- finalize_workflow(light_wflow, select_best(light_bayes)) %>%
+  last_fit(cc_split)
+
+#métricas finais
+light_bayes_final %>% collect_metrics()
+```
+
+Os resultados foram muito parecidos com o modelo anterior.
+
+## Conclusão
+
+Ao criar esse preditor de cartão de crédito, abordamos algumas das etapas de pré-processamento mais conhecidas, como dimensionamento, codificação de variáveis e imputação de valor ausente. Terminamos com algum aprendizado de máquina para prever se o pedido de cartão de crédito de uma pessoa seria aprovado ou não de acordo com algumas informações sobre essa pessoa.
+
+Os modelos tiveram um desempenho muito bom e com métricas muito semelhantes.
+
+# Referências
+
+-   Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. arXiv preprint arXiv:1603.02754.
+-   Ke, G., Wang, Q., Chen, W., Hu, W., & Liu, T.-Y. (2017). LightGBM: A highly efficient gradient boosting decision tree. In Advances in Neural Information Processing Systems (pp. 3146-3154).

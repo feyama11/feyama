@@ -1,0 +1,10 @@
+"0","# calcular a estatística observada"
+"0","observed_statistic <- gss %>%"
+"0","  specify(hours ~ college) %>%"
+"0","  calculate(stat = ""diff in means"", order = c(""degree"", ""no degree""))"
+"0",""
+"0","observed_statistic"
+"1","Response: hours (numeric)
+Explanatory: college (factor)"
+"1","
+"

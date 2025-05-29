@@ -1,0 +1,5 @@
+"0","autoplot(ens, ""weights"") +"
+"0","   geom_text(aes(x = weight + 0.01, label = model), hjust = 0) + "
+"0","   theme_bw()+"
+"0","   theme(legend.position = ""none"") +"
+"0","   lims(x = c(-0.01, 0.84))"

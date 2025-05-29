@@ -1,0 +1,256 @@
+---
+title: "R e SQL"
+description: |
+  Como se conectar a um banco de dados SQL e fazer análises direto do R?
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+preview: dbi_cover_image.png
+date: 2023-12-19
+categories:
+  - SQL
+  - R
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+---
+
+Conectar-se a um banco de dados SQL usando R é uma poderosa habilidade na caixa de ferramentas de um cientista de dados. Nesse post irei compartilhar  como realizar esse processo e simplificar a manipulação de dados diretamente do R para a base de dados. Se você está curioso para saber mais, confira o post completo!
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+## Conectando-se ao servidor
+
+No mundo da ciência de dados, existem muitas linguagens e ferramentas que podem ser usadas para concluir uma determinada tarefa. Embora você geralmente possa usar a ferramenta que preferir, é frequentemente importante para os analistas trabalhar com ferramentas semelhantes para que possam compartilhar seu código entre si. Aprender o que os profissionais da indústria de ciência de dados usam no trabalho pode ajudá-lo a ter uma compreensão melhor das coisas que você pode ser solicitado a fazer no futuro.
+
+Neste projeto, vamos descobrir quais ferramentas e idiomas os profissionais usam em seu trabalho diário. Os dados vêm da Pesquisa de Ciência de Dados do Kaggle, que inclui respostas de mais de 10.000 pessoas que escrevem código para analisar dados em seu trabalho diário, entretanto, ele está armazenado em um PosgreeSQL server.
+
+```{r}
+#Pacotes necessários
+library(DBI)
+library(dbplyr)
+library(dplyr)
+
+# Substitua esses espaço pelas suas credenciais do PostgreSQL
+dbname <- "kaggle"
+dbuser <- "feyama"
+dbhost <- "localhost"
+dbport <- 5432
+password <- "senha123"
+
+# Estabeleça a conexão
+con <- dbConnect(RPostgres::Postgres(),
+                 dbname = dbname,
+                 host = dbhost,
+                 port = dbport,
+                 user = dbuser,
+                 password = password)
+
+# Verificar se a conexão foi bem-sucedida
+if (dbIsValid(con)) {
+  print("Connected to PostgreSQL database!")
+} else {
+  print("Connection failed")
+}
+```
+
+Agora que a conexão foi feita, vamos dar uma olhada nas tabelas do banco de dados e nas primeiras linhas dos nossos dados:
+
+```{r}
+##listando as tabelas da conexão
+dbListTables(con)
+
+# Cria um objeto "kaggle" a partir da conexão com o banco de dados 
+kaggle <- tbl(con, "kaggle")
+
+# Exibe as primeiras linhas do objeto "kaggle"
+head(kaggle)
+```
+
+Podemos retirar a coluna 'Respondent', pois ela só indica o número da linha:
+
+```{r}
+# carregando tidyverse
+library(tidyverse)
+
+kaggle <- kaggle %>%
+  select(-Respondent)
+
+head(kaggle)
+```
+
+Podemos ver que a fonte de dados não é um data frame, mas sim uma query SQL de uma base de dados postgres
+
+## Ferramentas mais utilizadas
+
+Agora que carregamos os resultados da pesquisa, queremos focar nas ferramentas e linguagens que os respondentes da pesquisa usam no trabalho.
+
+Para ter uma ideia melhor de como os dados estão formatados, vamos analisar o uso de ferramentas pelos primeiros respondentes e ver que este participante da pesquisa listou várias ferramentas, cada uma separada por uma vírgula. Para saber quantas pessoas usam cada ferramenta, precisamos separar todas as ferramentas usadas por cada indivíduo.
+
+```{r}
+# Ferramentas e idiomas dos primeiros respondentes
+kaggle %>% 
+  select(WorkToolsSelect) %>%
+  head()
+```
+
+Vamos criar uma nova coluna 'work_tools', que será cada ferramenta citada na variável 'WorkToolsSelect' depois de separá-las.
+
+```{r eval=FALSE, include=TRUE}
+# Adicione uma nova coluna e desagrupe essa nova coluna.
+kaggle  %>% 
+    mutate(work_tools = str_split(WorkToolsSelect, ","))
+```
+
+Obtivemos um erro, dizendo que não é possível traduzir a função 'str_split' para SQL. Vamos, então, transformar nossos dados em um data frame para fazer essa análise.
+
+```{r}
+#transformando a tabela 'kaggle' em um df e atribuindo a variavel 'tools'
+tools <- kaggle  %>% collect()
+
+#Separando as palavras de 'WorkToolsSelect' de acordo com a vírgula
+tools <- tools %>%
+  mutate(work_tools = str_split(WorkToolsSelect, ",")) %>%
+  unnest(work_tools)
+
+#vizualizado as primeiras linhas da coluna work_tools
+head(tools$work_tools,15)
+```
+Agora sim! Cada linha representa apenas uma ferramenta
+
+## Número de usuários por ferramenta
+
+Agora que dividimos todas as ferramentas usadas por cada respondente, podemos descobrir quais ferramentas são as mais populares.
+
+```{r}
+# Agrupe os dados por 'work_tools', resuma as contagens e organize em ordem decrescente
+tool_count  <- tools  %>% 
+    group_by(work_tools)  %>% 
+    summarise(count = n()) %>%
+    arrange(desc(count))
+
+# primeiras linhas do resultado
+head(tool_count)
+```
+
+## Gráfico das ferramentas mais usadas
+
+```{r fig.height=8}
+# Criando um gráfico de barras da coluna work_tools.
+ggplot(tool_count, aes(x = fct_reorder(work_tools, count), y = count)) + 
+  coord_flip()  +
+  geom_col(fill = "#112446") +
+  theme_minimal() +
+  labs(x = "Ferramenta", y="Total")
+```
+
+Vemos o que era de se esperar quando se fala em ciência de dados: Python, R e SQL.
+
+## R ou Python?
+
+Dentro do campo da ciência de dados, há muito debate entre profissionais sobre se R ou Python deveriam predominar - eu, pessoalmente, prefiro muito mais o R :). Podemos ver a partir de nossa última figura que R e Python são as duas linguagens mais comumente usadas, mas é possível que muitos respondentes usem tanto R quanto Python. Vamos dar uma olhada em quantas pessoas usam R, Python e ambas as ferramentas.
+
+```{r}
+# Criando uma nova coluna chamada 'language_preference'
+debate_tools <- kaggle  %>% 
+   mutate(language_preference = case_when(
+      str_detect(WorkToolsSelect, "R") & ! str_detect(WorkToolsSelect, "Python") ~ 'R',
+      str_detect(WorkToolsSelect, "Python") & ! str_detect(WorkToolsSelect, "R") ~ 'Python',
+      str_detect(WorkToolsSelect, "R") & str_detect(WorkToolsSelect, "Python")   ~ "both",
+      TRUE ~ "neither"
+   ))
+
+
+# mostrando as primeiras linhas
+head(debate_tools %>% select(language_preference))
+```
+
+Além disso, olha que legal: podemos ver qual foi o código em SQL gerado pelo nosso código escrito com o tidyverse:
+
+```{r}
+debate_tools %>% show_query()
+```
+E, para quem preferir, usar diretamente código SQL para fazer a análise. Basta criar um 'code chunk' sql e especificar 'connection' = con:
+
+```{sql, connection = con}
+SELECT
+  "WorkToolsSelect",
+  "LanguageRecommendationSelect",
+  "EmployerIndustry",
+  "WorkAlgorithmsSelect",
+  CASE
+WHEN ("WorkToolsSelect" ~ 'R' AND NOT("WorkToolsSelect" ~ 'Python')) THEN 'R'
+WHEN ("WorkToolsSelect" ~ 'Python' AND NOT("WorkToolsSelect" ~ 'R')) THEN 'Python'
+WHEN ("WorkToolsSelect" ~ 'R' AND "WorkToolsSelect" ~ 'Python') THEN 'both'
+ELSE 'neither'
+END AS "language_preference"
+FROM "kaggle"
+```
+
+
+## Gráfico R vs Python
+
+Agora só precisamos analisar melhor quantos respondentes usam R, Python e ambos!
+
+```{r}
+# Agrupando por 'language_preference', calculando o número de respostas e removendo 'neither'
+debate_plot = debate_tools %>%
+  count(language_preference) %>%
+  filter(!language_preference == "neither") %>%
+  arrange(n)
+
+debate_plot
+```
+
+Também podemos ver  qual o código SQL usado:
+
+```{r}
+debate_plot %>% show_query()
+```
+
+Agora vamos visualizar essas informações:
+
+```{r}
+# Criando um gráfico de barras simples
+ggplot(debate_plot, aes(x= fct_reorder(language_preference, n), y = n)) + 
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(y="Total",  x="Linguagem")
+```
+
+## Recomendações
+
+Parece que o maior grupo de profissionais programa tanto em Python quanto em R. Mas o que acontece quando eles são questionados sobre qual linguagem recomendam para novos aprendizes? Os amantes de R sempre recomendam R?
+
+```{r}
+# Group by, summarise, arrange, mutate, and filter
+recommendations <- debate_tools  %>% 
+    group_by(language_preference, LanguageRecommendationSelect)  %>%
+    summarise(count = n())  %>% 
+    arrange(language_preference, desc(count))  %>% 
+    mutate(row = row_number()) %>% 
+    filter(row <= 4)
+
+# Criar um gráfico de barros dividido por 'language_preference'
+ggplot(recommendations, aes(x = LanguageRecommendationSelect, y = count)) +
+    geom_col() + 
+    facet_wrap(~language_preference) +
+    labs(x = "Linguagem recomendada")
+```
+
+## Conclusão
+
+Nesse post vimos como usar a linguagem R para se conecar a um banco de dados SQL e realizar 'querys' usando a sintaxe já conhecida do tidyverse. Entretanto, como vimos, algumas funções não possuem tradução ainda, desse modo é importante aprender SQL, ou saber onde pesquisar caso não consiga realizar alguma análise.
+
+Analisando os dados, descobrimos que Python é a linguagem mais popular usada entre os cientistas de dados do Kaggle, mas os usuários de R não estão muito atrás. E embora os usuários de Python possam altamente recomendar que novos aprendizes aprendam Python, os usuários de R também recomendam que novos aprendizes aprendam R.
+
+No fim, a linguagem de programação é apenas uma ferramenta. Utilize a que você se sinta mais confortável e mais produtivo, desde que o trabalho seja feito com qualidade.
+
+
+

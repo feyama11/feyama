@@ -1,0 +1,12 @@
+"0","# Adicione uma nova coluna e desagrupe essa nova coluna."
+"0","kaggle  %>% "
+"0","    mutate(work_tools = str_split(WorkToolsSelect, "",""))"
+"1","[1m[33mError[39m in `purrr::pmap()`:[22m
+[38;5;252m[36mℹ[38;5;252m In index: 5.
+[36mℹ[38;5;252m With name: work_tools.[39m
+[1mCaused by error in `str_split()`:[22m
+[38;5;252m[33m![38;5;252m str_split() is not available in this SQL variant[39m
+Backtrace:
+[90m  1. [39m[1mbase[22m (local) `<fn>`(x)
+[90m 30. [39m[1mdbplyr[22m (local) [1m[94mstr_split([39m[22mWorkToolsSelect, "",""[1m[94m)[39m[22m
+"

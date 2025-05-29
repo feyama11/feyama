@@ -1,0 +1,13 @@
+"0","# gerar a distribuição nula"
+"0","null_dist <- "
+"0","   gss_paired %>% "
+"0","   specify(response = diff) %>% "
+"0","   hypothesize(null = ""paired independence"") %>%"
+"0","   generate(reps = 1000, type = ""permute"") %>%"
+"0","   calculate(stat = ""mean"")"
+"0","   "
+"0","null_dist"
+"1","Response: diff (numeric)
+Null Hypothesis: paired independence"
+"1","
+"

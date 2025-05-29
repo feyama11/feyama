@@ -1,0 +1,40 @@
+"0","# Preparando os dados"
+"0","lendario_tipo = pokedex %>% "
+"0","    group_by(type) %>% "
+"0","    mutate(is_legendary = as.numeric(is_legendary) - 1) %>% "
+"0","    summarise(prop_legendary = mean(is_legendary)) %>% "
+"0","    ungroup() %>% "
+"0","    mutate(type = fct_reorder(type, prop_legendary))"
+"0",""
+"0","# Preparando o gráfico"
+"0","grafico_lendario_tipo = lendario_tipo %>% "
+"0","    ggplot(aes(x = type, y = prop_legendary, fill = prop_legendary)) + "
+"0","    geom_col() +"
+"0","    labs(title = ""Proporção de Pokémon Lendário por tipo"","
+"0","         x = ""Tipo"","
+"0","         y = ""Proporção"") +"
+"0","    coord_flip() +"
+"0","    guides(fill = ""none"")"
+"0",""
+"0","# grafico"
+"0","library(plotly)"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","ggplotly(grafico_lendario_tipo)"

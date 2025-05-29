@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Testes de Hipótese</title>
+
+  <meta property="description" itemprop="description" content="O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2023-12-16"/>
+  <meta property="article:created" itemprop="dateCreated" content="2023-12-16"/>
+  <meta name="article:author" content="Felipe Yamamoto Tenedine"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Testes de Hipótese"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Testes de Hipótese"/>
+  <meta property="twitter:description" content="O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","preview","date","categories","output","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Testes de Hipótese"]},{"type":"character","attributes":{},"value":["O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Felipe Yamamoto Tenedine"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/felipe-yamamoto-tenedine/"]}]}]},{"type":"character","attributes":{},"value":["images.jpeg"]},{"type":"character","attributes":{},"value":["2023-12-16"]},{"type":"character","attributes":{},"value":["teste de hipotese","estatistica","R"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","toc_float","toc_collapsed","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["markdown"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["wrap"]}},"value":[{"type":"integer","attributes":{},"value":[72]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["canis.csv","HAART.csv","Heart.csv","images/Sem título-01.png","images/Sem título-02.png","images/Sem título-03.png","images/Sem título-04.png","images/Sem título-05.png","images/Sem título-06.png","images/Sem título-07.png","images/Sem título-08.png","images/Sem título-09.png","images/Sem título-10.png","images/Sem título-11.png","images/Sem título-12.png","images/Sem título-13.png","images/Sem título-14.png","images/Sem título-15.png","images/Sem título-16.png","images/Sem título-17.png","images/Sem título-18.png","images/Sem título-19.png","images/Sem título-20.png","images/Sem título-21.png","images/Sem título-22.png","images/Sem título-23.png","images/Sem título-24.png","images/Sem título-25.png","images/Sem título-26.png","images/Sem título-27.png","images/Sem título-28.png","images/Sem título-29.png","images/Sem título-30.png","images/Sem título.png","images.jpeg","Oncology.csv","Rats.csv","teste-de-hiptese_files/anchor-4.2.2/anchor.min.js","teste-de-hiptese_files/bowser-1.9.3/bowser.min.js","teste-de-hiptese_files/distill-2.2.21/template.v2.js","teste-de-hiptese_files/header-attrs-2.20/header-attrs.js","teste-de-hiptese_files/jquery-3.6.0/jquery-3.6.0.js","teste-de-hiptese_files/jquery-3.6.0/jquery-3.6.0.min.js","teste-de-hiptese_files/jquery-3.6.0/jquery-3.6.0.min.map","teste-de-hiptese_files/popper-2.6.0/popper.min.js","teste-de-hiptese_files/tippy-6.2.7/tippy-bundle.umd.min.js","teste-de-hiptese_files/tippy-6.2.7/tippy-light-border.css","teste-de-hiptese_files/tippy-6.2.7/tippy.css","teste-de-hiptese_files/tippy-6.2.7/tippy.umd.min.js","teste-de-hiptese_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="teste-de-hiptese_files/header-attrs-2.20/header-attrs.js"></script>
+  <script src="teste-de-hiptese_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="teste-de-hiptese_files/popper-2.6.0/popper.min.js"></script>
+  <link href="teste-de-hiptese_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="teste-de-hiptese_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="teste-de-hiptese_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="teste-de-hiptese_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="teste-de-hiptese_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="teste-de-hiptese_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="teste-de-hiptese_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Testes de Hipótese","description":"O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?","authors":[{"author":"Felipe Yamamoto Tenedine","authorURL":"https://www.linkedin.com/in/felipe-yamamoto-tenedine/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-12-16T00:00:00.000-03:00","citationText":"Tenedine, 2023"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Testes de Hipótese</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">teste de hipotese</div>
+<div class="dt-tag">estatistica</div>
+<div class="dt-tag">R</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>O que é um teste de hipótese e quais são os principais testes Paramétricos e Não-Paramétricos?</p></p>
+</div>
+
+<div class="d-byline">
+  Felipe Yamamoto Tenedine <a href="https://www.linkedin.com/in/felipe-yamamoto-tenedine/" class="uri">https://www.linkedin.com/in/felipe-yamamoto-tenedine/</a> 
+  
+<br/>2023-12-16
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#teste-de-hipótese" id="toc-teste-de-hipótese">Teste de hipótese</a>
+<ul>
+<li><a href="#o-que-é" id="toc-o-que-é">O que é?</a></li>
+<li><a href="#quais-são-as-hipóteses" id="toc-quais-são-as-hipóteses">Quais são as hipóteses?</a></li>
+</ul></li>
+<li><a href="#tipos-de-hipóteses" id="toc-tipos-de-hipóteses">Tipos de Hipóteses</a>
+<ul>
+<li><a href="#hipóteses-bilaterais" id="toc-hipóteses-bilaterais">Hipóteses Bilaterais</a></li>
+<li><a href="#hipóteses-unilaterais" id="toc-hipóteses-unilaterais">Hipóteses Unilaterais</a></li>
+</ul></li>
+<li><a href="#tipos-de-erro" id="toc-tipos-de-erro">Tipos de erro</a></li>
+<li><a href="#etapas-de-um-teste-de-hipótese" id="toc-etapas-de-um-teste-de-hipótese">Etapas de um Teste de Hipótese</a>
+<ul>
+<li><a href="#ª-etapa-formulação-das-hipóteses" id="toc-ª-etapa-formulação-das-hipóteses">1ª Etapa – Formulação das Hipóteses</a></li>
+<li><a href="#ª-etapa-escolha-do-nível-de-significância" id="toc-ª-etapa-escolha-do-nível-de-significância">2ª Etapa – Escolha do Nível de Significância</a></li>
+<li><a href="#ª-etapa-estatística-do-teste" id="toc-ª-etapa-estatística-do-teste">3ª Etapa – Estatística do Teste</a></li>
+<li><a href="#ª-etapa-região-crítica" id="toc-ª-etapa-região-crítica">4ª Etapa – Região Crítica</a></li>
+<li><a href="#ª-etapa-nível-descritivo-do-teste-p-valor" id="toc-ª-etapa-nível-descritivo-do-teste-p-valor">5ª Etapa – Nível Descritivo do Teste (P-valor)</a></li>
+<li><a href="#ª-etapa-conclusão-estatística" id="toc-ª-etapa-conclusão-estatística">6ª Etapa – Conclusão Estatística</a></li>
+<li><a href="#ª-etapa-conclusão-prática" id="toc-ª-etapa-conclusão-prática">7ª Etapa – Conclusão Prática</a></li>
+</ul></li>
+<li><a href="#tipos-de-teste-de-hipótese" id="toc-tipos-de-teste-de-hipótese">Tipos de Teste de Hipótese</a></li>
+<li><a href="#testes-paramétricos" id="toc-testes-paramétricos">Testes Paramétricos</a>
+<ul>
+<li><a href="#média" id="toc-média">Média</a></li>
+<li><a href="#homogeneidade-de-variâncias" id="toc-homogeneidade-de-variâncias">Homogeneidade de Variâncias</a></li>
+<li><a href="#diferença-de-médias-amostras-independentes" id="toc-diferença-de-médias-amostras-independentes">Diferença de Médias (Amostras Independentes)</a></li>
+<li><a href="#diferença-de-médias-amostras-pareadas" id="toc-diferença-de-médias-amostras-pareadas">Diferença de Médias (Amostras Pareadas)</a></li>
+</ul></li>
+<li><a href="#testes-não-paramétricos" id="toc-testes-não-paramétricos">Testes Não-Paramétricos</a>
+<ul>
+<li><a href="#teste-qui-quadrado-de-aderência" id="toc-teste-qui-quadrado-de-aderência">Teste Qui-Quadrado de aderência</a></li>
+<li><a href="#teste-qui-quadrado-de-independência" id="toc-teste-qui-quadrado-de-independência">Teste Qui-Quadrado de Independência</a></li>
+<li><a href="#teste-exato-de-fisher" id="toc-teste-exato-de-fisher">Teste Exato de Fisher</a></li>
+<li><a href="#teste-de-mantel-haenzel" id="toc-teste-de-mantel-haenzel">Teste de Mantel-Haenzel</a></li>
+<li><a href="#teste-de-normalidade-de-shapiro-wilk" id="toc-teste-de-normalidade-de-shapiro-wilk">Teste de Normalidade de Shapiro-Wilk</a></li>
+<li><a href="#teste-de-mann-whitney" id="toc-teste-de-mann-whitney">Teste de Mann-Whitney</a></li>
+<li><a href="#teste-de-wilcoxon" id="toc-teste-de-wilcoxon">Teste de Wilcoxon</a></li>
+</ul></li>
+<li><a href="#referências" id="toc-referências">Referências</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="teste-de-hipótese">Teste de hipótese</h2>
+<h3 id="o-que-é">O que é?</h3>
+<p>Um teste de hipóteses é uma regra de decisão que permite rejeitar ou não
+as hipóteses testadas, com um determinado nível de confiança, baseados
+em valores amostrais.</p>
+<h3 id="quais-são-as-hipóteses">Quais são as hipóteses?</h3>
+<ul>
+<li><p>Hipóteses nula: é o oposto da hipótese alternativa, denotada por
+<span class="math inline">\(H_{0}\)</span></p></li>
+<li><p>Hipótese alternativa: é uma suposição provisória (de pesquisa)
+sobreum parâmetro populacional, denotada por <span class="math inline">\(H_{a}\)</span></p></li>
+</ul>
+<h2 id="tipos-de-hipóteses">Tipos de Hipóteses</h2>
+<h3 id="hipóteses-bilaterais">Hipóteses Bilaterais</h3>
+<p>Se nosso interesse for em avaliar se há uma diferença em relação ao
+valor definido para <span class="math inline">\(H_{0}\)</span>, tanto positiva como negativa, o teste será
+chamado de bilateral e suas hipóteses serão definidas, no caso
+paramétrico, como:</p>
+<p><span class="math inline">\(H_{0}\)</span>: Parâmetro Populacional = Parâmetro de Teste</p>
+<pre><code>                      VS</code></pre>
+<p><span class="math inline">\(H_{a}\)</span>: Parâmetro Populacional <span class="math inline">\(\neq\)</span> Parâmetro de Teste</p>
+<h3 id="hipóteses-unilaterais">Hipóteses Unilaterais</h3>
+<p>Às vezes, pode-se supor que uma diferença real possa ocorrer somente em
+um sentido, de tal forma que, se ocorrer uma diferença no outro sentido,
+isso é devido ao acaso. Nesse caso, o teste será chamado de unilateral e
+suas hipóteses, no caso paramétrico, serão definidas como:</p>
+<p><span class="math inline">\(H_{0}\)</span>: Parâmetro Populacional ≤ (ou ≥) Parâmetro de Teste</p>
+<pre><code>                        VS</code></pre>
+<p><span class="math inline">\(H_{a}\)</span>: Parâmetro Populacional &gt; (ou &lt;) Parâmetro de Teste</p>
+<h2 id="tipos-de-erro">Tipos de erro</h2>
+<ul>
+<li><p>Erro do tipo I: é o erro que ocorre quando rejeitamos a hipótese
+nula e ela é verdadeira, isto é, rejeitar a hipótese nula, neste
+caso, não é uma decisão correta. Esse tipo de erro é denotado por
+<span class="math inline">\(\alpha\)</span> e é conhecido como nível de significância do teste de
+hipóteses.</p></li>
+<li><p>Erro do tipo II: é o erro que ocorre quando não-rejeitamos a
+hipótese nula quando ela é falsa, isto é, descartamos a hipótese
+alternativa que é verdadeira, também não é uma decisão correta. Esse
+é denotado por <span class="math inline">\(\beta\)</span> e não pode ser controlado.</p></li>
+</ul>
+<p><img src="images/Sem%20t%C3%ADtulo-05.png" /></p>
+<h2 id="etapas-de-um-teste-de-hipótese">Etapas de um Teste de Hipótese</h2>
+<h3 id="ª-etapa-formulação-das-hipóteses">1ª Etapa – Formulação das Hipóteses</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Formulação das hipóteses nula e alternativa, de acordo com o objetivo do
+experimento.</p>
+<ul>
+<li>Exemplo:</li>
+</ul>
+<p>Por exemplo, se quisermos testar se a média (<span class="math inline">\(\mu\)</span>) de altura de uma
+população é igual a 170 cm, a hipótese nula seria <span class="math inline">\(H_{0}\)</span>: μ = 170 e a
+hipótese alternativa seria <span class="math inline">\(H_{a}\)</span>: <span class="math inline">\(\mu\)</span> <span class="math inline">\(\neq\)</span> 170 cm.</p>
+<h3 id="ª-etapa-escolha-do-nível-de-significância">2ª Etapa – Escolha do Nível de Significância</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Definir o nível de significância para o teste.</p>
+<ul>
+<li>Uso prático:</li>
+</ul>
+<p>O nível de significância é a probabilidade de cometer um erro do tipo I
+ao rejeitar a hipótese nula quando ela é verdadeira, sendo comum, na
+prática, o uso do valor de 5% (ou 0,05) para essa probabilidade.</p>
+<h3 id="ª-etapa-estatística-do-teste">3ª Etapa – Estatística do Teste</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Definir e calcular a estatística do teste que será utilizada.</p>
+<ul>
+<li>Forma da estatística:</li>
+</ul>
+<p>Para os testes paramétricos, a estatística do teste é baseada na
+distribuição amostral de interesse, sendo expressa, em geral, por:</p>
+<p><span class="math inline">\(\frac{\large\text{Parâmetro de interesse} \quad - \quad \text{Parâmetro da hipótese}}{\large\text{Erro-padrão do parâmetro de interesse}}\)</span></p>
+<h3 id="ª-etapa-região-crítica">4ª Etapa – Região Crítica</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Definir a região crítica do teste de hipóteses que são os valores
+numéricos da estatística do teste para os quais a hipótese nula será
+rejeitada.</p>
+<ul>
+<li><p>Exemplo: Estatística Z</p></li>
+<li><p><strong>Teste Unilateral à Esquerda</strong>: Rejeita-se <span class="math inline">\(H_{0}\)</span> se o valor
+calculado da estatística, <span class="math inline">\(Z_{\text{calc}}\)</span>, for menor ou igual ao
+valor crítico, <span class="math inline">\(-Z_{1-\alpha}\)</span>, definido para o teste de acordo com
+o nível significância.</p></li>
+<li><p><strong>Teste Unilateral à Direita</strong>: Rejeita-se <span class="math inline">\(H_{0}\)</span> se o valor
+calculado da estatística, <span class="math inline">\(Z_{\text{calc}}\)</span>, for maior ou igual ao
+valor crítico, <span class="math inline">\(Z_{1-\alpha}\)</span>, definido para o teste de acordo com o
+nível significância.</p></li>
+<li><p><strong>Teste Bilateral</strong>: Rejeita-se <span class="math inline">\(H_{0}\)</span> se o valor calculado da
+estatística, <span class="math inline">\(-Z_{1-\alpha}\)</span> for menor ou igual ao valor crítico,
+<span class="math inline">\(-Z_{1-\alpha}\)</span> , ou se o valor calculado da estatística
+<span class="math inline">\(Z_{\text{calc}}\)</span>, for maior ou igual ao valor crítico,
+<span class="math inline">\(Z_{1-\alpha}\)</span>, definido para o teste de acordo com o nível
+significância.</p></li>
+</ul>
+<p>Figura 2. Região crítica de um teste de hipóteses baseado na estatística
+Z assumindo <span class="math inline">\(\alpha\)</span> = 0,05.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-04.png" /></p>
+<h3 id="ª-etapa-nível-descritivo-do-teste-p-valor">5ª Etapa – Nível Descritivo do Teste (P-valor)</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Definir a regra de decisão pelo critério do nível descritivo do teste
+(p-valor). Tal nível descritivo é definido por
+<span class="math inline">\(p = \inf_{\alpha: X \in R_{\alpha}}\)</span> em que <span class="math inline">\(R_{\alpha}\)</span> é uma região
+de rejeição com nível de significância descrito por <span class="math inline">\(\alpha\)</span></p>
+<ul>
+<li>Regra de decisão:</li>
+</ul>
+<p>Se o p-valor for menor do que <span class="math inline">\(\alpha\)</span>, então rejeita-se <span class="math inline">\(H_{0}\)</span></p>
+<p>Se o p-valor for maior do que <span class="math inline">\(\alpha\)</span>, então não rejeita-se <span class="math inline">\(H_{0}\)</span></p>
+<h3 id="ª-etapa-conclusão-estatística">6ª Etapa – Conclusão Estatística</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Concluir se a hipótese nula, com base na região crítica (Etapa 4) ou no
+nível descritivo do teste (Etapa 5), deve ou não ser rejeitada.</p>
+<ul>
+<li>Observação:</li>
+</ul>
+<p>A não-rejeição ou rejeição de uma hipótese não significa que a hipótese
+seja verdadeira ou falsa, mas apenas que os dados coletados são
+consistentes ou inconsistentes com a hipótese testada.</p>
+<h3 id="ª-etapa-conclusão-prática">7ª Etapa – Conclusão Prática</h3>
+<ul>
+<li>Objetivo?</li>
+</ul>
+<p>Apresentar o referencial teórico (referente ao experimento,
+naturalmente) para o resultado obtido na 6ª Etapa.</p>
+<ul>
+<li>Observação:</li>
+</ul>
+<p>Em geral, espera-se que a conclusão estatística leve ao resultado
+esperado pela prática. Caso isso não ocorra, deve-se levar em conta que
+a conclusão prática não deve ser baseada exclusivamente no resultado do
+teste, sendo necessário uma avaliação crítica e novos dados.</p>
+<h2 id="tipos-de-teste-de-hipótese">Tipos de Teste de Hipótese</h2>
+<ul>
+<li><p>Paramétricos: baseados em pressupostos sobre a distribuição da
+população, sendo frequentemente utilizados quando a distribuição dos
+dados é conhecida ou pode ser assumida como normal.</p></li>
+<li><p>Não-paramétricos: não fazem suposições sobre a distribuição da
+população, sendo frequentemente utilizados quando a distribuição dos
+dados é desconhecida ou não pode ser assumida como normal.</p></li>
+</ul>
+<h2 id="testes-paramétricos">Testes Paramétricos</h2>
+<h3 id="média">Média</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste, em geral, é utilizado para comprovar se determinada
+população possui ou não o valor da média definida na hipótese nula,
+desde que a população atenda o pressuposto de normalidade.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-06.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função <strong>z.test</strong> do pacote <strong>BSDA</strong>.</p>
+<p><strong>EXEMPLO 1</strong>: Sabendo que na população geral a contagem média de
+glóbulos brancos é de μ = 7250/mm3, um pesquisador clínico deseja
+testar, ao nível de significância de 5%, a hipótese de que as pessoas
+infectadas com E.canis devem ter, em média, contagens mais baixas de
+glóbulos brancos do que a população geral. Sendo assim, para testar tal
+hipótese, ele coletou uma amostra de 45 infectados com E. canis. Com
+base nessa amostra e assumindo que o desvio padrão populacional seja
+<span class="math inline">\(\sigma = 320 \, \text{mm}^3\)</span></p>
+<p>Qual é a conclusão do teste de hipótese?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura do pacote library(BSDA)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/alanarnholt/BSDA'>BSDA</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Leitura dos dados</span></span>
+<span></span>
+<span><span class='va'>db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'canis.csv'</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span></span>
+<span><span class='fu'><a href='https://alanarnholt.github.io/BSDA/reference/z.test.html'>z.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>db</span><span class='op'>$</span><span class='va'>globulos_brancos</span>, alternative <span class='op'>=</span> <span class='st'>'less'</span>, mu <span class='op'>=</span> <span class='fl'>7250</span>,</span>
+<span>conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, sigma.x <span class='op'>=</span> <span class='fl'>320</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    One-sample z-Test
+
+data:  db$globulos_brancos
+z = -4.9683, p-value = 3.378e-07
+alternative hypothesis: true mean is less than 7250
+95 percent confidence interval:
+       NA 7091.464
+sample estimates:
+mean of x 
+     7013 </code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que as
+pessoas infectadas com E. canis tem, significativamente, contagens mais
+baixas de glóbulos brancos do que a população geral (p-valor &lt; 0.05),
+isto é, a hipótese do pesquisador é sustentada pela amostra dada.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-07.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função t.test disponível no R.</p>
+<p><strong>EXEMPLO 2</strong>: uma amostra de 20 pacientes com insuficiência cardíaca
+foi coletada. Sabendo que as medidas de CPK expressa nesta amostra
+provém de uma população normal, um pesquisador clínico sugere que a
+média dos valores de CPK dos pacientes com insuficiência cardíaca é
+superior a 600 UI/L. A amostra fornecida é suficiente para apoiar a
+hipótese do pesquisador, considerando um nível de significância de 5%?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Leitura dos dados</span></span>
+<span><span class='va'>db.heart</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'Heart.csv'</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>db.heart</span><span class='op'>$</span><span class='va'>CPK</span>, alternative <span class='op'>=</span> <span class='st'>'greater'</span>, mu <span class='op'>=</span> <span class='fl'>600</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    One Sample t-test
+
+data:  db.heart$CPK
+t = -0.32364, df = 298, p-value = 0.6268
+alternative hypothesis: true mean is greater than 600
+95 percent confidence interval:
+ 489.2536      Inf
+sample estimates:
+mean of x 
+ 581.8395 </code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que
+média dos valores de CPK dos pacientes com insuficiência cardíaca é
+inferior a 600 UI/L, isto é, a hipótese do pesquisador não é sustentada
+pela amostra dada.</p>
+<h3 id="homogeneidade-de-variâncias">Homogeneidade de Variâncias</h3>
+<ul>
+<li>Utilização:</li>
+</ul>
+<p>Este teste, , também conhecido como teste F, é um método estatístico
+utilizado para verificar se duas populações possuem variâncias iguais.</p>
+<ul>
+<li>Construção</li>
+</ul>
+<p>Para realizar o teste F, primeiro é necessário calcular a razão entre as
+variâncias das duas amostras. Essa razão é chamada de estatística F e
+tem distribuição F de Fisher-Snedecor com n − 1 (primeira amostra) e m −
+1 (segunda amostra) graus de liberdade.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-08.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função var.test disponível no R.</p>
+<p><strong>EXEMPLO 1</strong>: Um pesquisador deseja avaliar se há diferença na
+variabilidade dos tempos (em meses) de recuperação de pacientes
+submetidos a dois tipos diferentes de cirurgia cardíaca: cirurgia aberta
+(A) e cirurgia minimamente invasiva (MI). Para o estudo, então, ele
+coleta duas amostras de 20 pacientes que passaram por ambas as cirurgias
+(uma de cada). Os dados são dados abaixo:</p>
+<p>• A: 5, 2, 13, 4, 3, 5, 4, 2, 5, 9, 7, 5, 6, 1, 2, 4, 7, 11, 1, 5.</p>
+<p>• MI: 2, 1, 12, 3, 5, 12, 3, 5, 7, 5, 8, 11, 13, 10, 8, 7, 5, 2, 10, 1.</p>
+<p>Com base nessas amostras, ele calcula a variância dos tempos e obtém os
+seguintes resultados:</p>
+<p>• Amostra de cirurgia aberta: <span class="math inline">\(\sigma_{A}^{2}\)</span> = 10,05</p>
+<p>• Amostra de cirurgia minimamente invasiva: <span class="math inline">\(\sigma_{\text{MI}}^{2}\)</span> =
+15,11</p>
+<p>Qual seria a conclusão do teste de hipóteses para verificar se as
+variâncias são homogêneas, ao nível de significância de 5%?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura dos dados</span></span>
+<span><span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>13</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>7</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>7</span>, <span class='fl'>11</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span></span>
+<span><span class='va'>MI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>12</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>12</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>7</span>, <span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>11</span>, <span class='fl'>13</span>, <span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/var.test.html'>var.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>A</span>, y <span class='op'>=</span> <span class='va'>MI</span>, alternative <span class='op'>=</span> <span class='st'>'two.sided'</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    F test to compare two variances
+
+data:  A and MI
+F = 0.66533, num df = 19, denom df = 19, p-value = 0.3824
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.2633461 1.6809262
+sample estimates:
+ratio of variances 
+          0.665331 </code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que não há evidências
+suficientes para rejeitar a hipótese nula de que não há diferença na
+variabilidade nos tempos de recuperação entre pacientes submetidos a
+cirurgia aberta e pacientes submetidos a cirurgia minimamente invasiva.</p>
+<h3 id="diferença-de-médias-amostras-independentes">Diferença de Médias (Amostras Independentes)</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>É utilizado para a comparação de grupos independentes, amostrados de
+populações diferentes ou da mesma população, desde que as populações
+atendam o pressuposto de normalidade.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-09.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função z.test do pacote BSDA.</p>
+<p><strong>OBS</strong>: Quando o tamanho amostral é pequeno, uma ressalva sobre este
+tipo de teste de hipóteses deve ser feita, isto é, se as amostras são
+pequenas, devemos levar em consideração a variabilidade das amostras,
+pois ela irá influenciar nosso teste.</p>
+<p>Neste caso, a estatística do teste (estatística T) e os graus de
+liberdade assumirão formas diferentes quando as variâncias são
+homogêneas (teste T de Student para amostras independentes) ou
+heterogêneas (teste T de Welch para amostras independentes).</p>
+<p><img src="images/Sem%20t%C3%ADtulo-10.png" /></p>
+<p><img src="images/Sem%20t%C3%ADtulo-11.png" /></p>
+<p><strong>EXEMPLO 1</strong>: O risco de cardiotoxicidade relacionada ao tratamento
+oncológico varia de acordo com o tipo de câncer, mas estima-se que cerca
+de 33% dos homens ao serem diagnosticados com câncer de próstata já
+apresentam doença cardíaca associada, aumentando a possiblidade de
+complicações decorrentes do tratamento. Neste contexto, foi realizado um
+estudo com um total de 28 pacientes diagnosticados com câncer de pulmão
+(14 pacientes), e câncer de próstata (14 pacientes) com o objetivo de
+avaliar se a diferença de frequência cardíaca entre os tipos de câncer
+era significativa. Supondo que os dados populacionais provém de
+populações normais, a amostra fornecida é suficiente para apoiar a
+hipótese de que há uma diferença na média da frequência cardíaca
+considerando entre os pacientes com câncer de pulmão e câncer de
+próstata, considerando um nível de significância de 5%?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura dos dados</span></span>
+<span><span class='va'>db.cancer</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'Oncology.csv'</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span></span>
+<span><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>db.cancer</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span></span>
+<span><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>db.cancer</span><span class='op'>[</span>,<span class='fl'>4</span><span class='op'>]</span></span>
+<span></span>
+<span><span class='co'>## Como não foi citado nada sobre as variâncias, fazer teste de variância primeiro.</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses de homogeneidade de variâncias</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/var.test.html'>var.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, y <span class='op'>=</span> <span class='va'>y</span>, alternative <span class='op'>=</span> <span class='st'>'two.sided'</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    F test to compare two variances
+
+data:  x and y
+F = 1.3746, num df = 13, denom df = 13, p-value = 0.5745
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.4412763 4.2819014
+sample estimates:
+ratio of variances 
+          1.374591 </code></pre>
+</div>
+<p>De acordo com o teste de homogeneidade de variâncias, conclui-se que as
+variâncias são homogêneas (p-valor &gt; 0.05).</p>
+<p>Como as amostras são pequenas, será utilizado o teste T para a diferença
+de médias de duas amostras. Como as variâncias são homogêneas, usa-se a
+função t.test com argumento var.equal = TRUE.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>x</span>, y<span class='op'>=</span><span class='va'>y</span>, alternative <span class='op'>=</span> <span class='st'>'two.sided'</span>, mu <span class='op'>=</span> <span class='fl'>0</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, var.equal <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Two Sample t-test
+
+data:  x and y
+t = -2.4155, df = 26, p-value = 0.02304
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -42.440300  -3.416843
+sample estimates:
+mean of x mean of y 
+ 95.07143 118.00000 </code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que há
+diferença significativa entre as médias e, além disso, observa-se que a
+média da frequência cardíaca dos pacientes com câncer de próstata é
+maior do que a média da frequência cardíaca dos pacientes com câncer de
+pulmão visto que a diferença entre as médias é negativa.</p>
+<h3 id="diferença-de-médias-amostras-pareadas">Diferença de Médias (Amostras Pareadas)</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>É utilizado para comprovar se determinado paciente teve melhora após a
+administração do medicamento, ou tratamento. Isto é, define uma
+hipóteses baseada em antes e depois de um acontecimento.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, há duas possibilidades: amostras grandes,
+e amostras pequenas. No primeiro caso, o nosso teste será baseado na
+estatística Z, e no segundo caso, na estatística T.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-12.png" /></p>
+<p><img src="images/Sem%20t%C3%ADtulo-13.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função t.test disponível no R.</p>
+<p><strong>EXEMPLO 1</strong>: Com base na amostra apresentada e após uma inspeção
+exploratória dos dados, um pesquisador clínico afima que a diferença do
+número médio de células T-CD4 antes é inferior ao número médio de céluas
+T-CD4 depois da terapia HAART com IL-2, indicando uma eficácia da
+terapia. Sabendo que os dados populacionais provém de uma distribuição
+normal, a amostra fornecida é suficiente para apoiar a hipótese do
+pesquisador, considerando um nível de significância de 5%?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura dos dados</span></span>
+<span><span class='va'>db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'HAART.csv'</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span></span>
+<span><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>db</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span></span>
+<span><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>db</span><span class='op'>[</span>,<span class='fl'>3</span><span class='op'>]</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>x</span>, y<span class='op'>=</span><span class='va'>y</span>, alternative <span class='op'>=</span> <span class='st'>'two.sided'</span>, mu <span class='op'>=</span> <span class='fl'>0</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, paired <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Paired t-test
+
+data:  x and y
+t = -4.46, df = 6, p-value = 0.004283
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -223.66696  -65.19018
+sample estimates:
+mean difference 
+      -144.4286 </code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que o
+número médio de células T-CD4 antes é inferior ao número médio de
+células T-CD4 depois da terapia HAART com IL-2.</p>
+<h2 id="testes-não-paramétricos">Testes Não-Paramétricos</h2>
+<h3 id="teste-qui-quadrado-de-aderência">Teste Qui-Quadrado de aderência</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste tem por objetivo testar a adequabilidade de um modelo
+probabilístico a um conjunto de dados observados, isto é, testar se a
+frequência observada é igual ou não a frequência esperada pelo modelo em
+cada uma das categorias.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, considera-se tabelas de frequências, com
+k ≥ 2 categorias de uma variável qualitativa.</p>
+<p>Considere a seguinte tabela de frequências, com k ≥ 2 categorias:</p>
+<p><img src="images/Sem%20t%C3%ADtulo-14.png" /></p>
+<p>em que <span class="math inline">\(P_{0i}\)</span>,i = 1, … , k é a probabilidade especificada pelo
+modelo probabilístico.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-15.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função chisq.test disponível no R.</p>
+<p><strong>EXEMPLO 1</strong>: Suponha que, em uma certa população, 100 descendentes
+foram estudados tal que as frequências observadas são ilustradas na
+Tabela abaixo. Podemos afirmar que o modelo genético de Hardy-Weinberg é
+adequado para descrever essa população, ao nível de significância de 5%?</p>
+<p><img src="images/Sem%20t%C3%ADtulo-16.png" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Definir o vetor com as frequências observadas:</span></span>
+<span><span class='va'>f_obs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>26</span>, <span class='fl'>45</span>, <span class='fl'>29</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Definir o vetor com as probabilidades para cada categoria, isto é</span></span>
+<span><span class='co'>## P(AA) = 1/4, P(Aa) = 1/2 e P(aa) = 1/4, pois os genótipos originam-se</span></span>
+<span><span class='co'>## do cruzamento de Aa x Aa. Assim:</span></span>
+<span><span class='va'>probs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.25</span>, <span class='fl'>0.50</span>, <span class='fl'>0.25</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/chisq.test.html'>chisq.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>f_obs</span>, p <span class='op'>=</span> <span class='va'>probs</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Chi-squared test for given probabilities
+
+data:  f_obs
+X-squared = 1.18, df = 2, p-value = 0.5543</code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que o
+modelo genético de Hardy-Weinberg é adequado para descrever essa
+população.</p>
+<h3 id="teste-qui-quadrado-de-independência">Teste Qui-Quadrado de Independência</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste é utilizado para avaliar a dependência ou independência entre
+grupos ou entre duas variáveis categóricas, isto é, testar se há
+igualdade entre a frequência observada e a frequência esperada.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para realizar este teste, as variáveis devem estar tabuladas em forma de
+tabelas de contingência de tamanho “k × n”, em que “k” representa o nº
+de linhas e “n” o de colunas.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-17.png" /></p>
+<p><img src="images/Sem%20t%C3%ADtulo-18.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função chisq.test disponível no R.</p>
+<p><strong>EXEMPLO 1</strong>: A infecção do sítio cirúrgico é o processo pelo qual o
+microorganismo penetra, se estabelece e se multiplica na incisão
+operatória. um estudo examinou dois tipos de preparação pré-operatória
+da pele antes da realização de cirurgia cardíaca. Os dados do estudo
+estão dispostos na Tabela abaixo.</p>
+<p>Esses dados fornecem evidência suficiente, ao nível de significância de
+5%, para justificar a conclusão de que o tipo de preparação da pele e a
+infecção estão relacionados?</p>
+<p><img src="images/Sem%20t%C3%ADtulo-19.png" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Definir a tabela com os dados referente com as frequências observadas:</span></span>
+<span><span class='va'>f_obs_IA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>14</span>, <span class='fl'>94</span><span class='op'>)</span></span>
+<span><span class='va'>f_obs_II</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>97</span><span class='op'>)</span></span>
+<span><span class='va'>tab_IA_II</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>f_obs_IA</span>,<span class='va'>f_obs_II</span><span class='op'>)</span></span>
+<span><span class='va'>tab_IA_II</span></span></code></pre>
+</div>
+<pre><code>     f_obs_IA f_obs_II
+[1,]       14        4
+[2,]       94       97</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/chisq.test.html'>chisq.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>tab_IA_II</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  tab_IA_II
+X-squared = 4.2913, df = 1, p-value = 0.03831</code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que o
+tipo de preparação da pele e a infecção estão relacionados já que não
+são independentes, isto é, os dados fornecem evidência suficiente para
+suportar a hipótese em questão.</p>
+<h3 id="teste-exato-de-fisher">Teste Exato de Fisher</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste, em geral, é utilizado para analisar dados qualitativos
+(nominais ou ordinais) ou quantitativos discretos, quando os tamanhos
+das duas amostras são pequenos.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Determinar a probabilidade exata de ocorrência de uma frequência
+observada, ou de valores mais extremos com base em uma tabela de
+contingência 2 × 2 com linhas e colunas fixas.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-20.png" /></p>
+<p><img src="images/Sem%20t%C3%ADtulo-21.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função fisher.test disponível no R.</p>
+<p><strong>EXEMPLO</strong>: O objetivo de um estudo foi determinar se a salivação em
+crianças com paralisia cerebral é devido à hiper salivação. Um dos
+procedimentos, nesse estudo, foi examinar a capacidade salivar de
+crianças com paralisia cerebral e crianças saudáveis. Os dados do estudo
+estão dispostos na Tabela abaixo. Esses dados fornecem evidência
+suficiente, ao nível de significância de 5%, para concluir que há
+associação entre o tipo de criança em relação a capacidade salivar?</p>
+<p><img src="images/Sem%20t%C3%ADtulo-22.png" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Definir a tabela com os dados referente com as frequências observadas:</span></span>
+<span><span class='va'>f_obs_M</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span></span>
+<span><span class='va'>f_obs_A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>7</span><span class='op'>)</span></span>
+<span><span class='va'>tab_Group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>f_obs_M</span>,<span class='va'>f_obs_A</span><span class='op'>)</span></span>
+<span><span class='va'>tab_Group</span></span></code></pre>
+</div>
+<pre><code>     f_obs_M f_obs_A
+[1,]       2       8
+[2,]       3       7</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/fisher.test.html'>fisher.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>tab_Group</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  tab_Group
+p-value = 1
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.0390558 6.9366524
+sample estimates:
+odds ratio 
+  0.599308 </code></pre>
+</div>
+<p>Conclui-se que não há evidências, ao nível de 5% de significância, de
+que há associação entre o tipo de criança em relação a capacidade
+salivar (o intervalo da odds ratio contém o número 1), com base na
+amostra apresentada neste estudo.</p>
+<h3 id="teste-de-mantel-haenzel">Teste de Mantel-Haenzel</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste, tem como objetivo de avaliar se há uma associação entre duas
+variáveis categóricas, controlando o efeito de uma terceira variável
+categórica (chamada de efeito de confusão).</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Neste teste, os dados a serem analisados consistem em várias tabelas de
+contingência (a Tabela abaixo, por exemplo, representa a i-ésima tabela
+de contingência ou i-ésimo estrato) em vez de apenas uma.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-23.png" /></p>
+<ul>
+<li>Pressupostos?</li>
+</ul>
+<p>1o pressuposto: as observações devem independentes. 2o pressuposto: as
+observações devem ser identicamente distribuídas.</p>
+<ul>
+<li>Etapas?</li>
+</ul>
+<p><strong>1ª Etapa</strong>: Fornecer uma estimativa pontual para a odds ratio
+combinada, de acordo com a equação:</p>
+<p><span class="math inline">\(\widehat{\text{OR}}_{\mathcal{MH}} = \frac{\sum_{i=1}^{k} A_i D_i / N_i}{\sum_{i=1}^{k} B_i C_i / N_i}\)</span></p>
+<p>E, fornecer também um intervalo de confiança para a odds ratio
+combinada, de acordo com a equação:</p>
+<p><span class="math inline">\(\text{IC}_{\widehat{\text{OR}}_{\mathcal{MH}}} = \exp \left( \ln \widehat{\text{OR}}_{\mathcal{MH}} \pm z_{\frac{1-\alpha}{2}} \sqrt{\text{Var} \left( \ln \widehat{\text{OR}}_{\mathcal{MH}} \right)} \right)\)</span></p>
+<p>em que:</p>
+<p><span class="math inline">\(\text{Var}(\ln(\widehat{\text{OR}}_{\mathcal{MH}})) = \frac{\text{Var}(\widehat{\text{OR}}_{\mathcal{MH}})}{(\widehat{\text{OR}}_{\mathcal{MH}})^2}\)</span></p>
+<p>e,</p>
+<p><span class="math inline">\(Var(\widehat{OR_{MH}}) = \frac{\sum_{i=1}^k A_iD_i(\frac{A_i+D_i}{N^2_i})}{2(\sum_{i=1}^k \frac{A_iD_i}{N_i})^2} + \frac{\sum_{i=1}^k B_iC_i(\frac{B_i+C_i}{N^2_i})}{2(\sum_{i=1}^k \frac{B_iC_i}{N_i})^2} + \frac{\sum_{i=1}^k (\frac{A_iD_i(B_i+C_i)+B_iC_i(A_i+D_i)}{N^2_i})}{2\sum_{i=1}^k \frac{A_iD_i}{N_i}\sum_{i=1}^k \frac{B_iC_i}{N_i}}\)</span></p>
+<p><strong>2ªEtapa</strong>: combinar a informação de duas ou mais tabelas de
+contingências 2 × 2 e testar se o odds ratio combinado,
+<span class="math inline">\(\widehat{\text{OR}}_{\mathcal{MH}}\)</span>, é igual a 1. Neste caso, se
+<span class="math inline">\(\widehat{\text{OR}}_{\mathcal{MH}}\)</span> = 1 significa que não há associação
+entre a doença e o fator de risco. Sendo assim, podemos definir as
+hipóteses:</p>
+<p><span class="math inline">\(H_0: \widehat{\text{OR}}_{\mathcal{MH}} = 1\)</span></p>
+<pre><code>         VS</code></pre>
+<p><span class="math inline">\(H_a: \widehat{\text{OR}}_{\mathcal{MH}} \neq 1\)</span></p>
+<p>Agora, para cada combinação das tabelas de contingências, é suficiente
+calcular apenas o estimador do valor esperado da célula superior
+esquerda, isto é,</p>
+<p><span class="math inline">\(\widehat{E}_i = \frac{(A_i + B_i) \cdot (A_i + C_i)}{N_i}\)</span></p>
+<p>Tal que a variância de <span class="math inline">\(\widehat{E}_i\)</span> dada por:</p>
+<p><span class="math inline">\(\widehat{S}^2_i = \frac{(A_i + B_i)(A_i + C_i)(B_i + D_i)(C_i + D_i)}{N_i(N_i - 1)}\)</span></p>
+<p><img src="images/Sem%20t%C3%ADtulo-25.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função mantelhaen.test disponível no R.</p>
+<p><strong>EXEMPLO</strong>: foram coletados dados sobre doença arterial coronariana
+obstrutiva (DACO), hipertensão e idade entre os pacientes identificados
+por um teste de estresse em esteira como estando em risco. Os dados do
+estudo estão dispostos na Tabela abaixo. Esses dados fornecem evidência
+suficiente, ao nível de significância de 5%, para justificar a conclusão
+de que não existe uma associação entre a presença de hipertensão e a
+ocorrência de DACO nos pacientes com idade abaixo ou acima de 55 anos?</p>
+<p><img src="images/Sem%20t%C3%ADtulo-26.png" /></p>
+<p><img src="images/Sem%20t%C3%ADtulo-27.png" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Definir o array com os dados dos estratos:</span></span>
+<span><span class='va'>data_MH</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>21</span>, <span class='fl'>16</span>, <span class='fl'>11</span>, <span class='fl'>6</span>, <span class='fl'>50</span>, <span class='fl'>18</span>, <span class='fl'>14</span>, <span class='fl'>6</span><span class='op'>)</span>,</span>
+<span>dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span>dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Hipertensao <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Presente"</span>, <span class='st'>"Ausente"</span><span class='op'>)</span>,</span>
+<span>DACO <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Casos"</span>, <span class='st'>"Controles"</span><span class='op'>)</span>,</span>
+<span>Idade <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"&lt; 55_Anos"</span>, <span class='st'>"&gt;= 55_Anos"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/mantelhaen.test.html'>mantelhaen.test</a></span><span class='op'>(</span><span class='va'>data_MH</span>, correct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Mantel-Haenszel chi-squared test without continuity correction
+
+data:  data_MH
+Mantel-Haenszel X-squared = 0.024265, df = 1, p-value = 0.8762
+alternative hypothesis: true common odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.4184851 2.1018264
+sample estimates:
+common odds ratio 
+        0.9378609 </code></pre>
+</div>
+<p>Conclui-se, que não há evidências de que existe uma associação entre a
+presença de hipertensão e a ocorrência de DACO nos pacientes com idade
+abaixo ou acima de 55 anos ao nível de significância de 5% (baseando-se
+nesta amostra).</p>
+<h3 id="teste-de-normalidade-de-shapiro-wilk">Teste de Normalidade de Shapiro-Wilk</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>É um teste para avaliar se os dados de uma amostra (ou de uma população)
+seguem uma distribuição normal. Uma das vantagens deste teste é seu alto
+poder de decisão, mesmo limitado a 3 e 50 observações.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Estimar a estatística do teste de Shapiro-Wilk, <span class="math inline">\(D_{\text{calc}}\)</span>, e
+compará-la com o valor crítico, <span class="math inline">\(D_{\text{crit}}\)</span>, obtido da tabela de
+valores críticos (chamada de tabela D), para um determinado nível de
+confiança.</p>
+<p>A estatística do teste de Shapiro-Wilk é obtida através da seguinte
+forma:</p>
+<p><span class="math inline">\(D_{\text{calc}} = \frac{b^2}{\sum_{i=1}^{n} (X_i - \bar{X})^2}\)</span></p>
+<p>onde <span class="math inline">\(X_i\)</span> é o valor de cada medida independente que foi obtida,
+<span class="math inline">\(\bar{X}\)</span> é a média de todas as medidas obtidas, e b é um parâmetro que
+deve ser calculado e que depende de um outro parâmetro a e, também, da
+quantidade de observações (n) que temos de <span class="math inline">\(X_i\)</span>.</p>
+<p>Assim, se n for par, o valor de b é obtido da seguinte forma:</p>
+<p><span class="math inline">\(b = \sum_{i=1}^{\frac{n}{2}} a_{ni} (X_{n-i-1} - X_i)\)</span></p>
+<p>E caso n seja ímpar, b é obtido desta outra forma:</p>
+<p><span class="math inline">\(b = \sum_{i=1}^{\frac{n+1}{2}} a_{ni} (X_{n-i-1} - X_i)\)</span></p>
+<p><img src="images/Sem%20t%C3%ADtulo-28.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função shapiro.test disponível no R.</p>
+<p><strong>EXEMPLO</strong>: um estudo foi realizado com um grupo de 10 ratos e as
+medidas dos cérebros dos animais do estudo estão dispostos na planilha
+‘Rats’. Ao nível de 5% de significância, pode-se concluir que as
+medições obtidas seguem uma distribuição normal?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Definir a tabela com os dados referente com as frequências observadas:</span></span>
+<span><span class='va'>db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>'Rats.csv'</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>','</span><span class='op'>)</span></span>
+<span><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>db</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span></span>
+<span></span>
+<span><span class='co'>## Teste de normalidade de Shapiro-Wilk</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/shapiro.test.html'>shapiro.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  x
+W = 0.9269, p-value = 0.4181</code></pre>
+</div>
+<p>Conclui-se, ao nível de 5% de significância, que há evidências de que as
+medições obtidas para o tamanho do cérebro dos ratos do estudo seguem
+uma distribuição normal.</p>
+<h3 id="teste-de-mann-whitney">Teste de Mann-Whitney</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste, em geral, é utilizado para comprovar se dois grupos
+independentes foram ou não extraídos da mesma população, sendo o análogo
+não-paramétrico do teste paramétrico t de Student.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, considere <span class="math inline">\(n_1\)</span> = número de casos no
+menor dos dois grupos independentes e <span class="math inline">\(n_2\)</span> = número de casos no maior
+grupo.</p>
+<p>Primeiramente, combinam-se as observações ou escores de ambos os grupos,
+relacionando-os por ordem ascendente. Nessa ordenação ascendente,
+consideram-se os valores algébricos do grupo <span class="math inline">\(n\)</span> = <span class="math inline">\(n_1\)</span> + <span class="math inline">\(n_2\)</span>, isto
+é, os postos mais baixos são atribuídos aos maiores valores (negativos
+se houver).</p>
+<p>A estatística teste, U, será dada, então, pelo número de vezes que um
+escore no grupo com <span class="math inline">\(n_2\)</span> casos precede um escore no grupo com <span class="math inline">\(n_1\)</span>
+casos no grupo ordenado formado por <span class="math inline">\(n\)</span> = <span class="math inline">\(n_1\)</span> + <span class="math inline">\(n_2\)</span> casos.</p>
+<p>No caso em que n ⩽ 20 (amostras pequenas), a estatística do teste de
+Mann-Whitney pode escrita, de modo geral, pelas seguintes expressões:</p>
+<p><span class="math inline">\(U_1 = n_1 \cdot n_2 + \frac{n_1 \cdot (n_1 + 1)}{2} - R_1\)</span> e
+<span class="math inline">\(U_2 = n_1 \cdot n_2 + \frac{n_2 \cdot (n_2 + 1)}{2} - R_2\)</span></p>
+<p>em que <span class="math inline">\(R_i\)</span> é a soma dos postos grupo i = 1, 2.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-29.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função mannwhitney disponível no pacote sjstats.</p>
+<p><strong>EXEMPLO</strong>: Um ensaio constituiu em administrar uma droga para
+depressão a dois grupos de pacientes, compostos de forma aleatória, e
+quantificar a depressão em que os valores maiores indicam maior
+gravidade da depressão.</p>
+<p>Os dados do estudo são:</p>
+<p>• Placebo: 6, 33, 21, 26, 10, 29, 33, 29.</p>
+<p>• Tianeptina: 10, 8, 17, 4, 17, 14, 9, 4.</p>
+<p>Ao nível de 5% de significância, com base no teste de
+Mann-Whitney-Wilcoxon, pode-se concluir que há diferença significativa
+entre o uso deplacebo e o uso de tianeptina?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura do pacote</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjstats/'>sjstats</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Leitura dos dados</span></span>
+<span><span class='va'>obs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>33</span>, <span class='fl'>21</span>, <span class='fl'>26</span>, <span class='fl'>10</span>, <span class='fl'>29</span>, <span class='fl'>33</span>, <span class='fl'>29</span>, <span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>17</span>, <span class='fl'>4</span>, <span class='fl'>17</span>, <span class='fl'>14</span>, <span class='fl'>9</span>, <span class='fl'>4</span><span class='op'>)</span></span>
+<span><span class='va'>grupos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>'Placebo'</span>, <span class='fl'>8</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>'Tianeptina'</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>obs</span>, <span class='va'>grupos</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>tab</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>tab</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Observacoes'</span>, <span class='st'>'Grupos'</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://strengejacke.github.io/sjstats/reference/mwu.html'>mannwhitney</a></span><span class='op'>(</span><span class='va'>tab</span>, x <span class='op'>=</span> <span class='va'>Observacoes</span>, grp <span class='op'>=</span> <span class='va'>Grupos</span>, distribution <span class='op'>=</span> <span class='st'>'approximate'</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+# Mann-Whitney-U-Test
+
+Groups 1 = Placebo (n = 8) | 2 = Tianeptina (n = 8):
+  U = 90.500, W = 54.500, p = 0.014, Z = 2.372
+  effect-size r =  0.593
+   rank-mean(1) = 11.31
+   rank-mean(2) =  5.69</code></pre>
+</div>
+<p>Conclui-se que há evidências, ao nível de 5% de significância, de que há
+diferença entre os escores de placebo e tianeptina. Particularmente,
+observa-se ainda que os escores para o grupo de pacientes que tomaram
+tianeptina são menores, indicando menor gravidade de depressão.</p>
+<h3 id="teste-de-wilcoxon">Teste de Wilcoxon</h3>
+<ul>
+<li>Utilização?</li>
+</ul>
+<p>Este teste baseia-se nos postos das diferenças intrapares, sendo usado
+para comparar amostras relacionadas, é uma alternativa para o teste t de
+Student pareado.</p>
+<ul>
+<li>Construção?</li>
+</ul>
+<p>Para a construção deste teste, considere que <span class="math inline">\(X_i\)</span> representa os escores
+da amostra 1 e <span class="math inline">\(Y_i\)</span> os escores da amostra 2. Primeiramente, são
+calculadas as diferenças de cada par de escores, <span class="math inline">\(d_i = X_i - Y_i\)</span></p>
+<p>Em seguida, atribuem-se postos às diferenças dos escores em valor
+absoluto, ∣<span class="math inline">\(d_i\)</span>∣. A menor diferença em valor absoluto receberá o posto
+1, a segunda menor diferença em valor absoluto receberá o posto 2 e
+assim por diante. Depois, acrescenta-se o sinal das diferenças, <span class="math inline">\(d_i\)</span>,
+aos postos. Os empates podem ocorrer de duas maneiras: quando a
+diferença dos escores X e Y for zero, retira-se o par da análise. Quando
+houver diferenças em valor absoluto iguais, atribuem-se a média dos
+postos.</p>
+<p>Neste caso, tem-se que a estatística do teste é dada por:</p>
+<p><span class="math inline">\(W_{calc} = min(W_+ , W_-)\)</span>, em que</p>
+<p><span class="math inline">\(W_+ = \sum_{i=1}^{m}p^+_i \;\; e \;\; W_- = \sum_{i=1}^{m} p^-_i\)</span></p>
+<p>Neste caso, m é o número de valores <span class="math inline">\(d^+_i\)</span>, k é o número de valores
+<span class="math inline">\(d^-_i\)</span>, <span class="math inline">\(p^+i\)</span> é o posto (ordem) positivo de <span class="math inline">\(d^+_i\)</span> e <span class="math inline">\(p^-_i\)</span> é o
+posto (ordem) negativo de <span class="math inline">\(d^-_i\)</span>.</p>
+<p>A regra de decisão será baseada em uma tabela de valores críticos,
+chamada de tabela W tal que rejeita-se <span class="math inline">\(H_0\)</span> se
+<span class="math inline">\(W_{calc} \leq W_{tabela}\)</span>, de acordo com o nível se significância
+estipulado.</p>
+<p><img src="images/Sem%20t%C3%ADtulo-30.png" /></p>
+<ul>
+<li>No R?</li>
+</ul>
+<p>Uso da função wilcox.test disponível no R.</p>
+<p><strong>EXEMPLO</strong>: No estudo, um total de 20 pacientes com pré- hipertensão se
+inscreveram para o teste da droga e suas pressões arteriais sistólicas
+foram medidas. Depois da medição inicial, cada paciente recebeu a droga
+durante 12 semanas. Após 12 semanas, as pressões arteriais sistólicas
+foram medidas novamente.</p>
+<p>Os dados do estudo são:</p>
+<p>• Antes: 125, 132, 138, 120, 125, 127, 136, 139, 131, 132, 135, 136,
+128, 127, 130.</p>
+<p>• Depois: 118, 134, 130, 124, 105, 130, 130, 132, 123, 128, 126, 140,
+135, 126, 132.</p>
+<p>Ao nível de 5% de significância, com base no teste de Wilcoxon, pode-se
+afirmar que existe diferença nas pressões arteriais sistólicas após
+participação no programa de exercícios?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Leitura dos dados</span></span>
+<span><span class='va'>antes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>125</span>,<span class='fl'>132</span>,<span class='fl'>138</span>,<span class='fl'>120</span>,<span class='fl'>125</span>,<span class='fl'>127</span>,<span class='fl'>136</span>,<span class='fl'>139</span>,<span class='fl'>131</span>,<span class='fl'>132</span>,<span class='fl'>135</span>,<span class='fl'>136</span>,<span class='fl'>128</span>,<span class='fl'>127</span>,<span class='fl'>130</span><span class='op'>)</span></span>
+<span><span class='va'>depois</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>118</span>,<span class='fl'>134</span>,<span class='fl'>130</span>,<span class='fl'>124</span>,<span class='fl'>105</span>,<span class='fl'>130</span>,<span class='fl'>130</span>,<span class='fl'>132</span>,<span class='fl'>123</span>,<span class='fl'>128</span>,<span class='fl'>126</span>,<span class='fl'>140</span>,<span class='fl'>135</span>,<span class='fl'>126</span>,<span class='fl'>132</span><span class='op'>)</span></span>
+<span><span class='co'>## Teste de hipóteses</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>antes</span>, y <span class='op'>=</span> <span class='va'>depois</span>, alternative <span class='op'>=</span> <span class='st'>'two.sided'</span>, paired <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  antes and depois
+V = 89, p-value = 0.1048
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+<p>Conclui-se que H0 não deve ser rejeitada, isto é, ao nível de 5% de
+significância, pode-se concluir que não há uma diferença significativa
+nas pressões arteriais sistólicas após a administração da droga
+experimental em um período de 12 semanas, sugerindo-se que, talvez, que
+a administração da droga devesse ser feita em um período maior de tempo.</p>
+<h2 id="referências">Referências</h2>
+<ol type="1">
+<li><p>Lehmann, E. L., Romano, J. P., &amp; Casella, G. (2005). Testing
+Statistical Hypotheses. New York: springer</p></li>
+<li><p>Casella, G., &amp; Berger, R. L. (2021). Statistical Inference. Cengage
+Learning.</p></li>
+<li><p>Matloff, N. (2011). The Art of R Programming: A Tour of Statistical
+Software Design. No Starch Press.</p></li>
+<li><p>Montgomery, D. C., &amp; Runger, G. C. (2010). Applied Statistics and
+Probability for Engineers. John Wiley &amp; Sons.</p></li>
+<li><p>Taeger, D., &amp; Kuhnt, S. (2014). Statistical Hypothesis Testing with
+SAS and R. John Wiley &amp; Sons.</p></li>
+<li><p>Oliveira, R. P. (2023). Notas de Aula: Estatística Computacional.
+Departamento de Estatística - Universidade Estadual de Maringá.</p></li>
+</ol>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

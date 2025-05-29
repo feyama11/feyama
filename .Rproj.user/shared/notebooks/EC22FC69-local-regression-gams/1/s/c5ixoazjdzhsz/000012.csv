@@ -1,0 +1,5 @@
+"0","gam_mod3 %>% pluck('fit') %>% plot( all.terms = TRUE, pages = 1)
+"
+"2","Error in eval(term, data, enclos = pf) : 
+  invalid 'envir' argument of type 'closure'
+"

@@ -1,0 +1,22 @@
+"0","```r
+set.seed(2)
+#criando especificação do modelo
+regressao_logistica_espec = logistic_reg() %>%
+  set_mode(\"classification\") %>%
+  set_engine(\"glm\")
+
+#Atualizando o workflow da regressão logística
+regressao_logistica_workflow = workflow %>% add_model(regressao_logistica_espec)
+
+#ajustando o workflow aos dados
+regressao_logistica_modelo = fit(regressao_logistica_workflow, data = cc_apps_trainamento)
+
+#prevendo modelo logístico nos dados de teste
+regressao_logistica_previsoes_classes = regressao_logistica_modelo %>% predict(cc_apps_teste, type=\"class\") %>%
+  bind_cols(cc_apps_teste)
+
+regressao_logistica_previsoes_probabilidades = regressao_logistica_modelo %>% predict(cc_apps_teste, type=\"prob\") %>%
+  bind_cols(cc_apps_teste)
+
+regressao_logistica_previsoes_classes %>% accuracy(truth = X16, estimate = .pred_class)
+```"

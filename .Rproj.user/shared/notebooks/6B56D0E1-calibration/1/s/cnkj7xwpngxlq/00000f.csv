@@ -1,0 +1,6 @@
+"0","set.seed(8928)"
+"0","split <- initial_split(cells, strata = class)"
+"0","cells_tr <- training(split)"
+"0","cells_te <- testing(split)"
+"0",""
+"0","cells_rs <- vfold_cv(cells_tr, strata = class)"

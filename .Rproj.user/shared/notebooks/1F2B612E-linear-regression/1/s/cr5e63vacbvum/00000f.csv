@@ -1,0 +1,5 @@
+"0","## definindo matriz 2x2 para mostrar os dados"
+"0","par(mfrow = c(2, 2))"
+"0",""
+"0","#Fazendo os boxplots"
+"0","boxplot(db$Whole.Weight, main = ""Boxplot: Peso total"", pch = 19)"

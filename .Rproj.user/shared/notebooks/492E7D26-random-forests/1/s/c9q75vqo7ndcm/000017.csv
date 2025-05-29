@@ -1,0 +1,6 @@
+"0","plot_correlation(pokedex %>% na.omit(), "
+"0","                 type = ""c"", "
+"0","                 theme_config = list("
+"0","                   axis.text.x = element_text(angle = 45, hjust = 1)"
+"0","                   )"
+"0","                 )"

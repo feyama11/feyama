@@ -1,0 +1,8 @@
+"0","###Carregando pacote tidyverse"
+"0","library(tidyverse)"
+"0",""
+"0","#Carregando os dados"
+"0","hd_data = read_csv(""Cleveland_hd.csv"")"
+"0",""
+"0","#Prmeiras linhas:"
+"0","head(hd_data)"

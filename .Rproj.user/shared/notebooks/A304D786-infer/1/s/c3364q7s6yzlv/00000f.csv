@@ -1,0 +1,12 @@
+"0","# calcular a estatística observada"
+"0","observed_f_statistic <- gss %>%"
+"0","  specify(age ~ partyid) %>%"
+"0","  hypothesize(null = ""independence"") %>%"
+"0","  calculate(stat = ""F"")"
+"2","Dropping unused factor levels DK from the supplied explanatory variable 'partyid'."
+"0","observed_f_statistic"
+"1","Response: age (numeric)
+Explanatory: partyid (factor)
+Null Hypothesis: independence"
+"1","
+"

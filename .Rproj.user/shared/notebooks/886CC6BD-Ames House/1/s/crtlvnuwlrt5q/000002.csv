@@ -1,0 +1,7 @@
+"0","```r
+#carregando pacotes
+library(modeldata)
+library(tidyverse)
+library(tidymodels)
+library(visdat)
+```"

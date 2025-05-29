@@ -1,0 +1,47 @@
+"0","# Importa a biblioteca textrecipes, que é usada para a preparação de texto para modelagem"
+"0","library(textrecipes)"
+"2","Warning: package ‘textrecipes’ was built under R version 4.3.3"
+"0","# Importa a biblioteca themis, que é usada para lidar com desbalanceamento de classes"
+"0","library(themis)"
+"0",""
+"0",""
+"0","netflix_rec <- recipe(type ~ description, data = netflix_train) %>% # Cria uma receita de engenharia de recursos para o modelo de texto"
+"0","  step_tokenize(description) %>%                                    # Passo 1: Tokeniza a descrição, dividindo-a em palavras individuais"
+"0","  step_tokenfilter(description, max_tokens = 1e3) %>%               # Passo 2: Filtra os tokens, limitando o número máximo de tokens a 1000"
+"0","  step_tfidf(description) %>%                                       # Passo 3: Calcula a frequência inversa do documento (TF-IDF) para cada palavra na descrição"
+"0",""
+"0","  # Passo 4: Normaliza os preditores numéricos (no caso improvável de eles existirem)"
+"0","  step_normalize(all_numeric_predictors()) %>%"
+"0",""
+"0","  # Passo 5: Aplica a técnica SMOTE (Synthetic Minority Over-sampling Technique) para lidar com o desbalanceamento de classes"
+"0","  step_smote(type)"
+"0",""
+"0","# Retorna a receita de engenharia de recursos"
+"0","netflix_rec"
+"2","
+"
+"2","[36m──[39m [1mRecipe[22m [36m───────────────────────────────────────────────────────────────────────────────────────────────────────────[39m
+"
+"2","
+"
+"2","── Inputs 
+"
+"2","Number of variables by role
+"
+"2","outcome:   1
+predictor: 1
+"
+"2","
+"
+"2","── Operations 
+"
+"2","[36m•[39m Tokenization for: [34mdescription[39m
+"
+"2","[36m•[39m Text filtering for: [34mdescription[39m
+"
+"2","[36m•[39m Term frequency-inverse document frequency with: [34mdescription[39m
+"
+"2","[36m•[39m Centering and scaling for: [34mall_numeric_predictors()[39m
+"
+"2","[36m•[39m SMOTE based on: [34mtype[39m
+"

@@ -1,0 +1,4 @@
+"0","cell_test_cal_pred <-"
+"0","  cell_test_pred %>%"
+"0","  cal_apply(cell_cal)"
+"0","cell_test_cal_pred %>% dplyr::select(class, starts_with("".pred_""))"

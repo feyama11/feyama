@@ -1,0 +1,9 @@
+"0","qui2_calc <-"
+"0","  pilot_vs_rank %>%"
+"0","  calculate(stat = ""chisq"", order = ranks)"
+"0",""
+"0","qui2_calc"
+"1","Response: pilot_type (factor)
+Explanatory: rank_at_graduation (factor)"
+"1","
+"

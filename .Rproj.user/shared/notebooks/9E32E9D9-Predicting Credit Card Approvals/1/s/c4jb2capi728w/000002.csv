@@ -1,0 +1,22 @@
+"0","```r
+set.seed(3)
+#criando especificação do modelo
+random_forest_espec = rand_forest() %>%
+  set_mode(\"classification\") %>%
+  set_engine(\"ranger\")
+
+#atualizando o workflow random forest
+random_forest_workflow = workflow %>% add_model(random_forest_espec)
+
+#ajustando o workflow aos dados de trinamento
+random_forest_modelo = fit(random_forest_workflow, data = cc_apps_trainamento)
+
+#prevendo o modelo nos dados de teste
+random_forest_previsoes_classes = random_forest_modelo %>% predict(cc_apps_teste, type=\"class\") %>%
+  bind_cols(cc_apps_teste)
+
+random_forest_previsoes_probabilidades = random_forest_modelo %>% predict(cc_apps_teste, type=\"prob\") %>%
+  bind_cols(cc_apps_teste)
+
+random_forest_previsoes_classes %>% accuracy(truth = X16, estimate = .pred_class)
+```"

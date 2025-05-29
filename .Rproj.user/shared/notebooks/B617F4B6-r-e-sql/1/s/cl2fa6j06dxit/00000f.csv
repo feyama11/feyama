@@ -1,0 +1,45 @@
+"0","#Pacotes necessários"
+"0","library(DBI)"
+"0","library(dbplyr)"
+"2","Warning: package ‘dbplyr’ was built under R version 4.2.2"
+"2","Registered S3 methods overwritten by 'dbplyr':
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+"
+"2","
+Attaching package: ‘dbplyr’
+
+"
+"2","The following objects are masked from ‘package:dplyr’:
+
+    ident, sql
+
+"
+"0","library(dplyr)"
+"0",""
+"0","# Substitua esses espaço pelas suas credenciais do PostgreSQL"
+"0","dbname <- ""kaggle"""
+"0","dbuser <- ""feyama"""
+"0","dbhost <- ""localhost"""
+"0","dbport <- 5432"
+"0","password <- ""senha123"""
+"0",""
+"0","# Estabeleça a conexão"
+"0","con <- dbConnect(RPostgres::Postgres(),"
+"0","                 dbname = dbname,"
+"0","                 host = dbhost,"
+"0","                 port = dbport,"
+"0","                 user = dbuser,"
+"0","                 password = password)"
+"0",""
+"0","# Verificar se a conexão foi bem-sucedida"
+"0","if (dbIsValid(con)) {"
+"0","  print(""Connected to PostgreSQL database!"")"
+"0","} else {"
+"0","  print(""Connection failed"")"
+"0","}"
+"1","[1]"
+"1"," ""Connected to PostgreSQL database!"""
+"1","
+"

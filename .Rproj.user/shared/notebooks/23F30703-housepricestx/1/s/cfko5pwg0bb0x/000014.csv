@@ -1,0 +1,7 @@
+"0",""
+"0","show_best(xgb_word_rs)"
+"2","Warning in show_best(xgb_word_rs) :"
+"2","
+ "
+"2"," [38;5;255mNo value of `metric` was given; [34m""mn_log_loss""[38;5;255m will be used.[39m
+"

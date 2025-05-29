@@ -1,0 +1,6 @@
+"0","gam_mod2 <- college %>%"
+"0","    filter(Apps < 30000 | P.Undergrad < 20000) %>%"
+"0","    fit(gam_spec,"
+"0","    Grad.Rate ~ Private + s(Apps) + s(Top10perc) + s(Top25perc) + s(P.Undergrad) + s(Outstate) + s(Room.Board) + s(Books) + s(Personal) + s(PhD) + s(perc.alumni),"
+"0","    data = ."
+"0",")"

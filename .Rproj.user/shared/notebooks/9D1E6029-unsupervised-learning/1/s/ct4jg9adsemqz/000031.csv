@@ -1,0 +1,7 @@
+"0","  "
+"0",""
+"0","customer_data %>%"
+"0","  ggplot(aes(x = gender, y = age, fill= gender)) +"
+"0","  geom_boxplot(show.legend = F) +"
+"0","  labs(x = ""Gênero"", y = ""Idade"", title = ""Boxplot da distribuição da Idade por Gênero"") +"
+"0","  theme_bw()"

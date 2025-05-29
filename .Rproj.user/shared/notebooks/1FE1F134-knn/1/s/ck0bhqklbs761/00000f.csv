@@ -1,0 +1,27 @@
+"0","library(skimr)"
+"0",""
+"0","skim(hotel_stays)"
+"1","── Data Summary ────────────────────────
+"
+"1","                           Values     
+"
+"1","Name                       hotel_stays
+"
+"1","Number of rows             75166      
+"
+"1","Number of columns          29         
+"
+"1","_______________________               
+"
+"1","Column type frequency:                
+"
+"1","  character                14         
+"
+"1","  Date                     1          
+"
+"1","  numeric                  14         
+"
+"1","________________________              
+"
+"1","Group variables            None       
+"

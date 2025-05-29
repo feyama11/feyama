@@ -1,0 +1,7 @@
+"0"," "
+"0","fit.Time <-survfit(Surv(y, failed) ~Time,"
+"0"," data = queuing$data)"
+"0",""
+"0","plot(fit.Time, xlab = ""Segundos"","
+"0"," ylab = ""Probabilidade de Ainda Estar em Espera"","
+"0"," col = c(2, 4, 5))"

@@ -1,0 +1,5 @@
+"0","customer_data %>%"
+"0","  ggplot(aes(x = age, y = income, color = kmeans)) +"
+"0","  geom_point(size = 2) +"
+"0","  labs(x = ""Idade"", y = ""Renda"", color = ""Cluster"", title = ""Kmeans com k = 6 clusters"") +"
+"0","  theme_bw()"

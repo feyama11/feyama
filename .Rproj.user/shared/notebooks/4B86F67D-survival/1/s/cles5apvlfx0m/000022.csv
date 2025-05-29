@@ -1,0 +1,9 @@
+"0","dados %>%
+  gt() %>%
+  tab_header(
+    title = ""Resultados do modelo de riscos proporcionais de Cox ajustados aos dados do BrainCancer."",
+    subtitle = ""A variável diagnóstico é qualitativa com quatro níveis: meningioma, glioma LG, glioma HG, ou outro. As variáveis sexo, loc, e estéreo são binárias.""
+  )
+"
+"2","Warning: unable to translate 'A vari<e1>vel diagn<f3>stico <e9> qualitativa com quatro n<ed>veis: meningioma, glioma LG, glioma HG, ou outro. As vari<e1>veis sexo, loc, e est<e9>reo s<e3>o bin<e1>rias.' to a wide string"
+"2","Warning: input string 1 is invalid"

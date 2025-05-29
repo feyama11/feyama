@@ -1,0 +1,6 @@
+"0","```r
+choc_mod <- glm(chocolate ~ . -competitorname, data = candy_rankings, family = \"binomial\")
+
+```"
+"1","Warning: glm.fit: probabilidades ajustadas numericamente 0 ou 1 ocorreu
+"

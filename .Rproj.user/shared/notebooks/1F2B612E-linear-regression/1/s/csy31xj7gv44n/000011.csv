@@ -1,0 +1,11 @@
+"0","#Leitura do pacote"
+"0","library(tidymodels)"
+"0",""
+"0","#definindo a fórmula ou 'recipe'"
+"0","recipe <- recipe(Whole.Weight ~ Shucked.Weight + Viscera.Weight + Shell.Weight)"
+"1","[1m[33mError[39m in `recipe()`:[22m
+[38;5;252m[33m![38;5;252m Argument `data` is missing, with no default.[39m
+Backtrace:
+[90m 1. [39m[1mrecipes[22m::recipe(...)
+[90m 2. [39m[1m[94mrecipes:::recipe.formula([39m[22mWhole.Weight ~ Shucked.Weight + Viscera.Weight + Shell.Weight[1m[94m)[39m[22m
+"

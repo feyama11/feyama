@@ -1,0 +1,6 @@
+"0","# calcular o p-valor"
+"0","p_value_gof <- null_dist_gof %>%"
+"0","  get_p_value(observed_gof_statistic,"
+"0","              direction = ""greater"")"
+"2","Warning: Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step. See `?get_p_value()` for more information."
+"0","p_value_gof"

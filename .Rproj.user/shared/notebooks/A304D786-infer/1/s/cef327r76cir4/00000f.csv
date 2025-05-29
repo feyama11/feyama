@@ -1,0 +1,7 @@
+"0","# gerar a distribuição nula usando randomização"
+"0","null_dist <- gss %>%"
+"0","  specify(age ~ partyid) %>%"
+"0","  hypothesize(null = ""independence"") %>%"
+"0","  generate(reps = 1000, type = ""permute"") %>%"
+"0","  calculate(stat = ""F"")"
+"2","Dropping unused factor levels DK from the supplied explanatory variable 'partyid'."

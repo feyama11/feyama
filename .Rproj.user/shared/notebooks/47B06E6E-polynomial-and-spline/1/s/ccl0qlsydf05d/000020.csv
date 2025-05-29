@@ -1,0 +1,2 @@
+"0","# Coletar métricas do ajuste do modelo com hiperparâmetros variados e filtrar para o melhor parâmetro encontrado"
+"0","tune_output %>% collect_metrics() %>% filter(penalty == (best_penalty %>% pull(penalty)))"

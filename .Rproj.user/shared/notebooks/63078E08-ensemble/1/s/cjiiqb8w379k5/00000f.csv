@@ -1,0 +1,4 @@
+"0","nnet_param <- "
+"0","   nnet_spec %>% "
+"0","   extract_parameter_set_dials() %>% "
+"0","   update(hidden_units = hidden_units(c(1, 27)))"

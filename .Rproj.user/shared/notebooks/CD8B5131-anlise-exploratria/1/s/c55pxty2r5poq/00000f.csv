@@ -1,0 +1,4 @@
+"0","bin_seat <- function(x) cut(x, breaks = c(0L, 50L, 100L, 150L, 200L, 500L))"
+"0","transformed_data <- update_columns(dados, ""seats"", bin_seat)"
+"0",""
+"0","plot_bar(transformed_data$seats)"

@@ -1,0 +1,4 @@
+"0","#criando workflow e adicionando a receita e a especificação"
+"0","workflow_class <- workflow() %>%"
+"0","  add_recipe(recipe_clas) %>%"
+"0","  add_model(tree_clas_spec)"

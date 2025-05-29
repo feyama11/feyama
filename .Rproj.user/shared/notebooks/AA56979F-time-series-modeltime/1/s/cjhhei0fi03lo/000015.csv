@@ -1,0 +1,8 @@
+"0","submodels_calibrated_tbl %>% "
+"0","  modeltime_forecast("
+"0","    new_data = testing(splits),"
+"0","    actual_data = vendas_prep,"
+"0","    keep_data = TRUE"
+"0","  ) %>%"
+"0","  group_by(id) %>% "
+"0","  plot_modeltime_forecast(.facet_ncol = 1, .interactive = T)"

@@ -1,0 +1,6 @@
+"0","#parametros xgboost"
+"0","bart_params <- extract_parameter_set_dials(bart_model) %>%"
+"0","  finalize(ames_train)"
+"0",""
+"0","#grid de parâmetros (50 combinações para cada)"
+"0","bart_grid <- grid_latin_hypercube(x = bart_params, size = 50)"

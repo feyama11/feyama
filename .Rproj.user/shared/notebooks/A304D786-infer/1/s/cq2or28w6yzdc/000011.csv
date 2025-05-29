@@ -1,0 +1,8 @@
+"0","# visualize both null distributions and the test statistic!
+null_dist %>%
+  visualize(method = ""both"") + 
+  shade_p_value(observed_f_statistic,
+                direction = ""greater"")  +
+  theme_bw()
+"
+"2","Warning: Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you."

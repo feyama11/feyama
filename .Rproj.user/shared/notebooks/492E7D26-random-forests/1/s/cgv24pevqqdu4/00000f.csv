@@ -1,0 +1,2 @@
+"0","rf_last_fit <- rf_workflow %>%"
+"0","  last_fit(initial_split)"

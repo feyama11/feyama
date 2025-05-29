@@ -1,0 +1,6 @@
+"0","library(vip)"
+"0",""
+"0","final_ridge %>% "
+"0","  extract_fit_parsnip() %>%"
+"0","  vip(num_features = 30, mapping = aes(fill = Sign)) + "
+"0","  theme_minimal()"

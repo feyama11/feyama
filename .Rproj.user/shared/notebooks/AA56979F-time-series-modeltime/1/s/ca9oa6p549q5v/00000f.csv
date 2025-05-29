@@ -1,0 +1,74 @@
+"0","# ** 1. workflow() ----"
+"0","wflw_fit_prophet <- workflow() %>% "
+"0","# ** 2. add_model() ---- "
+"0","  add_model("
+"0","    # 'prophet_reg()' é do pacote modeltime. Usamos ""recipe_spec_1"""
+"0","    modeltime::prophet_reg() %>% set_engine('prophet') "
+"0","  ) %>% "
+"0","# ** 3. add_recipe() ----  "
+"0","  add_recipe(recipe_spec_1) %>% "
+"0","# ** 4. fit() ----   "
+"0","  fit(training(splits))"
+"0",""
+"0","wflw_fit_prophet"
+"1","══ Workflow [trained] ═══════════════════════════════════════════════════════════"
+"1",""
+"1","
+"
+"1","[3mPreprocessor:[23m Recipe"
+"1",""
+"1","
+"
+"1","[3mModel:[23m prophet_reg()"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","── Preprocessor ─────────────────────────────────────────────────────────────────"
+"1",""
+"1","
+"
+"1","6 Recipe Steps"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","• step_timeseries_signature()
+• step_rm()
+• step_normalize()
+• step_zv()
+• step_mutate()
+• step_dummy()"
+"1",""
+"1","
+"
+"1",""
+"1",""
+"1","
+"
+"1","── Model ────────────────────────────────────────────────────────────────────────"
+"1",""
+"1","
+"
+"1","PROPHET w/ Regressors Model
+- growth: 'linear'
+- n.changepoints: 25
+- changepoint.range: 0.8
+- yearly.seasonality: 'auto'
+- weekly.seasonality: 'auto'
+- daily.seasonality: 'auto'
+- seasonality.mode: 'additive'
+- changepoint.prior.scale: 0.05
+- seasonality.prior.scale: 10
+- holidays.prior.scale: 10
+- logistic_cap: NULL
+- logistic_floor: NULL
+- extra_regressors: 81"
+"1","
+"

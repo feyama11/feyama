@@ -1,0 +1,3 @@
+"0","collect_predictions(gbm_last) |> "
+"0","    roc_curve(yesno, .pred_n) |> "
+"0","    autoplot()"

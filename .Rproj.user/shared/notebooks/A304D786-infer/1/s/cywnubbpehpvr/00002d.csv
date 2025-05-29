@@ -1,0 +1,7 @@
+"0","# visualizar "
+"0","null_dist_1_sample %>%"
+"0","  visualize() + "
+"0","  shade_p_value(observed_statistic,"
+"0","                direction = ""two-sided"")+"
+"0","  theme_bw()"
+"0",""

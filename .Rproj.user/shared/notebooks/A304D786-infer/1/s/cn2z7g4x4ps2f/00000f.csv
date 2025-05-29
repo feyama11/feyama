@@ -1,0 +1,4 @@
+"0","t_test(x = gss, "
+"0","       formula = hours ~ college, "
+"0","       order = c(""degree"", ""no degree""),"
+"0","       alternative = ""two-sided"")"

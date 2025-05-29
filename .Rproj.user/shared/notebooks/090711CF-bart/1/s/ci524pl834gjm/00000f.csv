@@ -1,0 +1,5 @@
+"0","#ajustando o modelo
+lm_fit <- last_fit(lm_wflow, ames_split)
+"
+"2","Erro: objeto 'lm_wflow' não encontrado
+"

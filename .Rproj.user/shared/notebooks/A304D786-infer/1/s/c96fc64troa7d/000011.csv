@@ -1,0 +1,6 @@
+"0","# Visualizar a distribuição da variável 'hours'"
+"0","ggplot(gss, aes(x = hours)) +"
+"0","  geom_histogram(bins = 20, fill = ""lightblue"", color = ""black"") +"
+"0","  labs(title = ""Distribuição de horas trabalhadas"", x = ""Horas"", y = ""Frequência"")  +"
+"0","  scale_x_continuous(breaks = seq(0, 100, 10)) +"
+"0","  theme_bw()"

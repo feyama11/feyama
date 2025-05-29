@@ -1,0 +1,3 @@
+"0","dados <- drop_columns(dados, c(""year_flights"", ""tz_origin""))"
+"2","Warning: Column 'year_flights' does not exist to remove"
+"2","Warning: Column 'tz_origin' does not exist to remove"

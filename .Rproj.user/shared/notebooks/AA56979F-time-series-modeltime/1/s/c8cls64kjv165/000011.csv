@@ -1,0 +1,4 @@
+"0","# calculando acurácia"
+"0","submodels_calibrated_tbl %>% "
+"0","  modeltime_accuracy() %>%"
+"0","  table_modeltime_accuracy(.interactive = T)"

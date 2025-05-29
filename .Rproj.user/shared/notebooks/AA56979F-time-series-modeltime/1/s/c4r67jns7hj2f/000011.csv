@@ -1,0 +1,14 @@
+"0","# Dados"
+"0","vendas <- timetk::walmart_sales_weekly"
+"0",""
+"0","# grafico"
+"0","vendas %>% "
+"0","  group_by(id) %>% "
+"0","  plot_time_series(.date_var = Date, "
+"0","                   .value = Weekly_Sales, "
+"0","                   .facet_ncol = 3, "
+"0","                   .interactive = T)"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"

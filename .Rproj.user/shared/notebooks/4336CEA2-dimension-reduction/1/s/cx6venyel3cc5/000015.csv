@@ -1,0 +1,4 @@
+"0","bean_rec %>%"
+"0","  step_pls(all_numeric_predictors(), outcome = ""class"", num_comp = 4) %>%"
+"0","  plot_validation_results() + "
+"0","  ggtitle(""Partial Least Squares"")"

@@ -1,0 +1,6 @@
+"0","collect_predictions(bayes_res) %>%"
+"0","  ggplot(aes(.pred_PS)) +"
+"0","  geom_histogram(col = ""white"", bins = 40) +"
+"0","  facet_wrap(~ class, ncol = 1) +"
+"0","  geom_rug(col = ""blue"", alpha = 1 / 2) + "
+"0","  labs(x = ""Estimativa de Probabilidade de PS"")"

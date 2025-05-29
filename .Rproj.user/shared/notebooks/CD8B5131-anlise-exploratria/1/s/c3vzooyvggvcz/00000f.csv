@@ -1,0 +1,11 @@
+"0","#Carregando o pacote DataExplorer. Para instalar -> install.packages(""DataExplorer"")"
+"0","library(DataExplorer)"
+"2","Warning: package ‘DataExplorer’ was built under R version 4.2.3"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"

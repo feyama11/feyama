@@ -1,0 +1,7 @@
+"0","hotels_df <- hotel_stays %>%"
+"0","  select("
+"0","    children, hotel, arrival_date_month, meal, adr, adults,"
+"0","    required_car_parking_spaces, total_of_special_requests,"
+"0","    stays_in_week_nights, stays_in_weekend_nights"
+"0","  ) %>%"
+"0","  mutate_if(is.character, factor)"

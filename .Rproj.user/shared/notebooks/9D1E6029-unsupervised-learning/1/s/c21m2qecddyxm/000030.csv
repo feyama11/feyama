@@ -1,0 +1,6 @@
+"0",""
+"0","## Densidades"
+"0","ggplot(heart_long, aes(x = values, y = variables, fill = variables)) +"
+"0","  geom_density_ridges(show.legend = F) +"
+"0","  theme_bw() + "
+"0","  labs(x = ""Valores"", y = ""Variáveis"")"

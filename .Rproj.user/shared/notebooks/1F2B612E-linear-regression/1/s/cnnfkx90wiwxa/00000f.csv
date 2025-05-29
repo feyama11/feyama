@@ -1,0 +1,16 @@
+"0","## Leitura do pacote"
+"0","library('performance')"
+"2","Warning: package ‘performance’ was built under R version 4.2.3"
+"2","
+Attaching package: ‘performance’
+
+"
+"2","The following objects are masked from ‘package:yardstick’:
+
+    mae, rmse
+
+"
+"0","#extraindo o modelo"
+"0","linearMod <- extract_fit_parsnip(lm_model)"
+"0",""
+"0","check_model(linearMod, check = c('linearity', 'normality'))"

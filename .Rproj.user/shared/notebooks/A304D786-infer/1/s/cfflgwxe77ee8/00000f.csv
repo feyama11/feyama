@@ -1,0 +1,8 @@
+"0","chisq_test(gss, "
+"0","           response = finrela,"
+"0","           p = c(""far below average"" = 1/6,"
+"0","                    ""below average"" = 1/6,"
+"0","                    ""average"" = 1/6,"
+"0","                    ""above average"" = 1/6,"
+"0","                    ""far above average"" = 1/6,"
+"0","                    ""DK"" = 1/6))"

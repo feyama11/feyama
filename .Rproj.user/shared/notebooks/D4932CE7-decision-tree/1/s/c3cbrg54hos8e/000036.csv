@@ -1,0 +1,11 @@
+"0","# Traçando um histograma de 'winpercent'
+# Traçando um histograma de 'winpercent'
+ggplotly(
+  ggplot(candy_rankings, aes(x = winpercent)) +
+  geom_histogram(aes(y = stat(density)),  fill=""black"") +
+  geom_density( color = ""red"",  alpha=0.3, fill=""red"") +
+  labs(title = ""Histograma e Densidade"") +
+  theme_minimal()
+)
+"
+"2","[38;5;252m`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.[39m"

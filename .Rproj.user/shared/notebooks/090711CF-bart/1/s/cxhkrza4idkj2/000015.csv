@@ -1,0 +1,6 @@
+"0","paste(""O RMSE do modelo BART foi de: "", rmse_bart$.estimate[1])
+"
+"1","[1]"
+"1"," ""O RMSE do modelo BART foi de:  23549.0343089186"""
+"1","
+"

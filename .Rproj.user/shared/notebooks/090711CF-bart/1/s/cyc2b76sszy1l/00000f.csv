@@ -1,0 +1,6 @@
+"0","#Criar o recipe básico"
+"0","ames_rec = recipe(Sale_Price ~., data = ames_train) %>% "
+"0","  step_log(all_numeric(),-all_outcomes(), signed = T) %>%#escala log10 para todas as variaveis numericas"
+"0","  step_normalize(all_numeric_predictors()) %>% #normalizar dados numericos"
+"0","  step_other(all_factor_predictors(), threshold = 0.01) %>% #criar fator novo para dados incomuns "
+"0","  step_dummy(all_factor_predictors())"

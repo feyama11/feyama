@@ -1,0 +1,36 @@
+"0","library(tidymodels)"
+"2","[37m── [1mAttaching packages[22m ─────────────────────────────────────────────────────────────────────────── tidymodels 1.1.1 ──[39m
+"
+"2","[37m[32m✔[37m [34mbroom       [37m 1.0.5     [32m✔[37m [34mrsample     [37m 1.2.0
+[32m✔[37m [34mdials       [37m 1.2.0     [32m✔[37m [34mtune        [37m 1.1.2
+[32m✔[37m [34minfer       [37m 1.0.5     [32m✔[37m [34mworkflows   [37m 1.1.3
+[32m✔[37m [34mmodeldata   [37m 1.2.0     [32m✔[37m [34mworkflowsets[37m 1.0.1
+[32m✔[37m [34mparsnip     [37m 1.1.1     [32m✔[37m [34myardstick   [37m 1.2.0
+[32m✔[37m [34mrecipes     [37m 1.0.9     [39m
+"
+"2","[37m── [1mConflicts[22m ────────────────────────────────────────────────────────────────────────────── tidymodels_conflicts() ──
+[31m✖[37m [34mscales[37m::[32mdiscard()[37m masks [34mpurrr[37m::discard()
+[31m✖[37m [34mdplyr[37m::[32mfilter()[37m   masks [34mstats[37m::filter()
+[31m✖[37m [34mrecipes[37m::[32mfixed()[37m  masks [34mstringr[37m::fixed()
+[31m✖[37m [34mdplyr[37m::[32mlag()[37m      masks [34mstats[37m::lag()
+[31m✖[37m [34myardstick[37m::[32mspec()[37m masks [34mreadr[37m::spec()
+[31m✖[37m [34mrecipes[37m::[32mstep()[37m   masks [34mstats[37m::step()
+[34m•[37m Learn how to get started at [32mhttps://www.tidymodels.org/start/[37m[39m
+"
+"0","set.seed(123)"
+"0","netflix_split <- netflix_titles %>%"
+"0","  select(type, description) %>%"
+"0","  initial_split(strata = type)"
+"0",""
+"0","netflix_train <- training(netflix_split)"
+"0","netflix_test <- testing(netflix_split)"
+"0",""
+"0","set.seed(234)"
+"0","netflix_folds <- vfold_cv(netflix_train, strata = type)"
+"0","netflix_folds"
+"1","# "
+"1"," "
+"1","10-fold cross-validation using stratification"
+"1"," "
+"1","
+"

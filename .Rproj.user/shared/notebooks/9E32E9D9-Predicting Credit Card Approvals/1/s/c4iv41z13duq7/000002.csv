@@ -1,0 +1,22 @@
+"0","```r
+set.seed(4)
+#criando especificação do modelo
+xgboost_espec = boost_tree() %>%
+  set_mode(\"classification\") %>%
+  set_engine(\"xgboost\")
+
+#Atualizando o workflow 
+xgboost_workflow = workflow %>% add_model(xgboost_espec)
+
+#Ajustando workflow aos dados
+xgboost_modelo = fit(xgboost_workflow, data = cc_apps_trainamento)
+
+#prevendo modelo xgboost nos dados de teste
+xgboost_previsoes_classes = xgboost_modelo %>% predict(cc_apps_teste, type=\"class\") %>%
+  bind_cols(cc_apps_teste)
+
+xgboost_previsoes_probabilidades = xgboost_modelo %>% predict(cc_apps_teste, type=\"prob\") %>%
+  bind_cols(cc_apps_teste)
+
+xgboost_previsoes_classes %>% accuracy(truth = X16, estimate = .pred_class)
+```"

@@ -1,0 +1,6 @@
+"0","```r
+ggplot(candy_rankings, aes(x = fct_reorder(.f = competitorname, .x = pricepercent), y = pricepercent)) +
+  geom_point() +
+  geom_segment(aes(xend = fct_reorder(competitorname, pricepercent), yend = 0)) +
+  coord_flip()
+```"

@@ -1,0 +1,2 @@
+"0","set.seed(2002)"
+"0","ens <- blend_predictions(concrete_stack, penalty = 10^seq(-2, -0.5, length = 20))"

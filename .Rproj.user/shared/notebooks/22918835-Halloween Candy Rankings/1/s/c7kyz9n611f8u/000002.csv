@@ -1,0 +1,8 @@
+"0","```r
+candy_rankings_long = candy_rankings %>%
+  pivot_longer(cols = chocolate:pluribus, names_to = 'feature', values_to = 'value', values_drop_na = TRUE)
+
+ggplot(candy_rankings_long, aes(x = value)) +
+  geom_bar() +
+  facet_wrap(~ feature) 
+```"

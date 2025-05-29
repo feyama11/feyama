@@ -1,0 +1,3 @@
+"0",""
+"0","# Coletar métricas do ajuste do modelo com validação cruzada"
+"0","cv_output %>% collect_metrics()"

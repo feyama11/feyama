@@ -1,0 +1,183 @@
+---
+title: "Inferência usando Infer"
+description: |
+  O objetivo de análise estatística é entender a relação entre as aeronaves pilotadas e a patente na formatura dos aviadores de Tuskegee. Que tipo de aeronave os aviadores pilotaram? 
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2024-11-08
+preview: infer.jpg
+categories:
+ - estatistica
+ - R
+ - inferencia
+ - teste de hipotese
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+```{r}
+library(magick)
+img <- image_read("infer.png")
+img_resized <- image_resize(img, "200x150")
+image_write(img_resized, "infer.png")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# Explorar os dados
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+
+dados0 <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-08/airmen.csv")
+
+dados0 %>% count(pilot_type)
+```
+
+Vamos corrigir o erro de ortografia e visualizar a relação entre o tipo de aeronave pilotada e a patente na formatura.
+
+```{r}
+dados <-
+  dados0 %>%
+  mutate(pilot_type = str_replace(pilot_type, "Liason", "Liaison"))
+
+dados %>%
+  ggplot(aes(pilot_type, fill = rank_at_graduation)) +
+  geom_bar() +
+  labs(x = "Tipo de Piloto", y="Quantidade", fill="Rank")+
+  theme_bw()
+```
+Um tenente é uma patente superior a um oficial de voo. As categorias com mais aviadores são aeronaves de um e dois motores, bem como oficiais de voo e segundos-tenentes, então vamos focar nessas.
+
+# Usando Infer
+
+O pacote infer oferece uma gramática fácil para inferência estatística. Começamos utilizando a função specify() para declarar nossas variáveis de resposta e explicativas. Em seguida, podemos começar a gerar reamostras, como reamostras bootstrap e permutações.
+
+```{r message=FALSE, warning=FALSE}
+library(infer)
+
+aeronaves <- c("Single engine", "Twin engine")
+ranks <- c("Flight Officer", "2nd Lt")
+
+pilot_vs_rank <-
+  dados %>%
+  filter(pilot_type %in% aeronaves, rank_at_graduation %in% ranks) %>%
+  mutate(across(is.character, factor))%>%
+  specify(pilot_type ~ rank_at_graduation, success = "Twin engine")
+
+set.seed(123)
+bootstrapped <-
+  pilot_vs_rank %>%
+  generate(reps = 1000, type = "bootstrap")
+
+set.seed(234)
+permuted <-
+  pilot_vs_rank %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "Chisq")
+
+bootstrapped
+permuted
+```
+## Estatística Qui-Quadrado
+
+Agora que temos diferentes tipos de conjuntos de dados reamostrados, podemos calcular algumas estatísticas. Vamos começar com a estatística qui-quadrado; este é um valor que nos informa o quanto de diferença existe entre nossas contagens observadas (tipos de aeronaves, patentes na formatura) e as contagens que esperaríamos se não houvesse relação na população dos aviadores.
+
+Podemos calcular a estatística qui-quadrado na nossa amostra real:
+
+```{r}
+qui2_calc <-
+  pilot_vs_rank %>%
+  calculate(stat = "chisq", order = ranks)
+
+qui2_calc
+```
+Parece um valor grande (indicando que o tipo de aeronave e a patente estão relacionados), mas como sabemos se é significativo para o nosso conjunto de dados? Estamos bastante confiantes com base na nossa análise exploratória de dados (EDA), mas como podemos verificar isso? Podemos calcular a estatística para nossas reamostras bootstrap e encontrar um intervalo de confiança:
+
+```{r}
+qui2_boot <-
+  bootstrapped %>%
+  calculate(stat = "chisq")
+
+get_ci(qui2_boot)
+```
+Também podemos visualizar a distribuição junto com o intervalo de confiança.
+
+```{r}
+visualize(qui2_boot) +
+  shade_ci(
+    endpoints = get_ci(qui2_boot),
+    fill = "midnightblue",
+    color = "midnightblue",
+    lty = 2
+  ) +
+  theme_bw()
+```
+E se quisermos entender o quão extremo esse valor é? Podemos calcular a estatística para os dados permutados (que quebram a relação entre aeronave e patente) e ver como a nossa estatística observada real se compara.
+
+```{r}
+permuted %>%
+  visualize() +
+  shade_p_value(obs_stat = qui2_calc, direction = 'greater', color = "gray40", lty = 2) +
+  theme_bw()
+```
+O valor-p para isso seria minúsculo! Usar reamostragem e simulação em vez de um teste
+$\chi^2$ regular com um valor-p pode nos ajudar a entender as relações estatísticas aqui.
+
+```{r}
+permuted %>%
+  get_p_value(obs_stat = qui2_calc,
+              direction = "greater")
+```
+## Odds Ratio
+
+A estatística $\chi^2$ pode ser difícil de entender. A razão de chances, por outro lado, faz mais sentido  para alguns. Uma grande vantagem do infer é que podemos trocar a estatística que calculamos e refazer qualquer um dos passos anteriores. Vamos criar uma visualização da distribuição da razão de chances reamostrada.
+
+```{r, fig.height=7, fig.width=10}
+odds_desc <- paste(
+  "Oficiais de voo tinham maior probabilidade de pilotar aeronaves com motores duplos",
+  "Os segundos tenentes tinham maior probabilidade de pilotar aeronaves com motor único",
+  sep = "\n"
+)
+
+or_boot <- bootstrapped %>%
+  calculate(stat = "odds ratio", order = ranks)
+get_ci(or_boot)
+
+or_boot %>%
+  visualize() +
+  shade_ci(endpoints = get_ci(or_boot),
+    fill = "midnightblue",
+    color = "midnightblue",
+    lty = 2
+  ) +
+  labs(
+    title = "Distribuição bootstrap da patente dos aviadores de Tuskegee por tipo de aeronave",
+    subtitle = odds_desc,
+    x = "Razão de chances de motores duplos vs. motores únicos (para oficiais de voo em comparação com segundos tenentes)"
+  ) +
+  theme_bw()
+```
+Ao comparar motores duplos e motores únicos, os oficiais de voo têm de 2 a 3 vezes mais probabilidade de pilotar uma aeronave com motor duplo do que os segundos tenentes.
+
+# Usando R-stats
+
+Também podemos fazer a mesma análise usando apenas as funções nativas do R, de um modo mais 'estatístico'.
+
+```{r}
+tabela <- with(pilot_vs_rank, table(pilot_type, rank_at_graduation))
+chisq.test(tabela)
+fisher.test(tabela)
+```
+
+Podemos ver que os resultados são os mesmos, porém a interpretação é um pouco mais difícil para quem não tem familiaridade com estatística.

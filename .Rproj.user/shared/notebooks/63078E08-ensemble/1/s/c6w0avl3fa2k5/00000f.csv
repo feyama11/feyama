@@ -1,0 +1,7 @@
+"0","normalized <- "
+"0","   workflow_set("
+"0","      preproc = list(normalized = normalized_rec), "
+"0","      models = list(SVM_radial = svm_r_spec, SVM_poly = svm_p_spec, "
+"0","                    KNN = knn_spec, neural_network = nnet_spec)"
+"0","   )"
+"0","normalized"

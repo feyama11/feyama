@@ -1,0 +1,8 @@
+"0","# qqplot"
+"0","ggplotly("
+"0","ggplot(ames, aes(sample = Sale_Price))+ "
+"0","  stat_qq()+"
+"0","  stat_qq_line()+ "
+"0","  labs(x = """", y = """") +"
+"0","  scale_y_continuous(labels = dollar)"
+"0",")"

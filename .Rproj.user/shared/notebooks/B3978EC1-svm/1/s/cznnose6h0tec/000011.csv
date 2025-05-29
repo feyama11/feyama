@@ -1,0 +1,4 @@
+"0","# Carrega o pacote ROCR
+library(ROCR)
+"
+"2","Warning: package ‘ROCR’ was built under R version 4.3.3"

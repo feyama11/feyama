@@ -1,0 +1,2 @@
+"0","cell_cal <- cal_estimate_beta(bayes_res)"
+"0","bayes_fit <- bayes_wflow %>% fit(data = cells_tr)"

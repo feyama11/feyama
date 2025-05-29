@@ -1,0 +1,2 @@
+"0","final_df <- group_category(data = final_data, feature = ""manufacturer"", threshold = 0.2, update = TRUE)"
+"0","plot_bar(final_df$manufacturer)"

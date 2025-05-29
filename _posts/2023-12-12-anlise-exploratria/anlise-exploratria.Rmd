@@ -1,0 +1,437 @@
+---
+title: "Análise Exploratória"
+description: |
+  Nesse post vamos realizar uma análise exploratória de dados, utilizando o pacote DataExplorer 
+preview: eda.jpeg
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+date: 2023-12-12
+categories:
+  - analise exploratoria
+  - graficos
+  - R
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Definição
+
+### O que é análise exploratória de dados?
+
+A análise exploratória de dados (AED) é uma abordagem à análise de
+conjuntos de dados de modo a resumir suas características principais,
+frequentemente com métodos visuais. Seu objetivo é obter uma compreensão
+inicial dos dados, identificando padrões, tendências e outliers.
+
+A AED é uma etapa importante de qualquer análise de dados, pois fornece
+uma base sólida para o desenvolvimento de hipóteses e a aplicação de
+técnicas estatísticas mais sofisticadas. Ela pode ser usada em uma ampla
+variedade de aplicações, incluindo pesquisa científica, negócios,
+governo e saúde.
+
+### Importância da análise exploratória de dados
+
+A análise exploratória de dados é importante por vários motivos:
+
+Ela ajuda a entender os dados. A AED permite que os pesquisadores e
+analistas identifiquem padrões, tendências e outliers nos dados. Isso
+pode fornecer insights valiosos sobre o que os dados representam e como
+eles podem ser usados. Ela ajuda a identificar problemas nos dados. A
+AED pode ajudar a identificar problemas comuns nos dados, como valores
+ausentes, outliers e dados incorretos. Isso é importante para garantir
+que os dados sejam confiáveis e que as análises sejam válidas. Ela ajuda
+a gerar hipóteses. A AED pode ajudar os pesquisadores a gerar hipóteses
+sobre os dados. Essas hipóteses podem ser testadas com técnicas
+estatísticas mais sofisticadas. Exemplo de análise exploratória de dados
+
+Para ilustrar como a análise exploratória de dados pode ser feita, vamos
+usar o pacote dataExplorer do R para analisar o conjunto de dados
+nycflights13. Este conjunto de dados contém dados de pontualidade de
+companhias aéreas para todos os voos que partiram de Nova York em 2013.
+Inclui também 'metadados' úteis sobre companhias aéreas, aeroportos,
+clima e aviões.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dados
+
+```{r message=FALSE, warning=FALSE}
+#Instalando o pacote que contém os dados
+# install.packages("nycflights13")
+
+#Carregando o pacote
+library(nycflights13)
+```
+
+Há 5 conjuntos de dados neste pacote:
+
+-   Companhias aéreas (airlines)
+
+-   Aeroportos (airports)
+
+-   Voos (flights)
+
+-   Aviões (planes)
+
+-   Clima (weather)
+
+
+
+```{r}
+#Carregando o pacote DataExplorer. Para instalar -> install.packages("DataExplorer")
+library(DataExplorer)
+```
+
+Agora, vamos juntar todas as tabelas para criar um novo conjunto de dados
+
+```{r}
+merge_airlines <- merge(flights, airlines, by = "carrier", all.x = TRUE)
+merge_planes <- merge(merge_airlines, planes, by = "tailnum", all.x = TRUE, suffixes = c("_flights", "_planes"))
+merge_airports_origin <- merge(merge_planes, airports, by.x = "origin", by.y = "faa", all.x = TRUE, suffixes = c("_carrier", "_origin"))
+dados <- merge(merge_airports_origin, airports, by.x = "dest", by.y = "faa", all.x = TRUE, suffixes = c("_origin", "_dest"))
+```
+
+## Análise Exploratória
+
+### Introdução
+
+Para dar a primeira olhada nos nossos dados, podemos usar a função "introduce"
+
+```{r}
+introduce(dados)
+```
+Para visualizar as informações acima, com uma pequena análise, utilizamos "plot_intro"
+
+```{r fig.width=9}
+plot_intro(dados)
+```
+Você deve notar algumas surpresas:
+
+-   Apenas 0,3% das linhas estão completamente preenchidas! Isso significa que 99,7% das linhas possuem pelo menos um valor faltante.
+
+-   Apesar disso, o total de observações faltantes é de apenas 5,7%. Isso indica que a maioria das linhas possui apenas alguns valores faltantes.
+
+Os valores faltantes estão definitivamente criando problemas. Precisamos investigar e tratar esses valores para realizar uma análise adequada dos dados. Vamos dar uma olhada nos dados faltantes para entender melhor a situação.
+
+### Valores Ausentes
+
+Dados do mundo real são bagunçados, e você pode simplesmente usar a função "plot_missing" para visualizar o perfil de valores ausentes para cada variável.
+
+```{r fig.height=8}
+plot_missing(dados)
+```
+
+A partir do gráfico, a variável 'speed' está quase totalmente ausente e provavelmente não é informativa. Parece que encontramos o culpado pelas 0,3% de linhas completas. Vamos excluí-lo:
+
+```{r}
+dados <- drop_columns(dados, "speed")
+```
+
+### Distribuições
+
+Visualizando distribuições de frequência para todas as variáveis discretas:
+
+```{r message=FALSE, warning=FALSE, fig.height=15, fig.width=15}
+plot_bar(dados)
+```
+
+Após uma inspeção mais detalhada da variável 'manufacturer', não é difícil identificar as seguintes duplicações:
+
+-   AIRBUS e AIRBUS INDUSTRIE
+-   CANADAIR e CANADAIR LTD
+-   MCDONNELL DOUGLAS, MCDONNELL DOUGLAS AIRCRAFT CO e MCDONNELL DOUGLAS CORPORATION
+
+Vamos limpar e olhar a distribuição da variável 'manufacturer' de novo:
+
+```{r}
+dados[which(dados$manufacturer == "AIRBUS INDUSTRIE"),]$manufacturer <- "AIRBUS"
+dados[which(dados$manufacturer == "CANADAIR LTD"),]$manufacturer <- "CANADAIR"
+dados[which(dados$manufacturer %in% c("MCDONNELL DOUGLAS AIRCRAFT CO", "MCDONNELL DOUGLAS CORPORATION")),]$manufacturer <- "MCDONNELL DOUGLAS"
+
+plot_bar(dados$manufacturer)
+```
+Ok,tudo certo com a variável 'manufacturer'.
+
+As colunas dst_origin, tzone_origin, year_flights e tz_origin contém somente 1 valor, então vamos retirá-las também
+
+```{r}
+dados <- drop_columns(dados, c("dst_origin", "tzone_origin", "year_flights", "tz_origin"))
+```
+
+Muitas vezes, é muito útil olhar para a distribuição de frequência bivariada. Isso permite que você explore como duas variáveis se relacionam entre si e identifique possíveis padrões ou correlações. Por exemplo, podemos olhar para a distribuição de frequência das variáveis discretas em relação ao "arr_delay". Isso nos ajudará a entender como essas variáveis influenciam o atraso de chegada dos voos e vice-versa.
+
+```{r fig.height=15, fig.width=15, message=FALSE, warning=FALSE}
+plot_bar(dados, with = "arr_delay")
+```
+
+A distribuição resultante parece bastante diferente da distribuição de frequência regular.
+Você pode optar por desmembrar todas as frequências por uma variável discreta:
+
+```{r fig.height=15, fig.width=15, message=FALSE, warning=FALSE}
+plot_bar(dados, by = "origin")
+```
+
+### Histogramas
+
+Visualizando distribuições para todas as variáveis contínuas:
+
+```{r  fig.height=12}
+plot_histogram(dados)
+```
+
+À primeira vista, podemos observar que existem variáveis de data e hora que precisam ser tratadas posteriormente. Por exemplo, podemos concatenar ano, mês e dia para formar a data ou adicionar hora e minuto para formar a data e hora.
+
+Embora este exemplo não se aprofunde em tarefas analíticas, devemos tratar as seguintes features com base nas informações fornecidas pelos histogramas:
+
+-   Defina "flight" como uma variável categórica, pois se trata do número do voo, que não tem significado matemático
+
+```{r}
+dados <- update_columns(dados, "flight", as.factor)
+```
+
+-    Remover 'year_flights' e 'tz_origin' pois só tem um valor
+
+```{r}
+dados <- drop_columns(dados, c("year_flights", "tz_origin"))
+```
+### QQ-plot
+
+O gráfico Q-Q (Quantile-Quantile) é uma forma de visualizar o desvio de uma distribuição de probabilidade específica. Depois de analisar esses gráficos, muitas vezes é benéfico aplicar uma transformação matemática (como logaritmo) para modelos como a regressão linear. Para fazer isso, podemos usar a função plot_qq. Por padrão, ela compara os dados com uma distribuição normal.
+
+Nota: A função pode levar muito tempo com muitas observações, então você pode especificar um valor apropriado para o parâmetro 'sampled_rows'.
+
+```{r}
+qq_data <- dados[, c("arr_delay", "air_time", "distance", "seats")]
+
+plot_qq(qq_data, sampled_rows = 1000)
+```
+
+Com base no gráfico, as variáveis 'air_time', 'distance' e 'seats' parecem apresentar assimetria em ambas as extremidades (caudas). Para resolver isso, vamos aplicar uma transformação logarítmica simples e plotá-las novamente.
+
+Esta transformação ajudará a normalizar a distribuição dessas variáveis, tornando-as mais adequadas para análise estatística e modelagem. O logaritmo comprimirá os valores extremos, reduzindo a influência que eles têm na análise.
+
+Depois de aplicar a transformação, vamos plotar novamente as variáveis para verificar se a assimetria foi corrigida. Isso nos ajudará a determinar se a transformação foi eficaz e se podemos continuar com a análise dos dados.
+
+```{r}
+log_qq_data <- update_columns(data = qq_data, ind = 2:4, what = function(x) log(x + 1))
+
+plot_qq(log_qq_data[, 2:4], sampled_rows = 1000L)
+```
+
+A distribuição agora parece melhor! Se necessário, você também pode visualizar o gráfico Q-Q em relação a outra variável:
+
+```{r}
+qq_data <- dados[, c("name_origin", "arr_delay", "air_time", "distance", "seats")]
+
+plot_qq(qq_data, by = "name_origin", sampled_rows = 1000L)
+```
+
+### Análise de correlação
+
+Para visualizar a matriz de correlação de todas as variáveis sem valores ausentes:
+
+```{r fig.height=10, fig.width=8}
+#estamos ignorando variaveis que contenham mais de 5 categorias
+plot_correlation(na.omit(dados), maxcat = 5L)
+```
+
+### Análise de Componentes Principais (PCA)
+
+Embora você possa sempre executar plot_prcomp(na.omit(dados)) diretamente, a PCA funciona melhor com dados mais limpos. Para realizar e visualizar a PCA em algumas variáveis selecionadas:
+
+```{r}
+pca_df <- na.omit(dados[, c("origin", "dep_delay", "arr_delay", "air_time", "year_planes", "seats")])
+
+plot_prcomp(pca_df, variance_cap = 0.9, nrow = 2L, ncol = 2L)
+```
+### Boxplots
+
+
+Suponha que você deseja construir um modelo para prever o atraso de chegada, é possível visualizar a distribuição de todas as variáveis contínuas com base no atraso de chegada usando um boxplot:
+
+```{r}
+## selecionar apenas algumas variáveis
+arr_delay_df <- dados[, c("arr_delay", "month", "day", "hour", "minute", "dep_delay", "distance", "year_planes", "seats")]
+
+## Call boxplot function
+plot_boxplot(arr_delay_df, by = "arr_delay")
+```
+Entre todas as mudanças sutis na correlação com os atrasos de chegada, você pode perceber imediatamente que aviões com mais de 300 assentos tendem a ter atrasos muito maiores (16 a 21 horas). Agora você pode se aprofundar ainda mais para verificar ou gerar mais hipóteses.
+
+### Gráficos de dispersão
+
+```{r}
+arr_delay_df2 <- dados[, c("arr_delay", "dep_time", "dep_delay", "arr_time", "air_time", "distance", "year_planes", "seats")]
+
+plot_scatterplot(arr_delay_df2, by = "arr_delay", sampled_rows = 1000L)
+```
+## Mudanças de variáveis ('feature engineering')
+
+É o processo de criar novas variáveis a partir de dados existentes.
+
+### Substituir valores ausentes
+
+Valores ausentes podem ter significados para uma variável. Além dos métodos de imputação, também podemos substituí-los por alguns valores lógicos. Por exemplo, para variáveis discretas, podemos querer agrupar os valores faltantes em uma nova categoria. Para variáveis contínuas, podemos querer definir os valores faltantes como um número conhecido com base no conhecimento existente.
+
+No DataExplorer, isso pode ser feito pela função set_missing. A função identifica automaticamente o tipo de variável (discreta ou contínua) com base no argumento fornecido. Se você especificar um número, todos os valores faltantes de variáveis contínuas serão substituídos por esse número. Se você especificar uma string, todos os valores faltantes de variáveis discretas serão substituídos por essa string. Se você fornecer ambos, os valores faltantes de ambos os tipos serão substituídos.
+
+```{r}
+final_df <- set_missing(dados, list(0L, "unknown"))
+plot_missing(final_df)
+```
+### Agrupar categorias
+
+A partir dos gráficos de barras anteriores, observamos um certo número de variávei discretas com distribuições categóricas esparsas. Às vezes, queremos agrupar categorias de baixa frequência em um novo grupo ou reduzir o número de categorias para uma faixa razoável. A função group_category fará isso.
+
+Tome a variável "fabricante" como exemplo. Suponha que queremos agrupar em outra categoria. Podemos tentar primeiro com os 20% inferiores (por contagem):
+
+```{r}
+group_category(data = dados, feature = "manufacturer", threshold = 0.2)
+```
+
+Como podemos ver, o 'manufacturer' será reduzido a 4 categorias, ou seja, AIRBUS, BOEING, EMBRAER e OUTROS. Se você concordar com esse limite, pode especificar 'update = TRUE' para atualizar o conjunto de dados original.
+
+```{r}
+final_df <- group_category(data = dados, feature = "manufacturer", threshold = 0.2, update = TRUE)
+plot_bar(final_df$manufacturer)
+```
+Em vez de reduzir as categorias pela frequência, você também pode agrupar as categorias por outra métrica contínua. Por exemplo, se você deseja agrupar 'name_carrier' com os 20% inferiores de distância percorrida, você pode fazer o seguinte:
+
+```{r}
+group_category(data = dados, feature = "name_carrier", threshold = 0.2, measure = "distance")
+```
+
+Da mesma forma, se desejar, você pode adicionar "update = TRUE" para atualizar o conjunto de dados original.
+
+```{r}
+final_df <- group_category(data = dados, feature = "name_carrier", threshold = 0.2, measure = "distance", update = TRUE)
+plot_bar(final_df$name_carrier)
+```
+### Dummificar os dados
+
+Para transformar os dados em formato binário (para que os algoritmos de ML possam processá-los), a dummificação fará o trabalho. A função preserva a estrutura original dos dados, de modo que apenas características discretas elegíveis serão convertidas para o formato binário
+
+```{r}
+#usamos a função dummify
+dummy <- dummify(dados, maxcat = 5)
+plot_bar(dummy$origin_EWR)
+```
+### Excluir variáveis
+
+Após visualizar a distribuição das características, é comum querer descartar características que são insignificantes. Por exemplo, características como dst_dest têm principalmente um valor e não fornecem informações valiosas. Você pode usar 'drop_columns' para descartar rapidamente essas características. A função aceita nomes ou índices de colunas como parâmetro.
+
+```{r eval=FALSE, include=TRUE}
+drop_columns(dados, c("dst_dest", "tzone_dest")),
+```
+### Atualizar variáveis
+
+Para atualizar rapidamente várias características com o mesmo tratamento, você pode usar 'update_columns'. Um caso de uso muito comum é definir características para um tipo diferente, por exemplo, de contínuo para discreto. Para configurar rapidamente todas as características relacionadas ao tempo como discreta:
+
+```{r}
+temporal_features <- c("month", "day", "hour", "minute", "tz_dest")
+dados <- update_columns(dados, temporal_features, as.factor)
+str(dados[, c("month", "day", "hour", "minute", "tz_dest")])
+```
+Você também pode usar esta função para transformar características selecionadas com uma função personalizada:
+
+```{r}
+bin_seat <- function(x) cut(x, breaks = c(0L, 50L, 100L, 150L, 200L, 500L))
+transformed_data <- update_columns(dados, "seats", bin_seat)
+
+plot_bar(transformed_data$seats)
+```
+## Relatório de dados
+
+Para organizar todas as estatísticas de dados em um relatório, você pode usar a função 'create_report'. Ela executará a maioria das funções de Análise Exploratória de Dados (EDA) e gerará um arquivo HTML
+
+```{r eval=FALSE, include=TRUE}
+create_report(dados)
+```
+
+Para maximizar o uso desta função, sempre forneça uma variável de resposta (se aplicável) para automatizar diversas análises bivariadas. Por exemplo:
+
+```{r eval=FALSE, include=TRUE}
+create_report(dados, y = "arr_delay")
+```
+
+Você também pode personalizar cada seção individual usando a função 'configure_report'. Ela retorna todos os argumentos especificados em uma lista, que serão passados para do.call para serem invocados. Existem 3 tipos de argumentos nesta função:
+
+-   interruptores (add_): ligar/desligar uma seção
+-   argumentos (args): personalizar cada seção
+-   configurações globais (global*): configurações globais de tema
+-   Para desligar algumas seções e definir um tema global:
+
+```{r eval=FALSE, include=TRUE}
+configure_report(
+  add_plot_str = FALSE,
+  add_plot_qq = FALSE,
+  add_plot_prcomp = FALSE,
+  add_plot_boxplot = FALSE,
+  add_plot_scatterplot = FALSE,
+  global_ggtheme = quote(theme_minimal(base_size = 14))
+)
+```
+
+A saída pode ser passada diretamente para o argumento de configuração em create_report, por exemplo:
+
+```{r eval=FALSE, include=TRUE}
+config <- configure_report(
+  add_plot_str = FALSE,
+  add_plot_qq = FALSE,
+  add_plot_prcomp = FALSE,
+  add_plot_boxplot = FALSE,
+  add_plot_scatterplot = FALSE,
+  global_ggtheme = quote(theme_minimal(base_size = 14))
+)
+create_report(dados, config = config)
+```
+
+Para configurar o relatório sem usar a função configure_report, você pode editar o modelo abaixo e passá-lo diretamente para o argumento de configuração:
+
+```{r eval=FALSE, include=TRUE}
+config <- list(
+  "introduce" = list(),
+  "plot_intro" = list(),
+  "plot_str" = list(
+    "type" = "diagonal",
+    "fontSize" = 35,
+    "width" = 1000,
+    "margin" = list("left" = 350, "right" = 250)
+  ),
+  "plot_missing" = list(),
+  "plot_histogram" = list(),
+  "plot_density" = list(),
+  "plot_qq" = list(sampled_rows = 1000L),
+  "plot_bar" = list(),
+  "plot_correlation" = list("cor_args" = list("use" = "pairwise.complete.obs")),
+  "plot_prcomp" = list(),
+  "plot_boxplot" = list(),
+  "plot_scatterplot" = list(sampled_rows = 1000L)
+)
+create_report(dados, config = config)
+```
+
+## Referências:
+
+-   Berry, M. J., & Linoff, G. S. (2000). Data mining techniques: for marketing, sales, and customer relationship management (2a ed.). New York: John Wiley & Sons.
+
+-   Hastie, T., Tibshirani, R., & Friedman, J. (2009). The elements of statistical learning (2a ed.). New York: Springer.
+
+-   Hand, D. J., Heywood, F., & Cunningham, M. (2001). Exploratory data analysis: a practical guide. London: Chapman & Hall/CRC.
+
+-   Tukey, J. W. (1977). Exploratory data analysis. Reading, MA: Addison-Wesley.
+
+-   Witten, I. H., Frank, E., & Hall, M. A. (2011). Data mining: concepts and techniques (3a ed.). New York: Morgan Kaufmann.
+
+-   Cui, B. (2022, 20 de julho). DataExplorer: Automate data exploration and treatment. GitHub. Disponível em: https://github.com/boxuancui/DataExplorer. Acesso em: 12 de dezembro de 2023.

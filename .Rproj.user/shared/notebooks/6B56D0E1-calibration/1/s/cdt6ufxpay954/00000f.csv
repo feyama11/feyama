@@ -1,0 +1,4 @@
+"0","set.seed(1212)"
+"0","iso_val <- cal_validate_isotonic_boot(bayes_res, metrics = cls_met, "
+"0","                                      save_pred = TRUE, times = 50)"
+"0","collect_metrics(iso_val)"

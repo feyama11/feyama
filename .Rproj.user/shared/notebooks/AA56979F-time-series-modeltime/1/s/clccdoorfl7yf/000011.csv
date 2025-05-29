@@ -1,0 +1,5 @@
+"0",""
+"0","# Resumo da receita modificada (recipe_spec_2)"
+"0","recipe_spec_2 %>% "
+"0","  prep() %>%          # Prepara a receita atualizada"
+"0","  summary()           # Exibe o resumo atualizado com 'Date' como ID"

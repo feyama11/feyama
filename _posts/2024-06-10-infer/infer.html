@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Infer - Inferência Estatística</title>
+
+  <meta property="description" itemprop="description" content="Aprenda como fazer inferência estatística com o pacote Infer"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-06-12"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-06-12"/>
+  <meta name="article:author" content="Felipe Yamamoto Tenedine"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Infer - Inferência Estatística"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Aprenda como fazer inferência estatística com o pacote Infer"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Infer - Inferência Estatística"/>
+  <meta property="twitter:description" content="Aprenda como fazer inferência estatística com o pacote Infer"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","preview","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Infer - Inferência Estatística"]},{"type":"character","attributes":{},"value":["Aprenda como fazer inferência estatística com o pacote Infer\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Felipe Yamamoto Tenedine"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/felipe-yamamoto-tenedine/"]}]}]},{"type":"character","attributes":{},"value":["2024-06-12"]},{"type":"character","attributes":{},"value":["image.webp"]},{"type":"character","attributes":{},"value":["estatistica","R","inferencia","teste de hipotese"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","toc_float","toc_collapsed","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["image.webp","infer_files/anchor-4.2.2/anchor.min.js","infer_files/bowser-1.9.3/bowser.min.js","infer_files/distill-2.2.21/template.v2.js","infer_files/figure-html5/unnamed-chunk-10-1.png","infer_files/figure-html5/unnamed-chunk-10-2.png","infer_files/figure-html5/unnamed-chunk-13-1.png","infer_files/figure-html5/unnamed-chunk-18-1.png","infer_files/figure-html5/unnamed-chunk-2-1.png","infer_files/figure-html5/unnamed-chunk-21-1.png","infer_files/figure-html5/unnamed-chunk-22-1.png","infer_files/figure-html5/unnamed-chunk-23-1.png","infer_files/figure-html5/unnamed-chunk-26-1.png","infer_files/figure-html5/unnamed-chunk-30-1.png","infer_files/figure-html5/unnamed-chunk-31-1.png","infer_files/figure-html5/unnamed-chunk-32-1.png","infer_files/figure-html5/unnamed-chunk-36-1.png","infer_files/figure-html5/unnamed-chunk-39-1.png","infer_files/figure-html5/unnamed-chunk-44-1.png","infer_files/figure-html5/unnamed-chunk-47-1.png","infer_files/figure-html5/unnamed-chunk-49-1.png","infer_files/figure-html5/unnamed-chunk-5-1.png","infer_files/header-attrs-2.25/header-attrs.js","infer_files/jquery-3.6.0/jquery-3.6.0.js","infer_files/jquery-3.6.0/jquery-3.6.0.min.js","infer_files/jquery-3.6.0/jquery-3.6.0.min.map","infer_files/popper-2.6.0/popper.min.js","infer_files/tippy-6.2.7/tippy-bundle.umd.min.js","infer_files/tippy-6.2.7/tippy-light-border.css","infer_files/tippy-6.2.7/tippy.css","infer_files/tippy-6.2.7/tippy.umd.min.js","infer_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="infer_files/header-attrs-2.25/header-attrs.js"></script>
+  <script src="infer_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="infer_files/popper-2.6.0/popper.min.js"></script>
+  <link href="infer_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="infer_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="infer_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="infer_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="infer_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="infer_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="infer_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Infer - Inferência Estatística","description":"Aprenda como fazer inferência estatística com o pacote Infer","authors":[{"author":"Felipe Yamamoto Tenedine","authorURL":"https://www.linkedin.com/in/felipe-yamamoto-tenedine/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-06-12T00:00:00.000-03:00","citationText":"Tenedine, 2024"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Infer - Inferência Estatística</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">estatistica</div>
+<div class="dt-tag">R</div>
+<div class="dt-tag">inferencia</div>
+<div class="dt-tag">teste de hipotese</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Aprenda como fazer inferência estatística com o pacote Infer</p></p>
+</div>
+
+<div class="d-byline">
+  Felipe Yamamoto Tenedine <a href="https://www.linkedin.com/in/felipe-yamamoto-tenedine/" class="uri">https://www.linkedin.com/in/felipe-yamamoto-tenedine/</a> 
+  
+<br/>2024-06-12
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#introdução" id="toc-introdução">Introdução</a></li>
+<li><a href="#teste-t" id="toc-teste-t">Teste-t</a>
+<ul>
+<li><a href="#teste-t-de-1-amostra" id="toc-teste-t-de-1-amostra">Teste t de 1 Amostra</a></li>
+<li><a href="#teste-t-de-duas-amostras" id="toc-teste-t-de-duas-amostras">Teste t de duas amostras</a></li>
+</ul></li>
+<li><a href="#anova---análise-de-variância" id="toc-anova---análise-de-variância">ANOVA - Análise de variância</a></li>
+<li><a href="#teste-qui-quadrado" id="toc-teste-qui-quadrado">Teste Qui-Quadrado</a>
+<ul>
+<li><a href="#teste-de-independência" id="toc-teste-de-independência">Teste de Independência</a></li>
+<li><a href="#teste-de-aderência" id="toc-teste-de-aderência">Teste de aderência</a></li>
+</ul></li>
+<li><a href="#dados-pareados" id="toc-dados-pareados">Dados Pareados</a></li>
+</ul>
+</nav>
+</div>
+<h1 id="introdução">Introdução</h1>
+<p>Infer implementa uma gramática para realizar inferências estatísticas que conversas com o framework do tidyverse. Em vez de fornecer métodos para testes estatísticos específicos, este pacote consolida os princípios compartilhados entre os testes de hipóteses comuns em um conjunto de 4 verbos principais (funções), complementado com muitas utilidades para visualizar e extrair valor de seus resultados.</p>
+<p>Independentemente do teste de hipótese que estamos utilizando, ainda estamos fazendo o mesmo tipo de pergunta: o efeito/diferença nos nossos dados observados é real ou devido ao acaso? Para responder a essa pergunta, começamos assumindo que os dados observados vieram de um mundo onde “nada está acontecendo” (ou seja, o efeito observado foi simplesmente devido ao acaso), e chamamos essa suposição de nossa hipótese nula. (Na realidade, talvez não acreditemos na hipótese nula de forma alguma—a hipótese nula é oposta à hipótese alternativa, que supõe que o efeito presente nos dados observados é realmente devido ao fato de que “algo está acontecendo.”).</p>
+<p>Em seguida, calculamos uma estatística de teste a partir dos nossos dados que descreve o efeito observado. Podemos usar essa estatística de teste para calcular um valor p, dando a probabilidade de que nossos dados observados poderiam surgir se a hipótese nula fosse verdadeira. Se essa probabilidade estiver abaixo de algum nível de significância pré-definido α, então podemos rejeitar nossa hipótese nula.</p>
+<p>O fluxo de trabalho deste pacote é projetado em torno dessa ideia. Começando com algum conjunto de dados,</p>
+<ul>
+<li>specify() permite especificar a variável, ou a relação entre variáveis, da qual você está interessado.</li>
+<li>hypothesize() permite declarar a hipótese nula.</li>
+<li>generate() permite gerar dados que refletem a hipótese nula.</li>
+<li>calculate() permite calcular uma distribuição de estatísticas a partir dos dados gerados para formar a distribuição nula.</li>
+</ul>
+<p>Ao longo deste exemplo, utilizamos o gss, um conjunto de dados fornecido pelo infer, que contém uma amostra de 500 observações de 11 variáveis da Pesquisa Social Geral (General Social Survey).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Carregar o pacote infer</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymodels/infer'>infer</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Carregar o pacote tidyverse</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Carregar o conjunto de dados gss</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>gss</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Visualizar a estrutura do conjunto de dados gss</span></span>
+<span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>gss</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Rows: 500
+Columns: 11
+$ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000…
+$ age     &lt;dbl&gt; 36, 34, 24, 42, 31, 32, 48, 36, 30, 33, 21, 30, 38, …
+$ sex     &lt;fct&gt; male, female, male, male, male, female, female, fema…
+$ college &lt;fct&gt; degree, no degree, degree, no degree, degree, no deg…
+$ partyid &lt;fct&gt; ind, rep, ind, ind, rep, rep, dem, ind, rep, dem, de…
+$ hompop  &lt;dbl&gt; 3, 4, 1, 4, 2, 4, 2, 1, 5, 2, 4, 3, 4, 4, 2, 2, 3, 2…
+$ hours   &lt;dbl&gt; 50, 31, 40, 40, 40, 53, 32, 20, 40, 40, 23, 52, 38, …
+$ income  &lt;ord&gt; $25000 or more, $20000 - 24999, $25000 or more, $250…
+$ class   &lt;fct&gt; middle class, working class, working class, working …
+$ finrela &lt;fct&gt; below average, below average, below average, above a…
+$ weight  &lt;dbl&gt; 0.8960034, 1.0825000, 0.5501000, 1.0864000, 1.082500…</code></pre>
+</div>
+<h1 id="teste-t">Teste-t</h1>
+<p>Neste exemplo, vamos passar pela condução de testes t e seu análogo baseado em randomização usando o pacote infer. Começaremos com um teste t de uma amostra, que compara a média de uma amostra com um valor médio verdadeiro hipotetizado.</p>
+<p>Em seguida, discutiremos os testes t pareados, que são um caso especial dos testes t de uma amostra, e avaliaremos se as diferenças em valores pareados (por exemplo, alguma medida tomada de uma pessoa antes e depois de um experimento) diferem de 0.</p>
+<p>Finalmente, concluiremos com testes t de duas amostras, testando a diferença nas médias de duas populações usando uma amostra de dados extraídos delas.</p>
+<h2 id="teste-t-de-1-amostra">Teste t de 1 Amostra</h2>
+<p>O teste t de 1 amostra pode ser usado para testar se uma amostra de dados contínuos poderia plausivelmente ter vindo de uma população com uma média especificada.</p>
+<p>Como exemplo, vamos testar se o adulto americano médio trabalha 40 horas por semana usando dados do gss. Para isso, usaremos a variável hours, que indica o número de horas que os respondentes relataram ter trabalhado na semana anterior. A distribuição de horas nos dados observados é assim:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualizar a distribuição da variável 'hours'</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>bins <span class='op'>=</span> <span class='fl'>20</span>, fill <span class='op'>=</span> <span class='st'>"lightblue"</span>, color <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribuição de horas trabalhadas"</span>, x <span class='op'>=</span> <span class='st'>"Horas"</span>, y <span class='op'>=</span> <span class='st'>"Frequência"</span><span class='op'>)</span>  <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>100</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+</div>
+<p>Parece que a maioria dos respondentes relatou ter trabalhado 40 horas, mas há uma variabilidade considerável. Vamos testar se temos evidências de que a verdadeira média de horas que os americanos trabalham por semana é 40.</p>
+<p>O análogo baseado em randomização do teste t de 1 amostra no pacote infer é um teste de média de 1 amostra. Vamos começar demonstrando esse teste antes de mostrar como realizar um teste t baseado em teoria com o pacote.</p>
+<p>Primeiro, para calcular a estatística observada, podemos usar specify() e calculate().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Calcular a estatística observada</span></span>
+<span><span class='va'>observed_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: hours (numeric)
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  41.4</code></pre>
+</div>
+<p>A estatística observada é 41.382. Agora, queremos comparar essa estatística a uma distribuição nula, gerada sob a suposição de que a média era realmente 40, para ter uma ideia de quão provável seria observar essa média se o verdadeiro número de horas trabalhadas por semana na população fosse realmente 40.</p>
+<p>Podemos gerar a distribuição nula usando o bootstrap. No bootstrap, para cada réplica, uma amostra de tamanho igual ao tamanho da amostra de entrada é extraída (com reposição) dos dados da amostra de entrada. Isso nos permite ter uma ideia de quanta variabilidade esperaríamos ver em toda a população, para que possamos entender quão improvável seria a média da nossa amostra.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar a distribuição nula</span></span>
+<span><span class='va'>null_dist_1_sample</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Para ter uma ideia de como essas distribuições se parecem e onde nossa estatística observada se encontra, podemos usar visualize():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualizar </span></span>
+<span><span class='va'>null_dist_1_sample</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+</div>
+<p>Parece que nossa média observada de 41.382 seria relativamente improvável se a verdadeira média fosse realmente 40 horas por semana. Mais precisamente, podemos calcular o valor p:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular p valor</span></span>
+<span><span class='va'>p_value_1_sample</span> <span class='op'>&lt;-</span> <span class='va'>null_dist_1_sample</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>observed_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value_1_sample</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.036</code></pre>
+</div>
+<p>Assim, se o verdadeiro número médio de horas trabalhadas por semana fosse realmente 40, nossa aproximação da probabilidade de observarmos uma estatística do teste tão ou mais extrema do que 41.382 é aproximadamente 0.044.</p>
+<p>Analogamente aos passos mostrados acima, o pacote fornece uma função de envoltório, <strong>t_test</strong>, para realizar testes t de 1 amostra em dados organizados. Em vez de usar randomização, os envoltórios realizam o teste t baseado em teoria. A sintaxe se parece com isso:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://infer.tidymodels.org/reference/t_test.html'>t_test</a></span><span class='op'>(</span><span class='va'>gss</span>, response <span class='op'>=</span> <span class='va'>hours</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 7
+  statistic  t_df p_value alternative estimate lower_ci upper_ci
+      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1      2.09   499  0.0376 two.sided       41.4     40.1     42.7</code></pre>
+</div>
+<p>Uma abordagem alternativa ao envoltório t_test() é calcular a estatística observada com um pipeline do infer e depois fornecê-la à função pt do R base.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Observe que este pipeline para calcular uma estatística observada inclui uma chamada para hypothesize() já que a estatística t requer um valor médio hipotetizado.</p>
+<p>Em seguida, colocando essa estatística t ao lado de sua distribuição associada usando a função pt:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/TDist.html'>pt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unname.html'>unname</a></span><span class='op'>(</span><span class='va'>observed_statistic</span><span class='op'>)</span>, df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>gss</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span>, lower.tail <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>2</span></span></code></pre>
+</div>
+<pre><code>[1] 0.03755959</code></pre>
+</div>
+<p>Observe que as estatísticas t resultantes dessas duas abordagens baseadas em teoria são iguais.</p>
+<h2 id="teste-t-de-duas-amostras">Teste t de duas amostras</h2>
+<p>Testes t de 2 Amostras avaliam a diferença nos valores médios de duas populações usando dados amostrados aleatoriamente da população que segue aproximadamente uma distribuição normal. Como exemplo, vamos testar se os americanos trabalham o mesmo número de horas por semana independentemente de terem ou não um diploma universitário usando dados do gss. As variáveis college e hours nos permitem fazer isso:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Criar o boxplot</span></span>
+<span><span class='va'>boxplot_college</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>college</span>, y <span class='op'>=</span> <span class='va'>hours</span>, fill <span class='op'>=</span> <span class='va'>college</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Boxplot de Horas de Trabalho por Semana por Nível </span></span>
+<span><span class='st'>       de Educação"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Educação"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Horas de Trabalho por Semana"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_viridis.html'>scale_fill_viridis_d</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>density_college</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>hours</span>, y <span class='op'>=</span> <span class='va'>college</span>, fill <span class='op'>=</span> <span class='va'>college</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>ggridges</span><span class='fu'>::</span><span class='fu'><a href='https://wilkelab.org/ggridges/reference/geom_density_ridges.html'>geom_density_ridges</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Horas de Trabalho por Semana"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Educação"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Distribuição de Horas de Trabalho por Semana por Nível </span></span>
+<span><span class='st'>       de Educação"</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_viridis.html'>scale_fill_viridis_d</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://patchwork.data-imaginist.com'>patchwork</a></span><span class='op'>)</span></span>
+<span><span class='va'>boxplot_college</span> <span class='op'>/</span> <span class='va'>density_college</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-10-1.png" width="576" /></p>
+</div>
+<p>Parece que ambas essas distribuições estão centradas em torno de 40 horas por semana, mas a distribuição para aqueles com um diploma está ligeiramente inclinada para a direita.</p>
+<p>Novamente, observe o aviso sobre valores ausentes—muitos valores dos respondentes estão ausentes. Se estivéssemos realmente realizando este teste de hipóteses, poderíamos investigar mais sobre como esses dados foram coletados; é possível que se um valor em uma dessas colunas estiver ausente ou não esteja relacionado ao que esse valor seria.</p>
+<p>O análogo baseado em randomização do teste t de 2 amostras no pacote infer é um teste de diferença de médias. Vamos começar mostrando esse teste antes de demonstrar como realizar um teste t baseado em teoria com o pacote.</p>
+<p>Assim como no teste de uma amostra, para calcular a diferença observada nas médias, podemos usar specify() e calculate().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: hours (numeric)
+Explanatory: college (factor)
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  1.54</code></pre>
+</div>
+<p>Observe que, na linha specify(hours ~ college), poderíamos ter substituído isso pela sintaxe specify(response = hours, explanatory = college)!</p>
+<p>O argumento order na linha de calculate dá a ordem para subtrair os valores médios: no nosso caso, estamos pegando a média do número de horas trabalhadas por aqueles com um diploma menos a média do número de horas trabalhadas por aqueles sem um diploma; uma diferença positiva significaria que as pessoas com diplomas trabalharam mais do que aquelas sem diploma.</p>
+<p>Agora, queremos comparar essa diferença nas médias com uma distribuição nula, gerada sob a suposição de que o número de horas trabalhadas por semana não tem relação com a posse ou não de um diploma universitário, para termos uma ideia de quão provável seria para nós vermos essa diferença observada nas médias se realmente não houvesse relação entre essas duas variáveis.</p>
+<p>Podemos gerar a distribuição nula usando permutação, onde, para cada réplica, cada valor do status do diploma será atribuído aleatoriamente (sem reposição) a um novo número de horas trabalhadas por semana na amostra para quebrar qualquer associação entre os dois.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar a distribuição nula com randomização</span></span>
+<span><span class='va'>null_dist_2_sample</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Novamente, observe que, nas linhas specify(hours ~ college) no trecho acima, poderíamos ter usado a sintaxe specify(response = hours, explanatory = college) em vez disso!</p>
+<p>Para ter uma ideia de como essas distribuições se parecem e onde nossa estatística observada se encontra, podemos usar visualize().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualize a distribuição nula baseada em randomização e a estatística do teste!</span></span>
+<span><span class='va'>null_dist_2_sample</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<p>Parece que nossa estatística observada de 1.5384 seria improvável se realmente não houvesse relação entre o status do diploma e o número de horas trabalhadas. Mais precisamente, podemos calcular o valor p; valores p teóricos ainda não são suportados, então usaremos a distribuição nula baseada em randomização para calcular o valor p.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular o valor p a partir da distribuição nula baseada em randomização e da estatística observada</span></span>
+<span><span class='va'>p_value_2_sample</span> <span class='op'>&lt;-</span> <span class='va'>null_dist_2_sample</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>observed_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value_2_sample</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.252</code></pre>
+</div>
+<p>Assim, se realmente não houvesse relação entre o número de horas trabalhadas por semana e se alguém tem um diploma universitário, a probabilidade de vermos uma estatística tão ou mais extrema do que 1.5384 é aproximadamente 0.268.</p>
+<p>Observe que, de forma semelhante aos passos mostrados acima, o pacote fornece uma função de envoltório, t_test, para realizar testes t de 2 amostras em dados organizados. A sintaxe se parece com isso:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://infer.tidymodels.org/reference/t_test.html'>t_test</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>gss</span>, </span>
+<span>       formula <span class='op'>=</span> <span class='va'>hours</span> <span class='op'>~</span> <span class='va'>college</span>, </span>
+<span>       order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span>,</span>
+<span>       alternative <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 7
+  statistic  t_df p_value alternative estimate lower_ci upper_ci
+      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1      1.12  366.   0.264 two.sided       1.54    -1.16     4.24</code></pre>
+</div>
+<p>No exemplo acima, especificamos o relacionamento com a sintaxe fórmula = hours ~ college; também poderíamos ter escrito response = hours, explanatory = college.</p>
+<p>Uma abordagem alternativa ao envoltório t_test() é calcular a estatística observada com um pipeline infer e, em seguida, fornecê-la à função pt do R base. Podemos calcular a estatística como antes, trocando o argumento stat = “diff in means” por stat = “t”.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_statistic</span></span></code></pre>
+</div>
+<pre><code>      t 
+1.11931 </code></pre>
+</div>
+<p>Observe que este pipeline para calcular uma estatística observada inclui hypothesize() já que a estatística t requer um valor médio hipotetizado.</p>
+<p>Em seguida, colocando essa estatística t ao lado de sua distribuição associada usando a função pt:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/TDist.html'>pt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unname.html'>unname</a></span><span class='op'>(</span><span class='va'>observed_statistic</span><span class='op'>)</span>, df <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>gss</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>2</span>, lower.tail <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>*</span><span class='fl'>2</span></span></code></pre>
+</div>
+<pre><code>[1] 0.2635476</code></pre>
+</div>
+<p>Observe que os resultados dessas duas abordagens baseadas em teoria são quase os mesmos</p>
+<h1 id="anova---análise-de-variância">ANOVA - Análise de variância</h1>
+<p>ANOVAs são usadas para analisar diferenças nas médias de grupos.</p>
+<p>Para realizar uma ANOVA, examinaremos a associação entre idade e afiliação partidária nos Estados Unidos. A variável age é uma variável numérica que mede a idade dos respondentes no momento em que a pesquisa foi realizada, e partyid é uma variável de fator com valores únicos ind, rep, dem, other.</p>
+<p>Este é o aspecto da relação nos dados observados:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualizar a relação entre idade e afiliação partidária</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>partyid</span>, y <span class='op'>=</span> <span class='va'>age</span>, fill<span class='op'>=</span><span class='va'>partyid</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Relação entre Idade e Afiliação Partidária"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Afiliação Partidária"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Idade"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_viridis.html'>scale_fill_viridis_d</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-18-1.png" width="624" /></p>
+</div>
+<p>Se não houvesse relação, esperaríamos ver cada um desses boxplots alinhados ao longo do eixo y. Parece que a idade média dos democratas e republicanos é um pouco maior do que a dos eleitores independentes e de outros americanos. No entanto, essa diferença é apenas ruído aleatório?</p>
+<p>Primeiro, para calcular a estatística observada, podemos usar specify() e calculate().</p>
+<p>Aqui está o código para calcular a estatística observada:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_f_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_f_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: age (numeric)
+Explanatory: partyid (factor)
+Null Hypothesis: independence
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  2.48</code></pre>
+</div>
+<p>A estatística F observada é 2.4842. Agora, queremos comparar essa estatística a uma distribuição nula, gerada sob a suposição de que idade e afiliação partidária não estão realmente relacionadas, para termos uma ideia de quão provável seria vermos essa estatística observada se realmente não houvesse associação entre as duas variáveis.</p>
+<p>Podemos gerar uma aproximação da distribuição nula usando randomização. A abordagem de randomização permuta as variáveis de resposta e explicativas, de modo que a afiliação partidária de cada pessoa seja combinada com uma idade aleatória da amostra para quebrar qualquer associação entre as duas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar a distribuição nula usando randomização</span></span>
+<span><span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Observe que, na linha specify(age ~ partyid) acima, poderíamos usar a sintaxe equivalente specify(response = age, explanatory = partyid).</p>
+<p>Para ter uma ideia de como essa distribuição se parece e onde nossa estatística observada se encontra, podemos usar visualize():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualizar a distribução nula e a estatística teste</span></span>
+<span><span class='va'>null_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_f_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-21-1.png" width="624" /></p>
+</div>
+<p>Também poderíamos visualizar a estatística observada em relação à distribuição nula teórica. Para isso, use o verbo assume() para definir uma distribuição nula teórica e depois passe-a para visualize() como uma distribuição nula gerada a partir de generate() e calculate().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualize a distribuição nula teórica e a estatística do teste!</span></span>
+<span><span class='va'>null_dist_theory</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/assume.html'>assume</a></span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_dist_theory</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_f_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-22-1.png" width="624" /></p>
+</div>
+<p>Para visualizar tanto as distribuições nulas baseadas em randomização quanto as teóricas e ter uma ideia de como as duas se relacionam, podemos canalizar a distribuição nula baseada em randomização para visualize(), e então fornecer method = “both” para visualize().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualize both null distributions and the test statistic!</span></span>
+<span><span class='va'>null_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_f_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span>  <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-23-1.png" width="624" /></p>
+</div>
+<p>De qualquer forma, parece que nossa estatística de teste observada seria bastante improvável se realmente não houvesse associação entre idade e afiliação partidária. Mais precisamente, podemos aproximar o valor p a partir da aproximação baseada em randomização para a distribuição nula:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># # Calcular o valor p a partir da distribuição nula baseada em randomização e da estatística observada</span></span>
+<span><span class='va'>p_value</span> <span class='op'>&lt;-</span> <span class='va'>null_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>observed_f_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.063</code></pre>
+</div>
+<p>Assim, se realmente não houvesse relação entre idade e afiliação partidária, nossa aproximação da probabilidade de ver uma estatística tão ou mais extrema que 2.4842 é aproximadamente 0.07.</p>
+<p>Para calcular o valor p usando a verdadeira distribuição F, podemos usar a função pf do R base. Esta função nos permite situar a estatística de teste que calculamos anteriormente na distribuição F com os graus de liberdade apropriados.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/Fdist.html'>pf</a></span><span class='op'>(</span><span class='va'>observed_f_statistic</span><span class='op'>$</span><span class='va'>stat</span>, <span class='fl'>3</span>, <span class='fl'>496</span>, lower.tail <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 0.06006016</code></pre>
+</div>
+<p>Observe que, embora a estatística observada permaneça a mesma, o valor p resultante difere ligeiramente entre essas duas abordagens, pois a distribuição F empírica baseada em randomização é uma aproximação da verdadeira distribuição F.</p>
+<h1 id="teste-qui-quadrado">Teste Qui-Quadrado</h1>
+<p>Vamos abordar a realização de um teste χ² (qui-quadrado) de independência e um teste de aderência qui-quadrado usando o infer. Começaremos com um teste qui-quadrado de independência, que pode ser usado para testar a associação entre duas variáveis categóricas.</p>
+<p>Em seguida, passaremos para um teste de aderência qui-quadrado, que testa quão bem a distribuição de uma variável categórica pode ser aproximada por alguma distribuição teórica.</p>
+<h2 id="teste-de-independência">Teste de Independência</h2>
+<p>Para realizar um teste qui-quadrado de independência, examinaremos a associação entre renda e nível educacional nos Estados Unidos. college é uma variável categórica com valores degree e no degree, indicando se o respondente possui ou não um diploma universitário (incluindo faculdade comunitária), e finrela indica a autoidentificação da renda familiar do respondente, sendo classificada como muito abaixo da média, abaixo da média, média, acima da média, muito acima da média ou DK (não sei).</p>
+<p>Veja como é essa relação nos dados amostrais:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>finrela</span>, fill <span class='op'>=</span> <span class='va'>college</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"fill"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_viridis.html'>scale_fill_viridis_d</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Relação entre Renda e Nível Educacional"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Renda Familiar"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Proporção"</span>,</span>
+<span>       fill <span class='op'>=</span> <span class='st'>"Nível Educacional"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-26-1.png" width="624" /></p>
+</div>
+<p>Se não houvesse relação, esperaríamos ver as barras roxas atingindo a mesma altura, independentemente da classe de renda. No entanto, as diferenças que vemos aqui são apenas devido a ruídos aleatórios?</p>
+<p>Primeiro, para calcular a estatística observada, podemos usar specify() e calculate()</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_indep_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>college</span> <span class='op'>~</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_indep_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: college (factor)
+Explanatory: finrela (factor)
+Null Hypothesis: independence
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  30.7</code></pre>
+</div>
+<p>A estatística observada do teste χ² é 30.6825. Agora, queremos comparar essa estatística a uma distribuição nula, gerada sob a suposição de que essas variáveis na verdade não estão relacionadas, para termos uma ideia de quão provável seria para nós vermos essa estatística observada se realmente não houvesse associação entre educação e renda.</p>
+<p>Podemos gerar a distribuição nula de duas maneiras — usando métodos de randomização ou baseados em teoria. A abordagem de randomização aproxima a distribuição nula permutando as variáveis de resposta e explicativas, de modo que o nível de educação de cada pessoa seja combinado com uma renda aleatória da amostra para quebrar qualquer associação entre as duas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar a distribuição nula</span></span>
+<span><span class='va'>null_dist_sim</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>college</span> <span class='op'>~</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Observe que, na linha specify(college ~ finrela) acima, poderíamos usar a sintaxe equivalente specify(response = college, explanatory = finrela). O mesmo vale para o código abaixo, que gera a distribuição nula usando métodos baseados em teoria em vez de randomização.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Gerar a distribuição nula por meio de uma aproximação teórica.</span></span>
+<span><span class='va'>null_dist_theory</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>college</span> <span class='op'>~</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/assume.html'>assume</a></span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Para ter uma ideia de como essas distribuições se parecem e onde nossa estatística observada se encaixa, podemos usar a função visualize().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualize a distribuição nula e a estatística de teste!</span></span>
+<span><span class='va'>null_dist_sim</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_indep_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-30-1.png" width="624" /></p>
+</div>
+<p>Também poderíamos visualizar a estatística observada em relação à distribuição nula teórica. Para isso, use o verbo assume() para definir uma distribuição nula teórica e, em seguida, passe-a para visualize() como uma distribuição nula gerada a partir de generate() e calculate().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualize a distribuição nula teórica e a estatística de teste!</span></span>
+<span><span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span><span class='va'>college</span> <span class='op'>~</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/assume.html'>assume</a></span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_indep_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-31-1.png" width="624" /></p>
+</div>
+<p>Para visualizar tanto as distribuições nulas baseadas em randomização quanto as teóricas para ter uma ideia de como as duas se relacionam, podemos encadear a distribuição nula baseada em randomização na função visualize(), e ainda fornecer o argumento method = “both”.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Visualize ambas as distribuições nulas e a estatística de teste!</span></span>
+<span><span class='va'>null_dist_sim</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_indep_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-32-1.png" width="624" /></p>
+</div>
+<p>De qualquer forma, parece que nossa estatística de teste observada seria bastante improvável se na verdade não houvesse associação entre educação e renda. Mais precisamente, podemos aproximar o valor p com get_p_value:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Calcule o valor p a partir da estatística observada e da distribuição nula.</span></span>
+<span><span class='va'>p_value_independence</span> <span class='op'>&lt;-</span> <span class='va'>null_dist_sim</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>observed_indep_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value_independence</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1       0</code></pre>
+</div>
+<p>Assim, se realmente não houvesse relação entre educação e renda, nossa aproximação da probabilidade de vermos uma estatística tão ou mais extrema que 30.6825 é aproximadamente 0.</p>
+<p>Para calcular o valor p usando a verdadeira distribuição χ², podemos usar a função pchisq do R base. Esta função nos permite situar a estatística de teste que calculamos anteriormente na distribuição χ² com os graus de liberdade apropriados.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span><span class='op'>(</span><span class='va'>observed_indep_statistic</span><span class='op'>$</span><span class='va'>stat</span>, <span class='fl'>5</span>, lower.tail <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>   X-squared 
+1.082094e-05 </code></pre>
+</div>
+<p>Observe que, de forma equivalente à abordagem baseada em teoria mostrada acima, o pacote fornece uma função envoltória, chisq_test, para realizar testes qui-quadrado de independência em dados organizados. A sintaxe é a seguinte:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://infer.tidymodels.org/reference/chisq_test.html'>chisq_test</a></span><span class='op'>(</span><span class='va'>gss</span>, <span class='va'>college</span> <span class='op'>~</span> <span class='va'>finrela</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 3
+  statistic chisq_df   p_value
+      &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1      30.7        5 0.0000108</code></pre>
+</div>
+<h2 id="teste-de-aderência">Teste de aderência</h2>
+<p>Agora, passando para um teste de aderência do qui-quadrado, vamos analisar a classe de renda autoidentificada de nossos entrevistados. Suponhamos que nossa hipótese nula seja que ‘finrela’ segue uma distribuição uniforme (ou seja, há um número igual de pessoas que descrevem sua renda como muito abaixo da média, abaixo da média, média, acima da média, muito acima da média ou que não sabem sua renda). O gráfico abaixo representa esta hipótese:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>finrela</span>, fill <span class='op'>=</span> <span class='va'>finrela</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Renda"</span>, y <span class='op'>=</span> <span class='st'>"Nº de respostas"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_viridis.html'>scale_fill_viridis_d</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-36-1.png" width="624" /></p>
+</div>
+<p>Parece que uma distribuição uniforme pode não ser a descrição mais apropriada dos dados – muito mais pessoas descrevem sua renda como média do que qualquer uma das outras opções. Vamos agora testar se essa diferença nas distribuições é estatisticamente significativa.</p>
+<p>Primeiro, para realizar este teste de hipótese, calcularíamos nossa estatística observada</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calculando a distribuição nula</span></span>
+<span><span class='va'>observed_gof_statistic</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>,</span>
+<span>              p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"far below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"far above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"DK"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_gof_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: finrela (factor)
+Null Hypothesis: point
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  488.</code></pre>
+</div>
+<p>A estatística observada é 487,984. Agora, gerando uma distribuição nula, basta inserir uma chamada para generate():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerando uma distribuição nula, assumindo que cada classe de renda é igualmente provável</span></span>
+<span><span class='va'>null_dist_gof</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>,</span>
+<span>              p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"far below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"far above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"DK"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"draw"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Novamente, para ter uma ideia de como essas distribuições se parecem e onde nossa estatística observada se encaixa, podemos usar visualize():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualizar a distribuição nula e a estatística teste</span></span>
+<span><span class='va'>null_dist_gof</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_gof_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-39-1.png" width="624" /></p>
+</div>
+<p>Essa estatística parece ser bastante improvável se a autoidentificação da classe de renda realmente seguisse uma distribuição uniforme! Mas quão improvável? Calculando o valor p:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular o p-valor</span></span>
+<span><span class='va'>p_value_gof</span> <span class='op'>&lt;-</span> <span class='va'>null_dist_gof</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span><span class='va'>observed_gof_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value_gof</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1       0</code></pre>
+</div>
+<p>Assim, se cada classe de renda autoidentificada fosse igualmente provável de ocorrer, nossa aproximação da probabilidade de vermos uma distribuição como a que observamos é aproximadamente 0.</p>
+<p>Para calcular o valor p usando a verdadeira distribuição χ², podemos usar a função pchisq do R base. Essa função nos permite situar a estatística de teste que calculamos anteriormente na distribuição χ² com os graus de liberdade apropriados.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/Chisquare.html'>pchisq</a></span><span class='op'>(</span><span class='va'>observed_gof_statistic</span><span class='op'>$</span><span class='va'>stat</span>, <span class='fl'>5</span>, lower.tail <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 3.131231e-103</code></pre>
+</div>
+<p>Novamente, de forma equivalente à abordagem baseada em teoria mostrada acima, o pacote fornece uma função de envoltório, chisq_test, para realizar testes de aderência do Qui-Quadrado em dados organizados. A sintaxe é a seguinte:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://infer.tidymodels.org/reference/chisq_test.html'>chisq_test</a></span><span class='op'>(</span><span class='va'>gss</span>, </span>
+<span>           response <span class='op'>=</span> <span class='va'>finrela</span>,</span>
+<span>           p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"far below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"far above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
+<span>                    <span class='st'>"DK"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 3
+  statistic chisq_df   p_value
+      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1      488.        5 3.13e-103</code></pre>
+</div>
+<h1 id="dados-pareados">Dados Pareados</h1>
+<p>Agora, iremos percorrer a realização de um teste de independência pareado baseado em randomização com o pacote infer.</p>
+<p>Dois conjuntos de observações são emparelhados se cada observação em uma coluna tem uma correspondência especial ou conexão com exatamente uma observação na outra. Para os propósitos deste manual, vamos simular uma variável de dados adicional com um emparelhamento natural: suponha que cada um desses respondentes da pesquisa tenha fornecido o número de horas trabalhadas por semana quando pesquisado 5 anos antes, codificado como hours_previous</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>gss_paired</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>      hours_previous <span class='op'>=</span> <span class='va'>hours</span> <span class='op'>+</span> <span class='fl'>5</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span>, <span class='fl'>4.8</span><span class='op'>)</span>,</span>
+<span>      diff <span class='op'>=</span> <span class='va'>hours</span> <span class='op'>-</span> <span class='va'>hours_previous</span></span>
+<span>   <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>gss_paired</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>hours</span>, <span class='va'>hours_previous</span>, <span class='va'>diff</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 500 × 3
+   hours hours_previous  diff
+   &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;
+ 1    50             52    -2
+ 2    31             32    -1
+ 3    40             40     0
+ 4    40             37     3
+ 5    40             42    -2
+ 6    53             50     3
+ 7    32             28     4
+ 8    20             19     1
+ 9    40             40     0
+10    40             43    -3
+# ℹ 490 more rows</code></pre>
+</div>
+<p>O número de horas trabalhadas por semana por um determinado respondente tem uma correspondência especial com o número de horas trabalhadas 5 anos antes, hours_previous, pelo mesmo respondente. Gostaríamos de testar a hipótese nula de que a “média” de horas trabalhadas por semana não mudou entre o tempo amostrado e cinco anos antes.</p>
+<p>Para realizar inferência em dados emparelhados com o pacote infer, pré-calculamos a diferença entre os valores emparelhados no início da análise e usamos essas diferenças como nossos valores de interesse.</p>
+<p>Aqui, pré-calculamos a diferença entre as observações emparelhadas como diff. A distribuição de diff nos dados observados parece com isso:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gss_paired</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>diff</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>bins <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='st'>"Diferença de horas"</span>, y<span class='op'>=</span><span class='st'>"Nº de respostas"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-44-1.png" width="624" /></p>
+</div>
+<p>Pelo aspecto da distribuição, a maioria dos respondentes trabalhou um número semelhante de horas por semana como havia trabalhado 5 horas antes, embora pareça que pode haver uma ligeira queda no número de horas trabalhadas por semana em conjunto. (Sabemos que o verdadeiro efeito é de -0.2, pois simulamos esses dados.)</p>
+<p>Calculamos a estatística observada no ambiente emparelhado da mesma forma que faríamos fora do ambiente emparelhado. Usando specify() e calculate():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular a estatística observada</span></span>
+<span><span class='va'>observed_statistic</span> <span class='op'>&lt;-</span> </span>
+<span>   <span class='va'>gss_paired</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>diff</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>observed_statistic</span></span></code></pre>
+</div>
+<pre><code>Response: diff (numeric)
+# A tibble: 1 × 1
+    stat
+   &lt;dbl&gt;
+1 -0.202</code></pre>
+</div>
+<p>A estatística observada é -0.202. Agora, queremos comparar essa estatística com uma distribuição nula, gerada sob a suposição de que a verdadeira diferença era realmente zero, para ter uma ideia de quão provável seria para nós vermos essa diferença observada se não houvesse realmente mudança no número de horas trabalhadas por semana na população.</p>
+<p>Testes para dados emparelhados são realizados através do argumento null = “paired independence” para a função hypothesize().</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar a distribuição nula</span></span>
+<span><span class='va'>null_dist</span> <span class='op'>&lt;-</span> </span>
+<span>   <span class='va'>gss_paired</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>diff</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"paired independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span>   </span>
+<span><span class='va'>null_dist</span></span></code></pre>
+</div>
+<pre><code>Response: diff (numeric)
+Null Hypothesis: paired independence
+# A tibble: 1,000 × 2
+   replicate   stat
+       &lt;int&gt;  &lt;dbl&gt;
+ 1         1 -0.146
+ 2         2  0.19 
+ 3         3  0.042
+ 4         4  0.034
+ 5         5 -0.138
+ 6         6 -0.03 
+ 7         7  0.174
+ 8         8  0.066
+ 9         9  0.01 
+10        10  0.13 
+# ℹ 990 more rows</code></pre>
+</div>
+<p>Para cada réplica, generate() realiza type = “permute” com null = “paired independence” por meio de:</p>
+<ul>
+<li>Amostragem aleatória de um vetor de sinais (ou seja, -1 ou 1), probabilidade de 0,5 para ambos, com comprimento igual aos dados de entrada, e</li>
+<li>Multiplicando a variável de resposta pelo vetor de sinais, “invertendo” os valores observados para um subconjunto aleatório de valores em cada réplica.</li>
+</ul>
+<p>Para ter uma ideia de como essa distribuição se parece e onde nossa estatística observada se encontra, podemos usar visualize():</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># visualizar a distribuição nula e a estatística observada</span></span>
+<span><span class='va'>null_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>observed_statistic</span>,</span>
+<span>                direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-47-1.png" width="624" /></p>
+</div>
+<p>Parece que nossa média observada de -0.202 seria relativamente improvável se não houvesse realmente nenhuma mudança na média do número de horas trabalhadas por semana durante este período de tempo.</p>
+<p>Mais precisamente, podemos calcular o valor p:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># calcular p-valor</span></span>
+<span><span class='va'>p_value</span> <span class='op'>&lt;-</span> <span class='va'>null_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_p_value.html'>get_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>observed_statistic</span>,</span>
+<span>              direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>p_value</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.028</code></pre>
+</div>
+<p>Portanto, se a mudança na média do número de horas trabalhadas por semana durante este período de tempo fosse realmente zero, nossa aproximação da probabilidade de vermos uma estatística de teste tão ou mais extrema do que -0.202 é aproximadamente 0.028.</p>
+<p>Também podemos gerar um intervalo de confiança bootstrap para a diferença média emparelhada usando type = “bootstrap” em generate(). Como antes, usamos as diferenças pré-calculadas ao gerar as reamostras bootstrap:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># gerar uma distribuição com bootstrap</span></span>
+<span><span class='va'>boot_dist</span> <span class='op'>&lt;-</span> </span>
+<span>   <span class='va'>gss_paired</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>diff</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"paired independence"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>   <span class='fu'><a href='https://infer.tidymodels.org/reference/calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> </span>
+<span>   </span>
+<span><span class='fu'><a href='https://infer.tidymodels.org/reference/visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>boot_dist</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="infer_files/figure-html5/unnamed-chunk-49-1.png" width="624" /></p>
+</div>
+<p>Observe que, ao contrário da distribuição nula das estatísticas de teste geradas anteriormente com type = “permute”, esta distribuição está centrada na estatística observada.</p>
+<p>Calculando um intervalo de confiança:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># intervalo de confiança</span></span>
+<span><span class='va'>confidence_interval</span> <span class='op'>&lt;-</span> <span class='va'>boot_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_confidence_interval.html'>get_confidence_interval</a></span><span class='op'>(</span>level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>confidence_interval</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1   -0.390   -0.022</code></pre>
+</div>
+<p>Por padrão, get_confidence_interval() constrói os limites inferior e superior tomando as observações nos percentis <span class="math inline">\(\frac{(1−0.95)}{2}\)</span> e <span class="math inline">\(1−\frac{(1−0.95)}{2}\)</span>. Para construir o intervalo de confiança usando o erro padrão da distribuição bootstrap, podemos escrever:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_dist</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://infer.tidymodels.org/reference/get_confidence_interval.html'>get_confidence_interval</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"se"</span>,</span>
+<span>                          point_estimate <span class='op'>=</span> <span class='va'>observed_statistic</span>,</span>
+<span>                          level <span class='op'>=</span> <span class='fl'>.95</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1   -0.383  -0.0210</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

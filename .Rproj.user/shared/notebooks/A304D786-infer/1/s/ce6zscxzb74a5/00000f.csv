@@ -1,0 +1,5 @@
+"0","# Visualize a distribuição nula e a estatística de teste!"
+"0","null_dist_sim %>%"
+"0","  visualize() + "
+"0","  shade_p_value(observed_indep_statistic,"
+"0","                direction = ""greater"")"

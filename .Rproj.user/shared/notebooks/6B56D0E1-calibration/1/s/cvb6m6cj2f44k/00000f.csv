@@ -1,0 +1,7 @@
+"0","library(tidymodels)"
+"0","library(probably)"
+"0","library(discrim)"
+"0",""
+"0","tidymodels_prefer()"
+"0","theme_set(theme_bw())"
+"0","options(pillar.advice = FALSE, pillar.min_title_chars = Inf)"

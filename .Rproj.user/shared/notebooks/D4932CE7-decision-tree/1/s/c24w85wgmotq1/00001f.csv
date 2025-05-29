@@ -1,0 +1,4 @@
+"0","library(DataExplorer)"
+"0",""
+"0","#plotando variaveis categóricas com no máximo 5 categorias"
+"0","plot_bar(candy_rankings, maxcat = 5)"

@@ -1,0 +1,4 @@
+"0","```r
+
+ggplotly(graf_barras$page_1)
+```"

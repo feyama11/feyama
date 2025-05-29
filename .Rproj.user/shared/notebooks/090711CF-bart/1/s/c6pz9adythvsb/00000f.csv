@@ -1,0 +1,7 @@
+"0","#definindo modelo"
+"0","bart_model <- bart(trees = tune(), "
+"0","                   prior_terminal_node_coef = tune(), "
+"0","                   prior_terminal_node_expo = tune(), "
+"0","                   prior_outcome_range = tune()) %>%"
+"0","  set_mode(""regression"") %>%"
+"0","  set_engine(""dbarts"")"

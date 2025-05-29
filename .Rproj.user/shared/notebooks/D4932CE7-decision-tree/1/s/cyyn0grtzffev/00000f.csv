@@ -1,0 +1,2 @@
+"0","##criando as amostras"
+"0","folds <- vfold_cv(train, times = 5)"

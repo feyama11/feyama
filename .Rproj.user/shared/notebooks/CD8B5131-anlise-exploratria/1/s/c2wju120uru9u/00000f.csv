@@ -1,0 +1,2 @@
+"0","final_df <- group_category(data = dados, feature = ""name_carrier"", threshold = 0.2, measure = ""distance"", update = TRUE)"
+"0","plot_bar(final_df$name_carrier)"

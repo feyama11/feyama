@@ -1,0 +1,26 @@
+"0","library(skimr)"
+"0","skim(cc_apps)"
+"1","── Data Summary ────────────────────────
+"
+"1","                           Values 
+"
+"1","Name                       cc_apps
+"
+"1","Number of rows             690    
+"
+"1","Number of columns          16     
+"
+"1","_______________________           
+"
+"1","Column type frequency:            
+"
+"1","  character                10     
+"
+"1","  logical                  3      
+"
+"1","  numeric                  3      
+"
+"1","________________________          
+"
+"1","Group variables            None   
+"

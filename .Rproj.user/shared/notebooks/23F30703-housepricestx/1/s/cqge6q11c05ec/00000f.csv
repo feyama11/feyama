@@ -1,0 +1,51 @@
+"0","higher_pat <- glue::glue_collapse(higher_words, sep = ""|"")"
+"0","lower_pat <- glue::glue_collapse(lower_words, sep = ""|"")"
+"0","austin_rec <-"
+"0","  recipe(priceRange ~ ., data = austin_train) %>%"
+"0","  update_role(uid, new_role = ""uid"") %>%"
+"0","  step_regex(description, pattern = higher_pat, result = ""high_price_words"") %>%"
+"0","  step_regex(description, pattern = lower_pat, result = ""low_price_words"") %>%"
+"0","  step_rm(description) %>%"
+"0","  step_novel(homeType) %>%"
+"0","  step_unknown(homeType) %>%"
+"0","  step_other(homeType, threshold = 0.02) %>%"
+"0","  step_dummy(all_nominal_predictors()) %>%"
+"0","  step_nzv(all_predictors())"
+"0",""
+"0","austin_rec"
+"1","
+"
+"1","[36m──[39m [1mRecipe[22m [36m───────────────────────────────────────────────────────────────────────────────────────────[39m
+"
+"1","
+"
+"1","── Inputs 
+"
+"1","Number of variables by role
+"
+"1","outcome:    1
+predictor: 13
+uid:        1
+"
+"1","
+"
+"1","── Operations 
+"
+"1","[36m•[39m Regular expression dummy variable using:
+  [34m""outdoor|custom|pool|office|suite|gorgeous|w|windows|private|car|high|full""[39m
+"
+"1","[36m•[39m Regular expression dummy variable using:
+  [34m""carpet|paint|close|flooring|shopping|new|easy|minutes|tile|great|community|location""[39m
+"
+"1","[36m•[39m Variables removed: [34mdescription[39m
+"
+"1","[36m•[39m Novel factor level assignment for: [34mhomeType[39m
+"
+"1","[36m•[39m Unknown factor level assignment for: [34mhomeType[39m
+"
+"1","[36m•[39m Collapsing factor levels for: [34mhomeType[39m
+"
+"1","[36m•[39m Dummy variables from: [34mall_nominal_predictors()[39m
+"
+"1","[36m•[39m Sparse, unbalanced variable filter on: [34mall_predictors()[39m
+"

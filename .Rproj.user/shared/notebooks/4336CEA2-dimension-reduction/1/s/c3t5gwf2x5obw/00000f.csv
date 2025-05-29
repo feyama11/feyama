@@ -1,0 +1,80 @@
+"0","# Pacote tidymodels para a modelagem"
+"0","library(tidymodels)"
+"2","Warning:"
+"2"," package ‘tidymodels’ was built under R version 4.3.3
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","[37m── [1mAttaching packages[22m ─────────────────────────────────────────── tidymodels 1.2.0 ──[39m
+"
+"2","[37m[32m✔[37m [34mbroom       [37m 1.0.7      [32m✔[37m [34mrecipes     [37m 1.0.10
+[32m✔[37m [34mdials       [37m 1.3.0      [32m✔[37m [34mrsample     [37m 1.2.1 
+[32m✔[37m [34mdplyr       [37m 1.1.4      [32m✔[37m [34mtibble      [37m 3.2.1 
+[32m✔[37m [34mggplot2     [37m 3.5.1      [32m✔[37m [34mtidyr       [37m 1.3.1 
+[32m✔[37m [34minfer       [37m 1.0.7      [32m✔[37m [34mtune        [37m 1.2.1 
+[32m✔[37m [34mmodeldata   [37m 1.3.0      [32m✔[37m [34mworkflows   [37m 1.1.4 
+[32m✔[37m [34mparsnip     [37m 1.2.1      [32m✔[37m [34mworkflowsets[37m 1.1.0 
+[32m✔[37m [34mpurrr       [37m 1.0.2      [32m✔[37m [34myardstick   [37m 1.3.1 [39m
+"
+"2","Warning:"
+"2"," package ‘broom’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘dials’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘dplyr’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘ggplot2’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘infer’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘modeldata’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘parsnip’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘purrr’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘recipes’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘rsample’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘tibble’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘tidyr’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘tune’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘workflows’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘workflowsets’ was built under R version 4.3.3
+"
+"2","Warning:"
+"2"," package ‘yardstick’ was built under R version 4.3.3
+"
+"2","[37m── [1mConflicts[22m ────────────────────────────────────────────── tidymodels_conflicts() ──
+[31m✖[37m [34mpurrr[37m::[32mdiscard()[37m masks [34mscales[37m::discard()
+[31m✖[37m [34mdplyr[37m::[32mfilter()[37m  masks [34mstats[37m::filter()
+[31m✖[37m [34mdplyr[37m::[32mlag()[37m     masks [34mstats[37m::lag()
+[31m✖[37m [34mrecipes[37m::[32mstep()[37m  masks [34mstats[37m::step()
+[34m•[37m Dig deeper into tidy modeling with R at [32mhttps://www.tmwr.org[37m[39m
+"
+"0","#Função para dar preferência a funções que contem o mesmo nome"
+"0","tidymodels_prefer()"
+"0",""
+"0","#Biblioteca que contém os dados"
+"0","library(beans)"

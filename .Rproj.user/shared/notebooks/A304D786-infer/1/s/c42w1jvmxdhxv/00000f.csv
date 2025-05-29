@@ -1,0 +1,4 @@
+"0","boot_dist %>%"
+"0","  get_confidence_interval(type = ""se"","
+"0","                          point_estimate = observed_statistic,"
+"0","                          level = .95)"

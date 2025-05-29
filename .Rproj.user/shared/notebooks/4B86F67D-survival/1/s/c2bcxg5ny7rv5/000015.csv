@@ -1,0 +1,7 @@
+"0","library(coxed)"
+"0","set.seed(4)"
+"0","N <- 2000"
+"0","Operators <- sample(5:15, N, replace = T)"
+"0","Center <-sample(c(""A"", ""B"", ""C""), N, replace = T)"
+"0","Time <-sample(c(""Morn."", ""After."", ""Even.""), N, replace = T)"
+"0","X <- model.matrix(~ Operators + Center + Time)[,-1]"

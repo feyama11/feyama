@@ -1,0 +1,8 @@
+"0","normalized_rec <- "
+"0","   recipe(compressive_strength ~ ., data = concrete_train) %>% "
+"0","   step_normalize(all_predictors()) "
+"0",""
+"0","poly_recipe <- "
+"0","   normalized_rec %>% "
+"0","   step_poly(all_predictors()) %>% "
+"0","   step_interact(~ all_predictors():all_predictors())"

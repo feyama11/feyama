@@ -1,0 +1,4 @@
+"0","merge_airlines <- merge(flights, airlines, by = ""carrier"", all.x = TRUE)"
+"0","merge_planes <- merge(merge_airlines, planes, by = ""tailnum"", all.x = TRUE, suffixes = c(""_flights"", ""_planes""))"
+"0","merge_airports_origin <- merge(merge_planes, airports, by.x = ""origin"", by.y = ""faa"", all.x = TRUE, suffixes = c(""_carrier"", ""_origin""))"
+"0","final_data <- merge(merge_airports_origin, airports, by.x = ""dest"", by.y = ""faa"", all.x = TRUE, suffixes = c(""_origin"", ""_dest""))"

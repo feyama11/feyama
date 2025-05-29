@@ -1,0 +1,18 @@
+"0","xgb_last <-"
+"0","  xgb_word_wf %>%"
+"0","  finalize_workflow(select_best(xgb_word_rs)) %>%"
+"0","  last_fit(austin_split)"
+"2","Warning in select_best(xgb_word_rs) :"
+"2","
+ "
+"2"," [38;5;255mNo value of `metric` was given; [34m""mn_log_loss""[38;5;255m will be used.[39m
+"
+"0","xgb_last"
+"1","# Resampling results
+"
+"1","#"
+"1"," "
+"1","Manual resampling"
+"1"," "
+"1","
+"

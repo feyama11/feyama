@@ -1,0 +1,7 @@
+"0","reg_metrics <- metric_set(rmse, rsq)"
+"0","ens_test_pred <- "
+"0","  predict(ens, concrete_test) %>% "
+"0","  bind_cols(concrete_test)"
+"0",""
+"0","ens_test_pred %>% "
+"0","  reg_metrics(compressive_strength, .pred)"

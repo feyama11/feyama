@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Boosting Trees</title>
+
+  <meta property="description" itemprop="description" content="O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-01-08"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-01-08"/>
+  <meta name="article:author" content="Felipe Yamamoto Tenedine"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Boosting Trees"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Boosting Trees"/>
+  <meta property="twitter:description" content="O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","preview","date","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Boosting Trees"]},{"type":"character","attributes":{},"value":["O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Felipe Yamamoto Tenedine"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/felipe-yamamoto-tenedine/"]}]}]},{"type":"character","attributes":{},"value":["boost.jpg"]},{"type":"character","attributes":{},"value":["2024-01-08"]},{"type":"character","attributes":{},"value":["boosting trees","machine learning","R","tidymodels"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","toc_float","toc_collapsed","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["boost.jpg","boosting-trees_files/anchor-4.2.2/anchor.min.js","boosting-trees_files/bowser-1.9.3/bowser.min.js","boosting-trees_files/distill-2.2.21/template.v2.js","boosting-trees_files/figure-html5/unnamed-chunk-13-1.png","boosting-trees_files/figure-html5/unnamed-chunk-13-2.png","boosting-trees_files/figure-html5/unnamed-chunk-17-1.png","boosting-trees_files/figure-html5/unnamed-chunk-18-1.png","boosting-trees_files/figure-html5/unnamed-chunk-18-2.png","boosting-trees_files/figure-html5/unnamed-chunk-20-1.png","boosting-trees_files/figure-html5/unnamed-chunk-3-1.png","boosting-trees_files/figure-html5/unnamed-chunk-5-1.png","boosting-trees_files/figure-html5/unnamed-chunk-5-2.png","boosting-trees_files/header-attrs-2.25/header-attrs.js","boosting-trees_files/jquery-3.6.0/jquery-3.6.0.js","boosting-trees_files/jquery-3.6.0/jquery-3.6.0.min.js","boosting-trees_files/jquery-3.6.0/jquery-3.6.0.min.map","boosting-trees_files/popper-2.6.0/popper.min.js","boosting-trees_files/tippy-6.2.7/tippy-bundle.umd.min.js","boosting-trees_files/tippy-6.2.7/tippy-light-border.css","boosting-trees_files/tippy-6.2.7/tippy.css","boosting-trees_files/tippy-6.2.7/tippy.umd.min.js","boosting-trees_files/webcomponents-2.0.0/webcomponents.js","cc_approvals.data.csv","images/clipboard-3817179683.png","images/clipboard-4052902041.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="boosting-trees_files/header-attrs-2.25/header-attrs.js"></script>
+  <script src="boosting-trees_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="boosting-trees_files/popper-2.6.0/popper.min.js"></script>
+  <link href="boosting-trees_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="boosting-trees_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="boosting-trees_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="boosting-trees_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="boosting-trees_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="boosting-trees_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="boosting-trees_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Boosting Trees","description":"O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito.","authors":[{"author":"Felipe Yamamoto Tenedine","authorURL":"https://www.linkedin.com/in/felipe-yamamoto-tenedine/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-01-08T00:00:00.000-03:00","citationText":"Tenedine, 2024"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Boosting Trees</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">boosting trees</div>
+<div class="dt-tag">machine learning</div>
+<div class="dt-tag">R</div>
+<div class="dt-tag">tidymodels</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>O que são Boosting Trees? Veremos detalhadamente o que são essas árvores e como funciona o algoritmo. Depois usaremos duas variações - LightGBM e XGBoost - em dados para prever aplicações de cartão de crédito.</p></p>
+</div>
+
+<div class="d-byline">
+  Felipe Yamamoto Tenedine <a href="https://www.linkedin.com/in/felipe-yamamoto-tenedine/" class="uri">https://www.linkedin.com/in/felipe-yamamoto-tenedine/</a> 
+  
+<br/>2024-01-08
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#teoria" id="toc-teoria">Teoria</a>
+<ul>
+<li><a href="#boosting" id="toc-boosting">Boosting</a>
+<ul>
+<li><a href="#xgboost" id="toc-xgboost">XGBoost</a></li>
+<li><a href="#lightgbm" id="toc-lightgbm">LightGBM</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#prática" id="toc-prática">Prática</a>
+<ul>
+<li><a href="#aplicações-de-cartão-de-crédito" id="toc-aplicações-de-cartão-de-crédito">Aplicações de cartão de crédito</a></li>
+<li><a href="#dados" id="toc-dados">Dados</a></li>
+<li><a href="#inspecionando-as-aplicações" id="toc-inspecionando-as-aplicações">Inspecionando as aplicações</a></li>
+<li><a href="#separação-dos-dados" id="toc-separação-dos-dados">Separação dos dados</a></li>
+<li><a href="#pré-processamento" id="toc-pré-processamento">Pré-Processamento</a></li>
+<li><a href="#modelos" id="toc-modelos">Modelos</a></li>
+<li><a href="#otimização-bayesiana" id="toc-otimização-bayesiana">Otimização Bayesiana</a></li>
+<li><a href="#conclusão" id="toc-conclusão">Conclusão</a></li>
+</ul></li>
+<li><a href="#referências" id="toc-referências">Referências</a></li>
+</ul>
+</nav>
+</div>
+<h1 id="teoria">Teoria</h1>
+<h2 id="boosting">Boosting</h2>
+<p><em>Boosting</em> é outra abordagem para melhorar as previsões de uma árvore de decisão. Similar ao <em>bagging</em>, é uma abordagem geral que pode ser aplicada a muitos métodos de aprendizado estatístico para regressão ou classificação. No entanto, no contexto das árvores de decisão, a discussão de hoje se restringe ao boosting.</p>
+<p>Enquanto o <em>bagging</em> envolve criar múltiplas cópias do conjunto de dados de treinamento original usando a técnica de <em>bootstrap</em>, ajustar uma árvore de decisão separada para cada cópia e então combinar todas as árvores para criar um único modelo preditivo, o boosting funciona de forma semelhante, mas com uma abordagem sequencial. Cada árvore é construída usando informações das árvores previamente criadas. No boosting, não há amostragem de <em>bootstrap</em>; em vez disso, cada árvore é treinada em uma versão modificada do conjunto de dados original. Essa abordagem sequencial no <em>boosting</em> geralmente leva a modelos mais poderosos, focados em corrigir áreas onde os modelos anteriores falharam, resultando em melhor desempenho preditivo.</p>
+<p>No contexto da regressão, assim como no <em>bagging</em>, o <em>boosting</em> envolve combinar um grande número de árvores de decisão <span class="math inline">\(\hat{f}^1,...,\hat{f}^B\)</span>. O <em>boosting</em> é descrito no Algoritmo 1.</p>
+<p>—————————————————————————————————————————————— <strong>Algoritmo 1.</strong> Boosting para Árvores de Regressão: ——————————————————————————————————————————————</p>
+<ul>
+<li>Defina <span class="math inline">\(\hat{f}(x) = 0\)</span> e <span class="math inline">\(r_i = y_i\)</span> para todos os <span class="math inline">\(i\)</span> no conjunto de treinamento.</li>
+<li>Para <span class="math inline">\(b = 1, 2,...,B\)</span>, repita:</li>
+</ul>
+<ol type="a">
+<li><p>Ajuste uma árvore <span class="math inline">\(\hat{f}^b\)</span> com <span class="math inline">\(d\)</span> divisões (<span class="math inline">\(d + 1\)</span> nós terminais) aos dados de treinamento <span class="math inline">\((X, r)\)</span>.</p></li>
+<li><p>Atualize <span class="math inline">\(\hat{f}\)</span> adicionando uma versão encolhida da nova árvore:</p></li>
+</ol>
+<p><span class="math inline">\(\hat{f}(x) ← \hat{f}(x) + λ \hat{f}^ b(x).\)</span></p>
+<ol start="3" type="a">
+<li>Atualize os resíduos,</li>
+</ol>
+<p><span class="math inline">\(r_i ← r_i − λ \hat{f}^b (x_i).\)</span></p>
+<ul>
+<li>Produza o modelo com <em>boost</em>,</li>
+</ul>
+<p><span class="math inline">\(\hat{f}(x) = \sum_{b=1}^Bλ \hat{f}^ b(x).\)</span></p>
+<p>——————————————————————————————————————————————</p>
+<p>A ideia por trás desse procedimento difere da abordagem de ajustar uma única árvore grande aos dados, que pode levar ao overfitting ao ajustar os dados de maneira rígida. O <em>boosting</em>, por outro lado, aprende lentamente. Dado o modelo atual, ajustamos uma árvore de decisão aos resíduos do modelo. Ou seja, ajustamos uma árvore usando os resíduos atuais, em vez do resultado <span class="math inline">\(Y\)</span>, como resposta. Em seguida, adicionamos esta nova árvore de decisão à função ajustada para atualizar os resíduos. Cada uma dessas árvores pode ser relativamente pequena, com apenas alguns nós terminais, determinados pelo parâmetro <span class="math inline">\(d\)</span> no algoritmo. Ao ajustar árvores pequenas aos resíduos, melhoramos gradualmente <span class="math inline">\(\hat{f}\)</span> em áreas onde não performa bem.</p>
+<p>O parâmetro de encolhimento <span class="math inline">\(λ\)</span> diminui ainda mais o processo, permitindo que mais árvores de formas diferentes ataquem os resíduos. Em geral, abordagens de aprendizado estatístico que aprendem lentamente tendem a ter um bom desempenho. No <em>boosting</em>, ao contrário do <em>bagging</em>, a construção de cada árvore depende fortemente das árvores já criadas.</p>
+<p>Esse processo descreve o <em>boosting</em> de árvores de regressão. O <em>boosting</em> de árvores de classificação segue de maneira similar, mas de um modo ligeiramente mais complexo.</p>
+<p>O <em>boosting</em> clássico possui três parâmetros de ajuste:</p>
+<ul>
+<li>O número de árvores <span class="math inline">\(B\)</span>. Diferentemente do bagging e das florestas aleatórias, o boosting pode ter overfitting se <span class="math inline">\(B\)</span> for muito grande, embora isso ocorra lentamente, se ocorrer. Usamos validação cruzada para selecionar <span class="math inline">\(B\)</span>.</li>
+<li>O parâmetro de encolhimento <span class="math inline">\(λ\)</span>, um número positivo pequeno. Ele controla a taxa de aprendizado do boosting. Valores típicos são 0.01 ou 0.001, e a escolha correta pode depender do problema. <span class="math inline">\(λ\)</span> muito pequeno pode exigir um valor muito grande de <span class="math inline">\(B\)</span> para obter bom desempenho.</li>
+<li>O número d de divisões em cada árvore, que controla a complexidade do conjunto de árvores. Muitas vezes, <span class="math inline">\(d = 1\)</span> funciona bem, o que significa que cada árvore é um “stump”, consistindo de uma única divisão. Nesse caso, o conjunto de <em>stumps</em> do <em>boosting</em> está ajustando um modelo aditivo, já que cada termo envolve apenas uma variável. Geralmente, <span class="math inline">\(d\)</span> é a profundidade da interação e controla a ordem de interação do modelo <em>boost</em>, já que <span class="math inline">\(d\)</span> divisões podem envolver no máximo <span class="math inline">\(d\)</span> variáveis.</li>
+</ul>
+<p>Na Figura 1, o boosting foi aplicado a um conjunto de dados de expressão genética de câncer de 15 classes, para desenvolver um classificador que distingue a classe normal das 14 classes de câncer. O erro de teste é exibido em função do número total de árvores e da profundidade de interação <span class="math inline">\(d\)</span>.</p>
+<p>Observamos que “stumps” simples com profundidade de interação 1 têm bom desempenho se incluídos em número suficiente. Esse modelo supera o modelo de profundidade 2 e ambos superam uma floresta aleatória. Isso destaca uma diferença entre boosting e florestas aleatórias: no boosting, porque o crescimento de uma árvore específica leva em consideração as outras árvores já criadas, árvores menores são geralmente suficientes. O uso de árvores menores pode auxiliar na interpretabilidade; por exemplo, o uso de “stumps” leva a um modelo aditivo.</p>
+<figure>
+<img src="images/clipboard-3817179683.png" alt="Figura 1. Resultados da realização de boosting e florestas aleatórias no conjunto de dados de expressão genética de 15 classes para prever câncer versus normal. O erro de teste é exibido como uma função do número de árvores. Para os dois modelos de boost, λ = 0.01. Árvores de profundidade 1 têm um desempenho ligeiramente melhor do que árvores de profundidade 2, e ambas superam a floresta aleatória, embora os erros padrão sejam em torno de 0.02, o que torna nenhuma dessas diferenças significativas. A taxa de erro de teste para uma única árvore é de 24%." />
+<figcaption aria-hidden="true"><strong>Figura 1.</strong> Resultados da realização de <em>boosting</em> e florestas aleatórias no conjunto de dados de expressão genética de 15 classes para prever câncer versus normal. O erro de teste é exibido como uma função do número de árvores. Para os dois modelos de <em>boost</em>, <span class="math inline">\(λ = 0.01\)</span>. Árvores de profundidade 1 têm um desempenho ligeiramente melhor do que árvores de profundidade 2, e ambas superam a floresta aleatória, embora os erros padrão sejam em torno de 0.02, o que torna nenhuma dessas diferenças significativas. A taxa de erro de teste para uma única árvore é de 24%.</figcaption>
+</figure>
+<h3 id="xgboost">XGBoost</h3>
+<p><em>XGBoost</em> é um sistema de aprendizado de máquina de código aberto que implementa um algoritmo de <em>boosting</em> de árvores gradiente. O <em>boosting</em> de árvores é uma técnica de aprendizado de máquina que combina várias árvores de decisão para melhorar a precisão de predição.</p>
+<p>O XGBoost é um sistema escalável por vários motivos. Primeiro, ele usa um algoritmo de aprendizado de árvore específico para dados esparsos. Dados esparsos são dados em que muitos dos valores são zeros. O algoritmo de aprendizado de árvore do XGBoost é projetado para lidar com dados esparsos de forma eficiente.</p>
+<p>Segundo, o XGBoost usa uma técnica de amostragem de quantis ponderada para aprendizado de árvore aproximado. Essa técnica amostra aleatoriamente os dados e as árvores para reduzir o tempo de treinamento.</p>
+<p>O XGBoost também é flexível e fácil de usar. Ele suporta uma variedade de funções de perda e funções de penalidade, o que permite que seja adaptado a diferentes problemas de aprendizado de máquina. O XGBoost também oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo.</p>
+<p><strong>Algoritmo</strong></p>
+<p>O algoritmo funciona adicionando árvores de decisão à um modelo de aprendizado de máquina sequencialmente. Cada árvore é projetada para reduzir o erro do modelo em relação aos dados de treinamento.</p>
+<p>O algoritmo de boosting de árvores gradiente pode ser expresso matematicamente da seguinte forma:</p>
+<p><span class="math display">\[f(x) = \sum_{t=1}^T \beta_t h_t(x)\]</span> Onde:</p>
+<p><span class="math inline">\(f(x)\)</span> é o modelo de aprendizado de máquina resultante</p>
+<p><span class="math inline">\(T\)</span> é o número de árvores no modelo</p>
+<p><span class="math inline">\(β_t\)</span> é o peso da t-ésima árvore</p>
+<p><span class="math inline">\(h_t(x)\)</span> é a função de predição da t-ésima árvore</p>
+<p>O peso da t-ésima árvore é calculado usando o gradiente da função de perda do modelo em relação aos dados de treinamento. A função de perda é uma medida da diferença entre as previsões do modelo e os valores reais dos dados.</p>
+<p><strong>Funções de perda e funções de penalidade</strong></p>
+<p>O XGBoost suporta uma variedade de funções de perda e funções de penalidade. A função de perda é usada para medir o erro do modelo em relação aos dados de treinamento. A função de penalidade é usada para evitar o sobreajuste do modelo.</p>
+<p>Algumas funções de perda comuns incluem:</p>
+<p>Erro quadrático médio <span class="math inline">\((MSE): L(y,f(x))=(y−f(x))^ 2\)</span></p>
+<p>Erro de erro médio <span class="math inline">\((MAE): L(y,f(x))=∣y−f(x)∣\)</span></p>
+<p>Erro de entropia cruzada <span class="math inline">\((CE): L(y,f(x))=−∑_y ylogf(x)+(1−y)log(1−f(x))\)</span></p>
+<p>Algumas funções de penalidade comuns incluem:</p>
+<p>Regularização <span class="math inline">\(L1: λ∑_ tβ_t\)</span></p>
+<p>Regularização <span class="math inline">\(L2: λ∑_ tβ_ t^2\)</span></p>
+<p>Regularização <span class="math inline">\(Elastic Net: λ_ 1∑_ tβ_ t+λ_ 2∑_ tβ_ t^2\)</span></p>
+<p><strong>Mecanismos de regularização</strong></p>
+<p>O XGBoost oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo. Os mecanismos de regularização mais comuns incluem:</p>
+<ul>
+<li>Subamostragem de dados: o XGBoost pode subamostrar os dados de treinamento para reduzir o tamanho do modelo.</li>
+<li>Subamostragem de árvores: o XGBoost pode subamostrar as árvores de decisão para reduzir o tamanho do modelo.</li>
+<li>Regularização L1 e L2: o XGBoost pode usar regularização L1 ou L2 para reduzir o tamanho do modelo.</li>
+</ul>
+<p><strong>Hiperparâmetros</strong></p>
+<ul>
+<li>tree_depth: Profundidade da Árvore (tipo: inteiro, padrão: 6L)</li>
+<li>trees: Número de Árvores (tipo: inteiro, padrão: 15L)</li>
+<li>learn_rate: Taxa de Aprendizado (tipo: duplo, padrão: 0.3)</li>
+<li>mtry: Número de Preditores Selecionados Aleatoriamente (tipo: inteiro, padrão: ver abaixo)</li>
+<li>min_n: Tamanho Mínimo do Nó (tipo: inteiro, padrão: 1L)</li>
+<li>loss_reduction: Redução Mínima da Perda (tipo: duplo, padrão: 0.0)</li>
+<li>sample_size: Proporção de Observações Amostradas (tipo: duplo, padrão: 1.0)</li>
+<li>stop_iter: Número de Iterações Antes da Parada (tipo: inteiro, padrão: Inf)</li>
+</ul>
+<h3 id="lightgbm">LightGBM</h3>
+<p>LightGBM é um sistema de boosting de árvores altamente eficiente que foi apresentado por Guolin Ke, Qihang Wang, Wei Chen, Wei Hu, and Tie-Yan Liu em 2017. O sistema é amplamente utilizado por cientistas de dados para alcançar resultados de última geração em muitos desafios de aprendizado de máquina.</p>
+<p>O LightGBM apresenta várias inovações que o tornam um sistema altamente eficiente. Uma inovação é o uso de um algoritmo de crescimento de árvore <em>greedy</em>. O algoritmo de crescimento de árvore <em>greedy</em> do LightGBM é projetado para reduzir o número de folhas de uma árvore, o que melhora a eficiência do treinamento.</p>
+<p>Outra inovação é o uso de uma técnica de amostragem de gradientes ponderada. A técnica de amostragem de gradientes ponderada do LightGBM amostra aleatoriamente os dados e os gradientes para reduzir o tempo de treinamento.</p>
+<p>O LightGBM também oferece vários recursos que o tornam flexível e fácil de usar. O sistema suporta uma variedade de funções de perda e funções de penalidade, o que permite que seja adaptado a diferentes problemas de aprendizado de máquina. O LightGBM também oferece suporte a vários mecanismos de regularização, que ajudam a evitar o sobreajuste do modelo.</p>
+<p><strong>Algoritmo de crescimento de árvore greedy</strong></p>
+<p>O algoritmo de crescimento de árvore greedy do LightGBM funciona adicionando folhas à um árvore de decisão sequencialmente. Em cada iteração, o algoritmo escolhe a folha que tem o maior ganho de ganho, que é calculado usando a seguinte fórmula:</p>
+<p><span class="math inline">\(Gain = \sum_{i \in L} G_i\)</span></p>
+<p>Onde:</p>
+<p><span class="math inline">\(L\)</span> é o conjunto de dados da folha</p>
+<p><span class="math inline">\(G_i\)</span> é o ganho de informação da i-ésima instância</p>
+<p>O ganho de informação é uma medida da diferença entre a distribuição de probabilidade dos dados antes e depois de a instância ser adicionada à folha.</p>
+<p><strong>Amostragem de gradientes ponderada</strong></p>
+<p>A técnica de amostragem de gradientes ponderada do LightGBM funciona amostrando aleatoriamente os dados e os gradientes para reduzir o tempo de treinamento. A técnica funciona da seguinte forma:</p>
+<ul>
+<li>Calcule os gradientes dos dados de treinamento.</li>
+<li>Atribua pesos aos dados de treinamento com base nos seus gradientes.</li>
+<li>Amostre os dados de treinamento com base nos pesos.</li>
+</ul>
+<p>A técnica de amostragem de gradientes ponderada reduz o tempo de treinamento do LightGBM em até 20 vezes sem afetar a precisão do modelo.</p>
+<p><strong>HiperParâmetros</strong></p>
+<ul>
+<li>tree_depth: Profundidade da Árvore (tipo: inteiro, padrão: -1)</li>
+<li>trees: Número de Árvores (tipo: inteiro, padrão: 100)</li>
+<li>learn_rate: Taxa de Aprendizado (tipo: duplo, padrão: 0.1)</li>
+<li>mtry: Número de Preditores Selecionados Aleatoriamente (tipo: inteiro, padrão: ver abaixo)</li>
+<li>min_n: Tamanho Mínimo do Nó (tipo: inteiro, padrão: 20)</li>
+<li>loss_reduction: Redução Mínima da Perda (tipo: duplo, padrão: 0)</li>
+</ul>
+<h1 id="prática">Prática</h1>
+<h2 id="aplicações-de-cartão-de-crédito">Aplicações de cartão de crédito</h2>
+<p>Os bancos comerciais recebem muitos pedidos de cartões de crédito. Muitos deles são rejeitados por vários motivos, como altos saldos de empréstimos, baixos níveis de renda ou muitas consultas no relatório de crédito de um indivíduo, por exemplo. Analisar manualmente essas aplicações é mundano, sujeito a erros e demorado (e tempo é dinheiro!). Felizmente, essa tarefa pode ser automatizada com o poder do aprendizado de máquina e praticamente todos os bancos comerciais o fazem hoje em dia. Neste projeto, construiremos um preditor automático de aprovação de cartão de crédito usando <em>boosted trees</em>.</p>
+<p><img src="images/clipboard-4052902041.png" /></p>
+<h2 id="dados">Dados</h2>
+<p>Usaremos o conjunto de dados de aprovação de cartão de crédito do <em>UCI Machine Learning Repository</em>.</p>
+<ul>
+<li>Primeiro, começaremos carregando e visualizando o conjunto de dados.</li>
+<li>Veremos que o conjunto de dados tem uma mistura de características numéricas e não numéricas, que contém valores de diferentes intervalos, além de conter várias entradas ausentes. - Teremos que pré-processar o conjunto de dados para garantir que o modelo de aprendizado de máquina escolhido possa fazer boas previsões.</li>
+<li>Depois que nossos dados estiverem em boa forma, faremos algumas análises exploratórias de dados para construir nossas intuições.</li>
+<li>Finalmente, construiremos um modelo de aprendizado de máquina que pode prever se o pedido de cartão de crédito de um indivíduo será aceito.</li>
+</ul>
+<p>Primeiro, carregando e visualizando o conjunto de dados. Descobrimos que, como esses dados são confidenciais, o colaborador do conjunto de dados anonimizou os nomes dos recursos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Carregando tidyverse</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Carregando dados</span></span>
+<span><span class='va'>cc_apps</span> <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"cc_approvals.data.csv"</span>, col_names <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cc_apps</span></span></code></pre>
+</div>
+<pre><code># A tibble: 690 × 16
+   X1    X2       X3 X4    X5    X6    X7       X8 X9    X10   X11  
+   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;chr&gt;
+ 1 b     30.83  0    u     g     w     v      1.25 TRUE  TRUE  01   
+ 2 a     58.67  4.46 u     g     q     h      3.04 TRUE  TRUE  06   
+ 3 a     24.50  0.5  u     g     q     h      1.5  TRUE  FALSE 0    
+ 4 b     27.83  1.54 u     g     w     v      3.75 TRUE  TRUE  05   
+ 5 b     20.17  5.62 u     g     w     v      1.71 TRUE  FALSE 0    
+ 6 b     32.08  4    u     g     m     v      2.5  TRUE  FALSE 0    
+ 7 b     33.17  1.04 u     g     r     h      6.5  TRUE  FALSE 0    
+ 8 a     22.92 11.6  u     g     cc    v      0.04 TRUE  FALSE 0    
+ 9 b     54.42  0.5  y     p     k     h      3.96 TRUE  FALSE 0    
+10 b     42.50  4.92 y     p     w     v      3.16 TRUE  FALSE 0    
+# ℹ 680 more rows
+# ℹ 5 more variables: X12 &lt;lgl&gt;, X13 &lt;chr&gt;, X14 &lt;chr&gt;, X15 &lt;dbl&gt;,
+#   X16 &lt;chr&gt;</code></pre>
+</div>
+<h2 id="inspecionando-as-aplicações">Inspecionando as aplicações</h2>
+<p>Os dados podem parecer um pouco confusos à primeira vista, mas vamos tentar descobrir os recursos mais importantes de uma aplicação de cartão de crédito. Os recursos deste conjunto de dados foram anonimizados para proteger a privacidade.</p>
+<p>Os recursos prováveis em uma aplicação de cartão de crédito típico são Sexo, Idade, Dívida, Casado, Banco, Cliente, Nível de Educação, Etnia, Anos Empregados, Inadimplência anterior, Empregado, Pontuação de crédito, Carteira de motorista, Cidadania, Codigo postal, Renda e, finalmente, o Status de aprovação. Isso nos dá um bom ponto de partida e podemos mapear esses recursos em relação às colunas no output.</p>
+<p>Como podemos ver em nossa primeira olhada nos dados, o conjunto de dados tem uma mistura de características numéricas e não numéricas. Isso pode ser corrigido com algum pré-processamento, mas antes de fazermos isso, vamos aprender um pouco mais sobre o conjunto de dados para ver se há outros problemas de conjunto de dados que precisam ser corrigidos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://docs.ropensci.org/skimr/'>skimr</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://docs.ropensci.org/skimr/reference/skim.html'>skim</a></span><span class='op'>(</span><span class='va'>cc_apps</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<caption><span id="tab:unnamed-chunk-2">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">cc_apps</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">690</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">logical</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">X1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: logical</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: left;">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">X9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: left;">TRU: 361, FAL: 329</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: left;">FAL: 395, TRU: 295</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: left;">FAL: 374, TRU: 316</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 11%" />
+<col style="width: 15%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 7%" />
+<col style="width: 10%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">X3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.76</td>
+<td style="text-align: right;">4.98</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.75</td>
+<td style="text-align: right;">7.21</td>
+<td style="text-align: right;">28.0</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.22</td>
+<td style="text-align: right;">3.35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.62</td>
+<td style="text-align: right;">28.5</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1017.39</td>
+<td style="text-align: right;">5210.10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">395.50</td>
+<td style="text-align: right;">100000.0</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Nosso conjunto de dados contém dados numéricos e não numéricos. Especificamente, os recursos 3, 8, 11 e 15 contêm valores numéricos e todos os outros recursos contêm valores não numéricos.</p>
+<p>O conjunto de dados também contém valores de vários intervalos. Alguns recursos têm um intervalo de valores de 0 a 28, alguns têm um intervalo de 2 a 67 e alguns têm um intervalo de 1017 a 100000. Além disso, podemos obter informações estatísticas úteis (como média, máximo e mínimo) sobre os recursos que possuem valores numéricos.</p>
+<p>Por fim, o conjunto de dados possui valores ausentes, mas que não aparecem na análise exploratória, dos quais cuidaremos nesta tarefa. Os valores ausentes no conjunto de dados são rotulados com ‘?’</p>
+<p>Agora, vamos substituir temporariamente esses pontos de interrogação de valores ausentes por NA e transformar caracteres e variáveis lógicas em fatores. Além disso, recursos como Carteira de motorista e Código postal não são tão importantes quanto os outros recursos no conjunto de dados para prever aprovações de cartão de crédito.</p>
+<p>Para ter uma noção melhor, podemos medir sua correlação estatística com as variáveis do conjunto de dados. Devemos abandoná-los para criar nosso modelo de aprendizado de máquina com o melhor conjunto de variaveis. Na literatura de Ciência de Dados, isso costuma ser chamado de seleção de variaveis.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#correlação estatística</span></span>
+<span><span class='fu'>DataExplorer</span><span class='fu'>::</span><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_correlation.html'>plot_correlation</a></span><span class='op'>(</span><span class='va'>cc_apps</span>, type <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="boosting-trees_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+</div>
+<p>Podemos ver pelo gráfico de correlação que a variável X12 (se a pessoa possui carteira de motorista) não está correlacionadas com a variável de resultado, ou qualquer outra variável. Além dela, a variável X14 (códigos postais) possui 171 diferentes tipos de observações, e não é uma informação útil para o modelo.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Substituindo os '?'s por NA</span></span>
+<span><span class='va'>cc_apps</span> <span class='op'>=</span> <span class='va'>cc_apps</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate_all.html'>mutate_all</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>==</span> <span class='st'>"?"</span>, <span class='cn'>NA</span>, <span class='va'>.</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#Mudando algumas variáveis que estão com a classe errada</span></span>
+<span><span class='va'>cc_apps</span> <span class='op'>=</span> <span class='va'>cc_apps</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>X2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>X2</span><span class='op'>)</span>,</span>
+<span>         X11 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>X11</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Vamos visualizar como ficaram nossos dados:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://boxuancui.github.io/DataExplorer/'>DataExplorer</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_bar.html'>plot_bar</a></span><span class='op'>(</span><span class='va'>cc_apps</span>, nrow <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="boosting-trees_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_histogram.html'>plot_histogram</a></span><span class='op'>(</span><span class='va'>cc_apps</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="boosting-trees_files/figure-html5/unnamed-chunk-5-2.png" width="624" /></p>
+</div>
+<p>Ok! Só precisamosa antes converter as variáveis nominais e logicas para fator:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cc_apps</span> <span class='op'>&lt;-</span>  <span class='va'>cc_apps</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate_all.html'>mutate_if</a></span><span class='op'>(</span><span class='va'>is.character</span>, <span class='va'>factor</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate_all.html'>mutate_if</a></span><span class='op'>(</span><span class='va'>is.logical</span>, <span class='va'>factor</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="separação-dos-dados">Separação dos dados</h2>
+<p>Parece que está tudo ok. Vamos separar os dados em teste e treinamento para depois fazer o pré-processamento.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Carregando tidymodels</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Dividindo em conjuntos de treinamento e teste</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12345</span><span class='op'>)</span></span>
+<span><span class='va'>cc_split</span> <span class='op'>=</span> <span class='fu'>initial_split</span><span class='op'>(</span><span class='va'>cc_apps</span>, prop <span class='op'>=</span> <span class='fl'>0.75</span><span class='op'>)</span></span>
+<span><span class='va'>cc_train</span> <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>cc_split</span><span class='op'>)</span></span>
+<span><span class='va'>cc_test</span> <span class='op'>=</span> <span class='fu'>testing</span><span class='op'>(</span><span class='va'>cc_split</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="pré-processamento">Pré-Processamento</h2>
+<p>Substituímos todos os pontos de interrogação por NA’s. Isso vai nos ajudar no próximo tratamento de valores ausentes que vamos realizar. Uma questão importante levantada aqui é por que estamos dando tanta importância aos valores ausentes? Eles não podem ser simplesmente ignorados? Ignorar os valores ausentes pode afetar fortemente o desempenho de um modelo de aprendizado de máquina. Ao ignorar os valores ausentes, nosso modelo de aprendizado de máquina pode perder informações sobre o conjunto de dados que podem ser úteis para seu treinamento.</p>
+<p>Além disso, existem muitos modelos que não podem lidar com valores ausentes implicitamente, como a Análise Discriminante Linear (LDA). Então, para evitar esse problema, vamos imputar os valores faltantes com uma estratégia chamada imputação mediana.</p>
+<p>Ainda faltam alguns valores a serem imputados para as colunas 0, 1, 3, 4, 5, 6 e 13. Todas essas colunas contêm dados não numéricos e é por isso que a estratégia de imputação média não funcionaria aqui. Isso precisa de um tratamento diferente. Vamos imputar esses valores ausentes com os valores mais frequentes presentes nas respectivas colunas. Essa é uma boa prática quando se trata de imputar valores ausentes para dados categóricos em geral.</p>
+<p>Ainda há algum pré-processamento de dados menor, mas essencial e necessário antes de prosseguirmos para a construção de nosso modelo de aprendizado de máquina:</p>
+<ul>
+<li>Remover variáveis com 0 de variância, se houver</li>
+<li>Remover variáveis X12 e X14, com mencionado anteriormente</li>
+<li>Dimensionar os valores das variáveis para um intervalo uniforme</li>
+<li>Converter os dados não numéricos em numéricos: fazemos isso porque não apenas resulta em uma computação mais eficiente, mas também muitos modelos de aprendizado de máquina (como XGBoost) exigem que os dados estejam em um formato estritamente numérico</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#receita com a fómula e pré-processamentos necessários</span></span>
+<span><span class='va'>receita</span> <span class='op'>=</span> <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>X16</span><span class='op'>~</span><span class='va'>.</span>, <span class='va'>cc_train</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_rm</span><span class='op'>(</span><span class='va'>X14</span>, <span class='va'>X12</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_zv</span><span class='op'>(</span><span class='fu'>all_numeric_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_impute_median</span><span class='op'>(</span><span class='fu'>all_numeric_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_normalize</span><span class='op'>(</span><span class='fu'>all_numeric_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_impute_mode</span><span class='op'>(</span><span class='fu'>all_factor_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>step_dummy</span><span class='op'>(</span><span class='fu'>all_factor_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#Dados depois do pré-processamento</span></span>
+<span><span class='va'>receita</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>prep</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>juice</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 517 × 36
+        X2     X3     X8    X11     X15 X16    X1_b  X4_u  X4_y X5_gg
+     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1  2.12    2.41  -0.704  2.60  -0.163  +         0     1     0     0
+ 2 -0.496  -0.841 -0.405 -0.496 -0.227  +         0     1     0     0
+ 3 -1.08    0.996 -0.362  0.329 -0.0985 +         0     0     1     0
+ 4  0.0432 -0.106 -0.191 -0.496 -0.227  -         1     0     1     0
+ 5 -0.694  -0.823 -0.675 -0.496 -0.227  -         1     1     0     0
+ 6  2.77    3.25   5.28   1.36   0.0298 +         1     1     0     0
+ 7 -0.801  -0.823 -0.704 -0.496 -0.227  -         1     0     1     0
+ 8  1.41   -0.211  0.493 -0.496 -0.227  +         1     1     0     0
+ 9  0.477  -0.106  1.01  -0.496 -0.227  -         1     1     0     0
+10  1.13    0.524 -0.149 -0.496 -0.226  -         1     0     1     0
+# ℹ 507 more rows
+# ℹ 26 more variables: X5_p &lt;dbl&gt;, X6_c &lt;dbl&gt;, X6_cc &lt;dbl&gt;,
+#   X6_d &lt;dbl&gt;, X6_e &lt;dbl&gt;, X6_ff &lt;dbl&gt;, X6_i &lt;dbl&gt;, X6_j &lt;dbl&gt;,
+#   X6_k &lt;dbl&gt;, X6_m &lt;dbl&gt;, X6_q &lt;dbl&gt;, X6_r &lt;dbl&gt;, X6_w &lt;dbl&gt;,
+#   X6_x &lt;dbl&gt;, X7_dd &lt;dbl&gt;, X7_ff &lt;dbl&gt;, X7_h &lt;dbl&gt;, X7_j &lt;dbl&gt;,
+#   X7_n &lt;dbl&gt;, X7_o &lt;dbl&gt;, X7_v &lt;dbl&gt;, X7_z &lt;dbl&gt;, X9_TRUE. &lt;dbl&gt;,
+#   X10_TRUE. &lt;dbl&gt;, X13_p &lt;dbl&gt;, X13_s &lt;dbl&gt;</code></pre>
+</div>
+<h2 id="modelos">Modelos</h2>
+<p>Essencialmente, prever se um pedido de cartão de crédito será aprovado ou não é uma tarefa de classificação. De acordo com a UCI, nosso conjunto de dados contém mais instâncias que correspondem ao status “Negado” do que instâncias correspondentes ao status “Aprovado”. Especificamente, de 690 casos, 383 (55,5%) dos pedidos foram negados e 307 (44,5%) foram aprovados. Isso nos dá uma boa referência.</p>
+<p>Um bom modelo de aprendizado de máquina deve ser capaz de prever com precisão o status dos pedidos em relação a essas estatísticas.</p>
+<p>Primeiro vamos criar as especificações dos nossos 2 modelos:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#especificações XGBoost</span></span>
+<span><span class='va'>xgboost_spec</span> <span class='op'>&lt;-</span> <span class='fu'>boost_tree</span><span class='op'>(</span>mtry <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           trees <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           min_n <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>                           tree_depth <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           learn_rate <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           loss_reduction <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>                           sample_size <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           stop_iter <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                           mode <span class='op'>=</span> <span class='st'>"classification"</span>, </span>
+<span>                           engine <span class='op'>=</span> <span class='st'>"xgboost"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#especificações LightGBM</span></span>
+<span><span class='va'>light_spec</span> <span class='op'>&lt;-</span> <span class='fu'>boost_tree</span><span class='op'>(</span>tree_depth <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>                         trees <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                         learn_rate <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span>                         mtry <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                         min_n <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                         loss_reduction <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>                         mode <span class='op'>=</span> <span class='st'>"classification"</span>, </span>
+<span>                         engine <span class='op'>=</span> <span class='st'>"lightgbm"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Agora, vamos criar os dados para validação, que serão usados para otimizar os hiperparâmetros e criar um workflow para cada modelo</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#dados para validação cruzada, por bootstrap</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12345</span><span class='op'>)</span></span>
+<span><span class='va'>resample</span> <span class='op'>&lt;-</span> <span class='fu'>bootstraps</span><span class='op'>(</span><span class='va'>cc_train</span>, times <span class='op'>=</span> <span class='fl'>10</span>, strata <span class='op'>=</span> <span class='va'>X16</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#workflow XGBoost</span></span>
+<span><span class='va'>xgb_wflow</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>receita</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>xgboost_spec</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#workflow lightGBM</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bonsai.tidymodels.org/'>bonsai</a></span><span class='op'>)</span></span>
+<span><span class='va'>light_wflow</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>receita</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>light_spec</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Precisamos, ainda, definir os parâmetros de cada modelo e criar um grid com várias combinações de parâmetros para podemos otimizá-los</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#parametros xgboost</span></span>
+<span><span class='va'>xgb_params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html'>extract_parameter_set_dials</a></span><span class='op'>(</span><span class='va'>xgboost_spec</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>finalize</span><span class='op'>(</span><span class='va'>cc_train</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#parametros lightGBM</span></span>
+<span><span class='va'>light_params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html'>extract_parameter_set_dials</a></span><span class='op'>(</span><span class='va'>light_spec</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>finalize</span><span class='op'>(</span><span class='va'>cc_train</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#grid de parâmetros (30 combinações para cada)</span></span>
+<span><span class='va'>xgb_grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_latin_hypercube</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>xgb_params</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span>
+<span><span class='va'>light_grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_latin_hypercube</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>light_params</span>, size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Podemos otimizar os parâmetros com o pacote tune. Vou utilizar um método de racing, que depois que um número inicial de reamostragens é avaliado, o processo elimina combinações de parâmetros de ajuste que são improváveis de resultar nos melhores resultados usando um modelo de ANOVA de medidas repetidas.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#biblioteca para processamento em paralelo</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/doparallel'>doParallel</a></span><span class='op'>)</span></span>
+<span><span class='va'>cores</span> <span class='op'>&lt;-</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/parallel/makeCluster.html'>makePSOCKcluster</a></span><span class='op'>(</span><span class='va'>cores</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></span><span class='op'>(</span><span class='va'>cl</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#otimização com tune_race_anova</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymodels/finetune'>finetune</a></span><span class='op'>)</span></span>
+<span><span class='va'>xgb_tune_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://finetune.tidymodels.org/reference/tune_race_anova.html'>tune_race_anova</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>xgb_wflow</span>, </span>
+<span>                                    resamples <span class='op'>=</span> <span class='va'>resample</span>, </span>
+<span>                                    grid <span class='op'>=</span> <span class='va'>xgb_grid</span>,</span>
+<span>                                    metrics <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>roc_auc</span>, <span class='va'>accuracy</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>light_tune_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://finetune.tidymodels.org/reference/tune_race_anova.html'>tune_race_anova</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>light_wflow</span>, </span>
+<span>                                    resamples <span class='op'>=</span> <span class='va'>resample</span>, </span>
+<span>                                    grid <span class='op'>=</span> <span class='va'>light_grid</span>,</span>
+<span>                                    metrics <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>roc_auc</span>, <span class='va'>accuracy</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Podemos visualizar como as possíveis combinações de parâmetros que tentamos se saíram durante a “corrida”. Note como economizamos MUITO tempo ao não avaliar as combinações de parâmetros que estavam claramente se saindo mal em todas as reamostragens; só continuamos com as boas combinações de parâmetros.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://finetune.tidymodels.org/reference/plot_race.html'>plot_race</a></span><span class='op'>(</span><span class='va'>xgb_tune_results</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="boosting-trees_files/figure-html5/unnamed-chunk-13-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://finetune.tidymodels.org/reference/plot_race.html'>plot_race</a></span><span class='op'>(</span><span class='va'>light_tune_results</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="boosting-trees_files/figure-html5/unnamed-chunk-13-2.png" width="624" /></p>
+</div>
+<p>Também podemos ver os melhores resultados</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>show_best</a></span><span class='op'>(</span><span class='va'>xgb_tune_results</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 14
+   mtry trees min_n tree_depth learn_rate loss_reduction sample_size
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;          &lt;dbl&gt;       &lt;dbl&gt;
+1     6  1848     4          4    0.00416       0.000228       0.839
+# ℹ 7 more variables: stop_iter &lt;int&gt;, .metric &lt;chr&gt;,
+#   .estimator &lt;chr&gt;, mean &lt;dbl&gt;, n &lt;int&gt;, std_err &lt;dbl&gt;,
+#   .config &lt;chr&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>show_best</a></span><span class='op'>(</span><span class='va'>light_tune_results</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 5 × 12
+   mtry trees min_n tree_depth    learn_rate loss_reduction .metric
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;         &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;  
+1    10  1185    21          4 0.00379        0.000000165   roc_auc
+2     5   905     4         15 0.000298       0.000514      roc_auc
+3     9   429    21         10 0.00698        0.00000000974 roc_auc
+4     7  1113     7         12 0.00000000664  0.0128        roc_auc
+5     6  1015    15          8 0.00109        0.343         roc_auc
+# ℹ 5 more variables: .estimator &lt;chr&gt;, mean &lt;dbl&gt;, n &lt;int&gt;,
+#   std_err &lt;dbl&gt;, .config &lt;chr&gt;</code></pre>
+</div>
+<p>Os dois modelos se saíram muito bem e tiveram resultados parecidos nos dados de validação. Vamos ver a performance nos dados de teste, finalizando o workflow com os melhores parâmetros e ajustando ao split inicial.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#ajuste final xgboost</span></span>
+<span><span class='va'>xgb_last</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/finalize_model.html'>finalize_workflow</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>xgb_wflow</span>, </span>
+<span>                              parameters <span class='op'>=</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>select_best</a></span><span class='op'>(</span><span class='va'>xgb_tune_results</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tune.tidymodels.org/reference/last_fit.html'>last_fit</a></span><span class='op'>(</span><span class='va'>cc_split</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#ajuste final LightGBM</span></span>
+<span><span class='va'>light_last</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/finalize_model.html'>finalize_workflow</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>light_wflow</span>,</span>
+<span>                                parameters <span class='op'>=</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>select_best</a></span><span class='op'>(</span><span class='va'>light_tune_results</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tune.tidymodels.org/reference/last_fit.html'>last_fit</a></span><span class='op'>(</span><span class='va'>cc_split</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Podemos coletar as previsões no conjunto de teste e fazer o que quisermos, como criar uma curva ROC e métricas de desempenho</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>xgb_last</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://tune.tidymodels.org/reference/collect_predictions.html'>collect_metrics</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  .metric  .estimator .estimate .config             
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 accuracy binary         0.844 Preprocessor1_Model1
+2 roc_auc  binary         0.906 Preprocessor1_Model1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>light_last</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://tune.tidymodels.org/reference/collect_predictions.html'>collect_metrics</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  .metric  .estimator .estimate .config             
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 accuracy binary         0.844 Preprocessor1_Model1
+2 roc_auc  binary         0.903 Preprocessor1_Model1</code></pre>
+</div>
+<p>Os dois modelos têm uma performance muito parecida:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://xrobin.github.io/pROC/'>pROC</a></span><span class='op'>)</span></span>
+<span><span class='co'>#roc xgboost</span></span>
+<span><span class='va'>xgb_roc</span> <span class='op'>&lt;-</span> <span class='va'>xgb_last</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tune.tidymodels.org/reference/collect_predictions.html'>collect_predictions</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/pROC/man/roc.html'>roc</a></span><span class='op'>(</span><span class='va'>X16</span>, <span class='va'>`.pred_-`</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#roc lgbm</span></span>
+<span><span class='va'>light_roc</span> <span class='op'>&lt;-</span> <span class='va'>light_last</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tune.tidymodels.org/reference/collect_predictions.html'>collect_predictions</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/pROC/man/roc.html'>roc</a></span><span class='op'>(</span><span class='va'>X16</span>, <span class='va'>`.pred_-`</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#grafico conjunto</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>xgb_roc</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, main <span class='op'>=</span> <span class='st'>"Curvas ROC"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>light_roc</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>,add<span class='op'>=</span><span class='cn'>T</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/legend.html'>legend</a></span><span class='op'>(</span><span class='st'>"bottomright"</span>, legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"XGBoost"</span>, <span class='st'>"LightGBM"</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"red"</span>, <span class='st'>"blue"</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="boosting-trees_files/figure-html5/unnamed-chunk-17-1.png" width="624" /></p>
+</div>
+<p>Esses resultados são bastante bons para um modelo inicial.</p>
+<p>Também podemos calcular pontuações de importância de variáveis usando o pacote vip.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koalaverse/vip/'>vip</a></span><span class='op'>)</span></span>
+<span><span class='va'>xgb_last</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html'>extract_fit_parsnip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://koalaverse.github.io/vip/reference/vip.html'>vip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="boosting-trees_files/figure-html5/unnamed-chunk-18-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>light_last</span>  <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://hardhat.tidymodels.org/reference/hardhat-extract.html'>extract_fit_parsnip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://koalaverse.github.io/vip/reference/vip.html'>vip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="boosting-trees_files/figure-html5/unnamed-chunk-18-2.png" width="624" /></p>
+</div>
+<p>Observamos que nos dois modelos as duas variáveis mais importantes são as mesmas, provavelmente inadimplência anterior e renda.</p>
+<h2 id="otimização-bayesiana">Otimização Bayesiana</h2>
+<p>Vamos tentar otimizar ainda mais nosso modelo LightGBM utilizando métodos bayesianos. Podemos usar nosso resultado anterior para servir como passo inicial para o modelo.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>light_bayes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/tune_bayes.html'>tune_bayes</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>light_wflow</span>, </span>
+<span>           resamples <span class='op'>=</span> <span class='va'>resample</span>, </span>
+<span>           iter <span class='op'>=</span> <span class='fl'>30</span>, </span>
+<span>           metrics <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>accuracy</span>, <span class='va'>roc_auc</span><span class='op'>)</span>, </span>
+<span>           initial <span class='op'>=</span> <span class='va'>light_tune_results</span>, </span>
+<span>           param_info <span class='op'>=</span> <span class='va'>light_params</span>,</span>
+<span>           control <span class='op'>=</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/control_bayes.html'>control_bayes</a></span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>T</span>, no_improve <span class='op'>=</span> <span class='fl'>10</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#visualizar resultado</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>light_bayes</span>, type<span class='op'>=</span><span class='st'>"performance"</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="boosting-trees_files/figure-html5/unnamed-chunk-20-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>light_bayes</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>show_best</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 5 × 13
+   mtry trees min_n tree_depth learn_rate loss_reduction .metric 
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;   
+1    10  1185    21          4    0.00379  0.000000165   accuracy
+2     8  1902    15          1    0.00554  2.13          accuracy
+3     9   429    21         10    0.00698  0.00000000974 accuracy
+4    13   573    25          1    0.00191  0.0000408     accuracy
+5    15   524     2          1    0.0986   0.00000417    accuracy
+# ℹ 6 more variables: .estimator &lt;chr&gt;, mean &lt;dbl&gt;, n &lt;int&gt;,
+#   std_err &lt;dbl&gt;, .config &lt;chr&gt;, .iter &lt;int&gt;</code></pre>
+</div>
+<p>Vemos acima a performance de cada iteração e está parecido com o modelo anterior. Vamos selecionar o melhor e avaliar nos dados de teste</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>#finalizar modelo</span></span>
+<span><span class='va'>light_bayes_final</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tune.tidymodels.org/reference/finalize_model.html'>finalize_workflow</a></span><span class='op'>(</span><span class='va'>light_wflow</span>, <span class='fu'><a href='https://tune.tidymodels.org/reference/show_best.html'>select_best</a></span><span class='op'>(</span><span class='va'>light_bayes</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tune.tidymodels.org/reference/last_fit.html'>last_fit</a></span><span class='op'>(</span><span class='va'>cc_split</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'>#métricas finais</span></span>
+<span><span class='va'>light_bayes_final</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://tune.tidymodels.org/reference/collect_predictions.html'>collect_metrics</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  .metric  .estimator .estimate .config             
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 accuracy binary         0.844 Preprocessor1_Model1
+2 roc_auc  binary         0.903 Preprocessor1_Model1</code></pre>
+</div>
+<p>Os resultados foram muito parecidos com o modelo anterior.</p>
+<h2 id="conclusão">Conclusão</h2>
+<p>Ao criar esse preditor de cartão de crédito, abordamos algumas das etapas de pré-processamento mais conhecidas, como dimensionamento, codificação de variáveis e imputação de valor ausente. Terminamos com algum aprendizado de máquina para prever se o pedido de cartão de crédito de uma pessoa seria aprovado ou não de acordo com algumas informações sobre essa pessoa.</p>
+<p>Os modelos tiveram um desempenho muito bom e com métricas muito semelhantes.</p>
+<h1 id="referências">Referências</h1>
+<ul>
+<li>Chen, T., &amp; Guestrin, C. (2016). XGBoost: A scalable tree boosting system. arXiv preprint arXiv:1603.02754.</li>
+<li>Ke, G., Wang, Q., Chen, W., Hu, W., &amp; Liu, T.-Y. (2017). LightGBM: A highly efficient gradient boosting decision tree. In Advances in Neural Information Processing Systems (pp. 3146-3154).</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+"0","customer_data %>%"
+"0","  ggplot(aes(x = age)) +"
+"0","  geom_histogram(bins = 10, fill = ""darkblue"", alpha = 0.7) +"
+"0","  theme_bw() +"
+"0","  labs(x = ""Idade"", y = ""Frequência"", title = ""Histograma da frequência da Idade"")"

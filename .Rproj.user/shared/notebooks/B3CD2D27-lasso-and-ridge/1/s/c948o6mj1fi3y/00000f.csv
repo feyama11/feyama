@@ -1,0 +1,5 @@
+"0","set.seed(2020)"
+"0","library(tidymodels)"
+"0","office_split <- initial_split(office, strata = season)"
+"0","office_train <- training(office_split)"
+"0","office_test <- testing(office_split)"

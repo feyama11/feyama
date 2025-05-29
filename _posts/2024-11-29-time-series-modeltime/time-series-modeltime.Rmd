@@ -1,0 +1,475 @@
+---
+title: "Séries Temporais - Modeltime"
+description: |
+  Nesse post vou modelar séries temporais de vendas do Walmart usando o pacote Modeltime. 
+author:
+  - name: Felipe Yamamoto Tenedine
+    url: https://www.linkedin.com/in/felipe-yamamoto-tenedine/
+preview: time.webp
+date: 2024-12-02
+categories:
+  - time series
+  - machine learning
+  - R
+  - tidymodels
+output:
+  distill::distill_article:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    self_contained: false
+draft: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# Pacotes
+
+```{r message=FALSE, warning=FALSE}
+# Pacotes
+require(modeltime)
+require(modeltime.resample)
+require(tidymodels)
+require(timetk)
+require(tidyverse)
+require(kernlab)
+library(finetune)
+```
+
+A competição "Walmart Recruiting - Store Sales Forecasting" do Kaggle utilizou dados de varejo para combinações de lojas e departamentos dentro de cada loja. Ela incluiu dados de 45 lojas de varejo localizadas em diferentes regiões. O conjunto de dados incluía diversas variáveis externas, como informações sobre feriados, temperatura, preço de combustível e promoções. Esse conjunto de dados contém uma amostra de 7 departamentos da loja com ID 1 (7 séries temporais no total).
+
+# Dados
+
+Primeiro vamos carregar os dados, que estão no pacote *timetk* e visualizar as séries temporais
+
+```{r message=FALSE, warning=FALSE}
+# Dados
+vendas <- timetk::walmart_sales_weekly
+
+# grafico
+vendas %>% 
+  group_by(id) %>% 
+  plot_time_series(.date_var = Date, 
+                   .value = Weekly_Sales, 
+                   .facet_ncol = 3, 
+                   .interactive = T)
+```
+
+## Manipulação
+
+Primeiro precisamos definir quantos períodos queremos prever e criar dados vazios para essas datas futuras
+
+```{r message=FALSE, warning=FALSE}
+# Definir o número de períodos futuros que queremos prever
+p <- 52 
+
+# Preparar o conjunto de dados completo: dados históricos + períodos futuros
+vendas_full <- vendas %>%
+  
+  # Selecionar apenas as colunas relevantes do conjunto de dados original
+  select(id, Date, Weekly_Sales) %>% 
+  
+  # Agrupar os dados por 'id' para manipulação individual de cada série temporal
+  group_by(id) %>% 
+  
+  # Adicionar períodos futuros para previsão
+  future_frame(
+    .date_var = Date,         # Coluna de datas
+    .length_out = p,          # Número de períodos a adicionar (52)
+    .bind_data = TRUE         # Combinar os dados históricos e futuros em um único conjunto
+  ) %>% 
+  
+  # Remover o agrupamento dos dados
+  ungroup() %>% 
+  
+  # Remover níveis de fatores não utilizados na coluna 'id'
+  mutate(id = fct_drop(id))
+
+# Visualizar o conjunto de dados completo: histórico + previsão futura
+vendas_full %>%
+  group_by(id) %>%
+  plot_time_series(.date_var = Date, 
+                   .value = Weekly_Sales, 
+                   .facet_ncol = 3, 
+                   .interactive = T)
+
+```
+
+## Diagnosticos
+
+Vamos separar os dados futuros em branco dos dados atuais e fazer um diagnósticos da variável data
+
+```{r}
+# Preparar o conjunto de dados de treinamento (dados originais neste caso)
+vendas_prep <- vendas_full %>% 
+  filter(!is.na(Weekly_Sales))  # Filtrar apenas as linhas com valores não ausentes em 'Weekly_Sales'
+
+# Verificar o resumo dos dados de séries temporais no conjunto de treinamento
+# Objetivo: garantir que cada grupo ('id') tenha o mesmo "intervalo de tempo" e "escala"
+vendas_prep %>% 
+  group_by(id) %>%               # Agrupar por 'id' (cada série temporal)
+  tk_summary_diagnostics(        # Resumir diagnósticos de séries temporais (função do pacote 'timetk')
+    .date_var = Date             # Especificar a coluna de datas
+  )
+
+# Preparar o conjunto de dados futuros (períodos que precisam ser previstos)
+future_tbl <- vendas_full %>% 
+  filter(is.na(Weekly_Sales))    # Filtrar apenas as linhas com valores ausentes em 'Weekly_Sales' (dados futuros)
+future_tbl                      # Exibir os dados futuros
+
+# Verificar o resumo dos dados futuros
+future_tbl %>% 
+  group_by(id) %>%               # Agrupar por 'id' (cada série futura)
+  tk_summary_diagnostics()       # Resumir diagnósticos para os períodos futuros
+
+```
+
+# Modelagem
+
+## Treinamento / Teste
+
+Agora, separamos os dados em trenamento e teste para a modelagem. Deixamos de lado os dados futuros por enquanto.
+
+```{r message=FALSE, warning=FALSE}
+# Dividir o conjunto de dados de treinamento em conjunto de análise (treinamento) e avaliação (teste)
+splits <- vendas_prep %>% 
+  time_series_split(
+    date_var = Date,      # Coluna que contém as datas das séries temporais
+    assess = p,           # Número de períodos reservados para avaliação (neste caso, 52)
+    cumulative = TRUE     # Inclui todos os dados históricos anteriores no conjunto de análise (cumulativo)
+  )
+
+# Visualizar os splits criados
+splits
+
+```
+
+## Pré Processamento
+
+  Para usar modelos de Machine Learning, precisamos criar outras variáveis a partir da nossa variável de data.
+
+```{r}
+# Criar uma especificação de receita para pré-processamento dos dados
+recipe_spec_1 <- recipe(Weekly_Sales ~ ., training(splits)) %>% 
+  
+  # Extrair diversas características do calendário a partir da variável 'Date'
+  step_timeseries_signature(Date) %>% 
+  
+  # Remover variáveis que não são relevantes para o modelo
+  step_rm(matches("(.iso$)|(.xts$)|(day)|(hour)|(minute)|(second)|(am.pm)")) %>% 
+  
+  # Normalizar variáveis com valores numéricos maiores, como o índice da data e o ano
+  step_normalize(Date_index.num, Date_year) %>% 
+  
+  # Remover preditores com variância zero (sem variação, não contribuem para o modelo)
+  step_zv(all_predictors()) %>% 
+  
+  # Converter a semana do ano em uma variável do tipo fator ordenado
+  step_mutate(Date_week = factor(Date_week, ordered = TRUE)) %>% 
+  
+  # Transformar todas as variáveis categóricas em variáveis dummy (one-hot encoding)
+  step_dummy(all_nominal(), one_hot = TRUE)
+
+# Visualizar a matriz de design após o pré-processamento
+recipe_spec_1 %>% 
+  prep() %>%              # Preparar a receita para aplicação
+  juice() %>%             # Extrair os dados transformados
+  glimpse()               # Exibir a estrutura dos dados
+
+```
+
+Damos à coluna "Date" uma nova função chamada "ID". Isso porque modelos do pacote parsnip precisam usar o ID, ao contrário dos modelos do pacote Modeltime.
+
+```{r}
+# Atualizar o papel da variável 'Date' na receita
+recipe_spec_2 <- recipe_spec_1 %>% 
+  update_role(Date, new_role = 'ID')  # Altera o papel de 'Date' de preditor para identificador (ID)
+
+# No 'recipe_spec_1', 'Date' era considerado como um preditor.
+# No 'recipe_spec_2', 'Date' agora é tratado como uma variável de identificação (ID).
+
+# Resumo da receita original (recipe_spec_1)
+recipe_spec_1 %>% 
+  prep() %>%          # Prepara a receita, aplicando todas as transformações
+  summary()           # Exibe um resumo das variáveis e seus papéis no modelo
+
+# Resumo da receita modificada (recipe_spec_2)
+recipe_spec_2 %>% 
+  prep() %>%          # Prepara a receita atualizada
+  summary()           # Exibe o resumo atualizado com 'Date' como ID
+
+```
+
+## Modelos
+
+### Prophet com Regressores
+
+```{r message=FALSE, warning=FALSE}
+# ** 1. workflow() ----
+wflw_fit_prophet <- workflow() %>% 
+# ** 2. add_model() ---- 
+  add_model(
+    # 'prophet_reg()' é do pacote modeltime. Usamos "recipe_spec_1"
+    modeltime::prophet_reg() %>% set_engine('prophet') 
+  ) %>% 
+# ** 3. add_recipe() ----  
+  add_recipe(recipe_spec_1) %>% 
+# ** 4. fit() ----   
+  fit(training(splits))
+
+```
+
+### XGBoost 
+
+```{r}
+wflw_fit_xgboost <- workflow() %>% 
+  add_model(
+    # 'boost_tree()' é do pacote parsnip. Usamos "recipe_spec_2"
+    parsnip::boost_tree() %>% 
+      set_engine('xgboost') %>%
+      set_mode("regression")
+  ) %>% 
+  add_recipe(recipe_spec_2) %>% 
+  fit(training(splits))
+
+```
+
+### Random Forest
+
+```{r message=FALSE, warning=FALSE}
+# * Random Forest ----
+wflw_fit_rf <- workflow() %>% 
+  add_model(
+    parsnip::rand_forest() %>% 
+      set_engine('ranger') %>%
+      set_mode('regression')
+  ) %>% 
+  add_recipe(recipe_spec_2) %>% 
+  fit(training(splits))
+
+```
+### Support Vector Machine (SVM)
+
+```{r message=FALSE, warning=FALSE}
+# * Support Vector Machine (SVM) ----
+wflw_fit_svm <- workflow() %>% 
+  add_model(
+    parsnip::svm_rbf("regression") %>% set_engine('kernlab')
+  ) %>% 
+  add_recipe(recipe_spec_2) %>% 
+  fit(training(splits))
+
+```
+
+### Prophet Boost
+
+```{r message=FALSE, warning=FALSE}
+# * Prophet Boost----
+wflw_fit_prophet_boost <- workflow() %>% 
+  add_model(
+    modeltime::prophet_boost(
+      seasonality_daily = FALSE,
+      seasonality_weekly = FALSE,
+      seasonality_yearly = FALSE
+    ) %>% 
+      set_engine('prophet_xgboost')
+  ) %>% 
+  add_recipe(recipe_spec_1) %>% 
+  fit(training(splits))
+
+```
+
+## Workflow
+
+### Tabela Modeltime
+
+Agora, incluímos todos os modelos em uma unica tabela organizada
+
+```{r message=FALSE, warning=FALSE}
+submodels_tbl <- modeltime_table(
+  wflw_fit_prophet,
+  wflw_fit_xgboost,
+  wflw_fit_rf,
+  wflw_fit_svm,
+  wflw_fit_prophet_boost
+)
+submodels_tbl
+```
+
+### Calibração nos dados de teste
+
+E fazemos a calibração nos dados de teste para avaliar as métricas de acurácia.
+
+```{r message=FALSE, warning=FALSE}
+# calibração
+submodels_calibrated_tbl <- submodels_tbl %>%
+  modeltime_calibrate(testing(splits),  id = "id")
+
+submodels_calibrated_tbl
+
+# calculando acurácia
+submodels_calibrated_tbl %>% 
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = T)
+```
+
+### Visualização
+
+```{r, fig.height=8, fig.width=12}
+submodels_calibrated_tbl %>% 
+  modeltime_forecast(
+    new_data = testing(splits),
+    actual_data = vendas_prep,
+    keep_data = TRUE
+  ) %>%
+  group_by(id) %>% 
+  plot_modeltime_forecast(.facet_ncol = 2, .interactive = T)
+```
+
+### Otimização dos Parâmetros
+
+Inicialmente o modelo XGBoost foi o que se saiu melhor. Vamos tentar otimizar os parâmetros para melhorar as previsões. Para isso vamos tentar 2 métodos de validação cruzada: de séries temporais e vfold.
+
+```{r fig.width=15, message=FALSE, warning=FALSE}
+# workflow com hiperparametros
+wflw_tune_xgboost <- workflow() %>% 
+  add_model(
+    parsnip::boost_tree(mtry = tune(), trees = 1e3, tree_depth = tune(), learn_rate = tune()) %>% 
+      set_engine('xgboost') %>%
+      set_mode("regression")
+  ) %>% 
+  add_recipe(recipe_spec_2)
+
+# criar cross-validation para series temporais
+set.seed(123)
+
+resamples1 <- time_series_cv(
+  data        = training(splits) %>% drop_na(),
+  date_var    = Date,
+  cumulative  = TRUE,
+  assess      = "8 weeks",
+  skip        = "4 weeks",
+  slice_limit = 10
+)
+
+resamples2 <- vfold_cv(
+  data = training(splits),
+  v = 10
+)
+
+# Visualizar o plano de validação
+resamples1 %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(Date, Weekly_Sales, .facet_ncol = 2)
+
+resamples2 %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(Date, Weekly_Sales, .facet_ncol = 2)
+
+# Extrair parametros para otimização
+params <- parameters(wflw_tune_xgboost) %>%
+  finalize(testing(splits))
+
+# Criar grid de parametros
+grid <- grid_space_filling(x = params,
+                           size = 100)
+
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+# Otimização em Paralelo
+library(doParallel)
+cores <- parallel::detectCores()
+cl <- makePSOCKcluster(cores)
+registerDoParallel(cl)
+
+# Otimização com 'early-stop'
+tune_results1 <- wflw_tune_xgboost%>%
+  tune_race_anova(resamples = resamples1, 
+                  grid = grid, 
+                  metrics = metric_set(mae))
+
+tune_results2 <- wflw_tune_xgboost%>%
+  tune_race_anova(resamples = resamples2, 
+                  grid = grid, 
+                  metrics = metric_set(mae))
+
+```
+
+```{r, include=FALSE, eval=TRUE}
+tune_results1 <- readRDS("tune_results1")
+tune_results2 <- readRDS("tune_results2")
+```
+
+
+```{r,fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+# Visualizacao da 'corrida'
+plot_race(tune_results1)
+plot_race(tune_results2)
+
+# Melhores combinacoes de parametros
+show_best(tune_results1)
+show_best(tune_results2)
+
+# Finalizar os modelos com os parametros
+xgb_last1 <- finalize_workflow(x = wflw_tune_xgboost, 
+                              parameters = select_best(tune_results1)) %>%
+  fit(training(splits))
+
+xgb_last2 <- finalize_workflow(x = wflw_tune_xgboost, 
+                              parameters = select_best(tune_results2)) %>%
+  fit(training(splits))
+  
+# tabela modeltime
+xgb_table <- modeltime_table(xgb_last1, xgb_last2) %>%
+  mutate(.model_desc = ifelse(.model_id == 1, "Mod1", "Mod2"))
+
+# Calibrar resultados
+xgb_calibrated <- xgb_table %>%
+  modeltime_calibrate(testing(splits),  id = "id")
+
+# Tabela com resultados
+xgb_calibrated %>% 
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = T)
+
+# Visualizar modelos
+xgb_calibrated %>%
+  modeltime_forecast(
+    new_data = testing(splits),
+    actual_data = vendas_prep,
+    keep_data = TRUE
+  ) %>% 
+  group_by(id) %>% 
+  plot_modeltime_forecast(.facet_ncol = 2,.interactive = T)
+```
+
+### Melhor Modelo
+
+Os resultados dos dois modelos são bem parecidos, mas o modelo 1 (validação cruzada para séries temporais) se saiu um pouco melhor. Vamos agora treiná-lo no conjunto inteiro de dados e ver a projeção para o futuro
+
+```{r fig.width=8, fig.height=12, message=FALSE, warning=FALSE}
+# Selecionar modelo 1 e ajustar aos dados
+xgb_refit_tbl <- xgb_calibrated %>%
+  filter(.model_desc == "Mod1") %>%
+  modeltime_refit(vendas_prep)
+
+xgb_refit_tbl
+
+# Visualizar
+xgb_refit_tbl %>% 
+  modeltime_forecast(
+    new_data = future_tbl,
+    actual_data = vendas_prep,
+    keep_data = TRUE
+  ) %>% 
+  group_by(id) %>% 
+  plot_modeltime_forecast(.facet_ncol = 2, .interactive = T)
+```
+
+
+

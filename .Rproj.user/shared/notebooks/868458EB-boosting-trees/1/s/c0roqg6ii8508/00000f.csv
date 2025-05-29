@@ -1,0 +1,7 @@
+"0","# Substituindo os '?'s por NA"
+"0","cc_apps = cc_apps %>% mutate_all(~ifelse(. == ""?"", NA, .))"
+"0",""
+"0","#Mudando algumas variáveis que estão com a classe errada"
+"0","cc_apps = cc_apps %>% "
+"0","  mutate(X2 = as.numeric(X2),"
+"0","         X11 = as.numeric(X11))"

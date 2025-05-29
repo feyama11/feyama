@@ -1,0 +1,4 @@
+"0","doParallel::stopImplicitCluster(cl)
+"
+"2","Error in doParallel::stopImplicitCluster(cl) : unused argument (cl)
+"

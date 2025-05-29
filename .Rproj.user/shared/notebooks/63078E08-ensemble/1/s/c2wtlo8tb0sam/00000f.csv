@@ -1,0 +1,5 @@
+"0","with_features <- "
+"0","   workflow_set("
+"0","      preproc = list(full_quad = poly_recipe), "
+"0","      models = list(linear_reg = linear_reg_spec, KNN = knn_spec)"
+"0","   )"

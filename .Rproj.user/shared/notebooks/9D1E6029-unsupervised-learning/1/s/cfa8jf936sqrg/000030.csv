@@ -1,0 +1,8 @@
+"0",""
+"0","customer_data %>%"
+"0","  ggplot(aes(x = score)) +"
+"0","  geom_histogram(aes(y = ..density..), fill = ""#660033"", bins = 10, alpha = 0.5) +"
+"0","  geom_density(color = ""darkblue"", linewidth = 1.2, linetype = ""dashed"") +"
+"0","  theme_bw() +"
+"0","  scale_x_continuous(breaks = seq(0, 100, 20)) +"
+"0","  labs(x = ""Score"", y = ""Densidade"",title = ""Histograma do Score do consumidor"")"

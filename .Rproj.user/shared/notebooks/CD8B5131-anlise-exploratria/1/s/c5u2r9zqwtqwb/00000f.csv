@@ -1,0 +1,8 @@
+"0","identical("
+"0","  drop_columns(dados, c(""dst_dest"", ""tzone_dest"")),"
+"0","  drop_columns(dados, c(37, 38))"
+"0",")"
+"1","[1]"
+"1"," TRUE"
+"1","
+"

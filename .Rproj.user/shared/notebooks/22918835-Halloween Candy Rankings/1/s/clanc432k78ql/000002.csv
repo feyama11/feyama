@@ -1,0 +1,8 @@
+"0","```r
+last_fit = choc_mod %>%
+  last_fit(chocolate ~ . -competitorname, data = candy_rankings)
+
+```"
+"1","Warning: The `...` are not used in this function but one or more objects were passed: 'data'Error in last_fit_workflow(wflow, split, metrics, control) : 
+  argument \"split\" is missing, with no default
+"

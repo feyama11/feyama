@@ -1,0 +1,4 @@
+"0","permuted %>%"
+"0","  visualize() +"
+"0","  shade_p_value(obs_stat = qui2_calc, direction = 'greater', color = ""gray40"", lty = 2) +"
+"0","  theme_bw()"

@@ -1,0 +1,13 @@
+"0","race_results %>% 
+   extract_workflow(""boosting"") %>% 
+   finalize_workflow(best_results) %>% 
+   last_fit(split = concrete_split)
+"
+"1","# Resampling results
+"
+"1","#"
+"1"," "
+"1","Manual resampling"
+"1"," "
+"1","
+"

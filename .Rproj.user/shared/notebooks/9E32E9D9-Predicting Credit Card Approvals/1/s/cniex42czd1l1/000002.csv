@@ -1,0 +1,10 @@
+"0","```r
+# Carregando tidyverse
+library(tidyverse)
+
+# Carregando dados
+cc_apps = read_csv(\"cc_approvals.data.csv\", col_names = F)
+
+# Visualizando primeiras observações
+head(cc_apps)
+```"

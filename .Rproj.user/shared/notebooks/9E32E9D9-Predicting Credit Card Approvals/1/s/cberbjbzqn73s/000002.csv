@@ -1,0 +1,11 @@
+"0","```r
+#receita com a fómula e pré-processamentos necessários
+receita = recipe(X16~., cc_apps_trainamento) %>%
+  step_impute_mean(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  step_impute_mode(all_factor_predictors()) %>%
+  step_dummy(all_factor_predictors())
+
+#workflow inicial com a receita criada
+workflow = workflow() %>% add_recipe(receita)
+```"
