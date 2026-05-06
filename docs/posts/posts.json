@@ -51,6 +51,23 @@
     "input_file": "trabalhos-de-estatistica-multivariada.knit.md"
   },
   {
+    "path": "posts/2026-05-06-trabalho-de-series-temporais/",
+    "title": "Trabalho de Séries Temporais: Análise da Produção de Cavalinha",
+    "description": "Estudo da relação entre a quantidade pescada e a variação da temperatura utilizando modelos ARIMA, ETS e Redes Neurais (NNAR).",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nEste seminário apresenta uma análise detalhada da série temporal da produção de “Cavalinha” entre 2020 e 2024, explorando a sua tendência de crescimento e padrões sazonais anuais.\r\n\r\nRelatório Final: Modelagem e Previsão de Séries Temporais\r\n\r\n\r\nO trabalho destaca a superioridade do modelo ARIMAX (com regressor de temperatura) na previsão da produção, resultando numa redução de erro significativa em comparação com modelos univariados básicos. As principais conclusões incluem:\r\n\r\n\r\nTendência e Sazonalidade: Identificação de uma inclinação linear positiva e picos sazonais no início e fim de cada ano.\r\n\r\n\r\nImpacto Climático: A inclusão da temperatura como regressor melhorou a assertividade do modelo.\r\n\r\n\r\nProjeção Financeira: Estimativa de receita acumulada para o próximo semestre próxima de 56,7 bilhões de dólares.\r\n\r\n\r\n📥 Baixar relatorio_final.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:48:57-03:00",
+    "input_file": "trabalho-de-series-temporais.knit.md"
+  },
+  {
     "path": "posts/2025-05-29-calibration/",
     "title": "Calibração de Probabilidades",
     "description": "Como calibrar as probabilidades de um classificador usando os pacotes probably e tidymodels.",
