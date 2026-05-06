@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2026-05-06-trabalhos-de-minerao-de-dados/",
+    "title": "Trabalhos de Mineração de Dados",
+    "description": "Projetos práticos envolvendo classificação supervisionada, clusterização, regras de associação e análise de sentimentos.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nAbaixo estão os relatórios desenvolvidos para a disciplina. Clique nos títulos para expandir.\r\n\r\nTrabalho 1: Classificação Supervisionada\r\n\r\n\r\nRelatório focado no treinamento e avaliação de modelos de classificação supervisionada.\r\n\r\n\r\n📥 Baixar class.sup.pdf\r\n\r\n\r\n\r\n\r\n\r\nTrabalho 2: Aprendizado Não Supervisionado\r\n\r\n\r\nAnálise de clusters, regras de associação e análise de sentimentos.\r\n\r\n\r\n📥 Baixar cluster_assoc_sentim.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:06:54-03:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2025-05-29-calibration/",
     "title": "Calibração de Probabilidades",
     "description": "Como calibrar as probabilidades de um classificador usando os pacotes probably e tidymodels.",

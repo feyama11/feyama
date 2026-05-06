@@ -3,17 +3,17 @@
     {
       "path": "about.html",
       "title": "Sobre mim:",
-      "description": "Sou estudante de Estatística na Universidade Estadual de Maringá (UEM),\napaixonado por números e dados e em constante aprendizado na área.\n\nCursei medicina na UEM durante quase 4 anos, onde aprendi um pouco sobre a área da saúde e sobre pessoas. Porém tenho uma vocação muito maior para trabalhar com números e dados, então decidi mudar totalmente o rumo da minha vida profissional e estudar estatística.",
+      "description": "Sou estudante de Estatística na Universidade Estadual de Maringá (UEM),\napaixonado por números e dados e em constante aprendizado na área.",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2024-01-14T23:23:59-03:00"
+      "last_modified": "2025-05-29T17:19:12-03:00"
     },
     {
       "path": "index.html",
       "title": "Statistics & Data Science",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2024-01-14T23:24:03-03:00"
+      "last_modified": "2025-05-29T17:19:16-03:00"
     }
   ],
   "collections": ["posts/posts.json"]
