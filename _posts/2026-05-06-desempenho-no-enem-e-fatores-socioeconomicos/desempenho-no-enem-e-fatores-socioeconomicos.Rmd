@@ -1,0 +1,26 @@
+---
+title: "Desempenho no ENEM e Condições Socioeconômicas"
+description: |
+  Trabalho de Iniciação Científica: Uma análise estatística sobre os determinantes do desempenho dos estudantes de Maringá no ENEM 2023, utilizando Regressão Linear Múltipla.
+author:
+  - name: Felipe Yamamoto Tenedine
+date: 2026-05-07
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Este trabalho investiga como variáveis socioeconômicas, familiares e escolares influenciam as notas dos estudantes locais, utilizando Microdados do INEP.
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Relatório de Iniciação Científica: Análise ENEM 2023</summary>
+<div style="margin-top: 15px;">
+<p>O estudo emprega uma estratégia analítica dividida em fase exploratória e modelagem preditiva. As principais evidências encontradas incluem:</p>
+<ul>
+<li><b>Capital Familiar e Renda:</b> A escolaridade dos pais e a renda mensal familiar foram identificadas como os fatores isolados com maior poder preditivo.</li>
+<li><b>Desigualdades Estruturais:</b> Mesmo controlando por renda, variáveis de raça e tipo de escola (pública vs. privada) apresentaram impactos significativos nas notas médias.</li>
+<li><b>Acesso à Tecnologia:</b> O acesso à internet e a posse de computadores no domicílio resultaram em incrementos positivos expressivos no desempenho geral.</li>
+<p><a href="enem.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar enem.pdf</a></p>
+<iframe src="enem.pdf" width="100%" height="750px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>

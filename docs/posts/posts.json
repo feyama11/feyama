@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2026-05-06-desempenho-no-enem-e-fatores-socioeconomicos/",
+    "title": "Desempenho no ENEM e Condições Socioeconômicas",
+    "description": "Trabalho de Iniciação Científica: Uma análise estatística sobre os determinantes do desempenho dos estudantes de Maringá no ENEM 2023, utilizando Regressão Linear Múltipla.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-07",
+    "categories": [],
+    "contents": "\r\nEste trabalho investiga como variáveis socioeconômicas, familiares e escolares influenciam as notas dos estudantes locais, utilizando Microdados do INEP.\r\n\r\nRelatório de Iniciação Científica: Análise ENEM 2023\r\n\r\n\r\nO estudo emprega uma estratégia analítica dividida em fase exploratória e modelagem preditiva. As principais evidências encontradas incluem:\r\n\r\n\r\nCapital Familiar e Renda: A escolaridade dos pais e a renda mensal familiar foram identificadas como os fatores isolados com maior poder preditivo.\r\n\r\n\r\nDesigualdades Estruturais: Mesmo controlando por renda, variáveis de raça e tipo de escola (pública vs. privada) apresentaram impactos significativos nas notas médias.\r\n\r\n\r\nAcesso à Tecnologia: O acesso à internet e a posse de computadores no domicílio resultaram em incrementos positivos expressivos no desempenho geral.\r\n\r\n\r\n📥 Baixar enem.pdf\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:59:23-03:00",
+    "input_file": "desempenho-no-enem-e-fatores-socioeconomicos.knit.md"
+  },
+  {
     "path": "posts/2026-05-06-trabalhos-de-minerao-de-dados/",
     "title": "Trabalhos de Mineração de Dados",
     "description": "Projetos práticos envolvendo classificação supervisionada, clusterização, regras de associação e análise de sentimentos.",
