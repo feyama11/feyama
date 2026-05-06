@@ -17,6 +17,23 @@
     "input_file": {}
   },
   {
+    "path": "posts/2026-05-06-modelos-lineares-generalizados/",
+    "title": "Modelos Lineares Generalizados",
+    "description": "Relatório da Disciplina de Modelos Lineares Generalizados sobre análise de dados clínicos e identificação de fatores de risco associados a doenças cardíacas utilizando regressão logística.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nAbaixo está o relatório completo da disciplina. O estudo utiliza um Modelo Linear Generalizado com função de ligação logito para identificar características de risco, como sexo, resultados de fluoroscopia e talassemia, em uma amostra de pacientes. Clique no título para expandir e ler o documento.\r\n\r\nRelatório: Modelos Lineares Generalizados (Doença Cardíaca)\r\n\r\n\r\nDiagnóstico de adequação do modelo, análise de resíduos e interpretação das Razões de Chances (Odds Ratio) para os fatores de risco.\r\n\r\n\r\n📥 Baixar mlg2.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:29:03-03:00",
+    "input_file": "modelos-lineares-generalizados.knit.md"
+  },
+  {
     "path": "posts/2025-05-29-calibration/",
     "title": "Calibração de Probabilidades",
     "description": "Como calibrar as probabilidades de um classificador usando os pacotes probably e tidymodels.",
