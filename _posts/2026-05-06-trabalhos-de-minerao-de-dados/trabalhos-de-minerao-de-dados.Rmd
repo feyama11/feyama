@@ -1,0 +1,31 @@
+---
+title: "Trabalhos de Mineração de Dados"
+description: |
+  Projetos práticos envolvendo classificação supervisionada, clusterização, regras de associação e análise de sentimentos.
+author:
+  - name: Felipe Yamamoto Tenedine
+date: 2026-05-06
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Abaixo estão os relatórios desenvolvidos para a disciplina. Clique nos títulos para expandir.
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Trabalho 1: Classificação Supervisionada</summary>
+<div style="margin-top: 15px;">
+<p>Relatório focado no treinamento e avaliação de modelos de classificação supervisionada.</p>
+<p><a href="class.sup.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar class.sup.pdf</a></p>
+<iframe src="class.sup.pdf" width="100%" height="700px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Trabalho 2: Aprendizado Não Supervisionado</summary>
+<div style="margin-top: 15px;">
+<p>Análise de clusters, regras de associação e análise de sentimentos.</p>
+<p><a href="cluster_assoc_sentim.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar cluster_assoc_sentim.pdf</a></p>
+<iframe src="cluster_assoc_sentim.pdf" width="100%" height="700px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>
