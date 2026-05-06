@@ -1,0 +1,40 @@
+---
+title: "Estatística Multivariada"
+description: |
+  Trabalhos da disciplina de Estatística Multivariada. Análise aprofundada de dados de saúde cardiovascular utilizando técnicas de PCA, Análise Fatorial, Correspondência Múltipla e MANOVA.
+author:
+  - name: Felipe Yamamoto Tenedine
+date: 2026-05-06
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Nesta disciplina, exploramos diversas técnicas para analisar múltiplas variáveis simultaneamente em um banco de dados clínico. Abaixo estão os relatórios técnicos detalhados.
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Relatório 1: MANOVA e Comparação de Vetores Médios</summary>
+<div style="margin-top: 15px;">
+<p>Este trabalho foca na Análise de Variância Multivariada (MANOVA) e no teste T² de Hotelling para comparar o perfil fisiológico de pacientes doentes e saudáveis. Inclui testes de normalidade multivariada de Royston e intervalos de confiança simultâneos de Bonferroni.</p>
+<p><a href="mnorm.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar mnorm.pdf</a></p>
+<iframe src="mnorm.pdf" width="100%" height="750px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Relatório 2: PCA e Correlação de Variáveis</summary>
+<div style="margin-top: 15px;">
+<p>Análise de Componentes Principais (PCA) aplicada para redução de dimensionalidade. Os quatro primeiros componentes explicaram quase 81% da variância dos dados, revelando associações entre idade, saúde dos vasos e condições metabólicas.</p>
+<p><a href="pca.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar pca.pdf</a></p>
+<iframe src="pca.pdf" width="100%" height="750px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>
+
+<details style="margin-bottom: 20px; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; background-color: #f8f9fa;">
+<summary style="font-weight: bold; font-size: 1.1rem; cursor: pointer; color: #2c3e50;">Relatório 3: Análise Fatorial, MCA e MFA</summary>
+<div style="margin-top: 15px;">
+<p>Exploração de estruturas latentes e associação entre variáveis categóricas. O estudo utilizou Análise Fatorial (FA), Correspondência Múltipla (MCA) e Múltiplos Fatores (MFA) para distinguir perfis de saúde e doença, além de utilizar a técnica ROSE para balanceamento de dados.</p>
+<p><a href="fa.mca.mfa.pdf" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📥 Baixar fa.mca.mfa.pdf</a></p>
+<iframe src="fa.mca.mfa.pdf" width="100%" height="750px" style="border: 1px solid #ddd;"></iframe>
+</div>
+</details>

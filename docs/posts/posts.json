@@ -34,6 +34,23 @@
     "input_file": "modelos-lineares-generalizados.knit.md"
   },
   {
+    "path": "posts/2026-05-06-trabalhos-de-estatistica-multivariada/",
+    "title": "Estatística Multivariada",
+    "description": "Trabalhos da disciplina de Estatística Multivariada. Análise aprofundada de dados de saúde cardiovascular utilizando técnicas de PCA, Análise Fatorial, Correspondência Múltipla e MANOVA.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nNesta disciplina, exploramos diversas técnicas para analisar múltiplas variáveis simultaneamente em um banco de dados clínico. Abaixo estão os relatórios técnicos detalhados.\r\n\r\nRelatório 1: MANOVA e Comparação de Vetores Médios\r\n\r\n\r\nEste trabalho foca na Análise de Variância Multivariada (MANOVA) e no teste T² de Hotelling para comparar o perfil fisiológico de pacientes doentes e saudáveis. Inclui testes de normalidade multivariada de Royston e intervalos de confiança simultâneos de Bonferroni.\r\n\r\n\r\n📥 Baixar mnorm.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 2: PCA e Correlação de Variáveis\r\n\r\n\r\nAnálise de Componentes Principais (PCA) aplicada para redução de dimensionalidade. Os quatro primeiros componentes explicaram quase 81% da variância dos dados, revelando associações entre idade, saúde dos vasos e condições metabólicas.\r\n\r\n\r\n📥 Baixar pca.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 3: Análise Fatorial, MCA e MFA\r\n\r\n\r\nExploração de estruturas latentes e associação entre variáveis categóricas. O estudo utilizou Análise Fatorial (FA), Correspondência Múltipla (MCA) e Múltiplos Fatores (MFA) para distinguir perfis de saúde e doença, além de utilizar a técnica ROSE para balanceamento de dados.\r\n\r\n\r\n📥 Baixar fa.mca.mfa.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:35:04-03:00",
+    "input_file": "trabalhos-de-estatistica-multivariada.knit.md"
+  },
+  {
     "path": "posts/2025-05-29-calibration/",
     "title": "Calibração de Probabilidades",
     "description": "Como calibrar as probabilidades de um classificador usando os pacotes probably e tidymodels.",
