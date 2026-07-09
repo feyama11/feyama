@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2026-07-09-modelos-mistos-aplicados-a-precisao-de-equipamentos-hvi/",
+    "title": "Modelos Mistos Aplicados à Precisão de Equipamentos HVI",
+    "description": "Análise da variabilidade e precisão de equipamentos HVI e quais variáveis influenciam o Índice de Fibras Curtas (SFI) no algodão, utilizando Modelos Lineares de Efeitos Mistos (LMM).",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-07-09",
+    "categories": [],
+    "contents": "\r\nEste projeto foi desenvolvido como Relatório Final de Estágio Supervisionado, em parceria com a Associação Brasileira dos Produtores de Algodão (Abrapa). O estudo avalia a confiabilidade das medições de Instrumentos de Alto Volume (HVI) no âmbito do Programa Standard Brasil HVI.\r\n\r\n📊 Relatório Final de Estágio: Análise do SFI via Modelos Mistos\r\n\r\n\r\nO estudo analisa um expressivo conjunto de 8.010 medições realizadas por 89 máquinas em 15 laboratórios brasileiros, com o objetivo de identificar os fatores determinantes na variabilidade do Índice de Fibras Curtas (SFI). As principais abordagens técnicas incluem:\r\n\r\n\r\nModelagem de Efeitos Mistos (LMM): Utilização do pacote lme4 para decompor a variabilidade total. O modelo considerou o modelo da máquina, o laboratório e a idade do equipamento como efeitos fixos, enquanto a máquina individual e o lote foram tratados como efeitos aleatórios.\r\n\r\n\r\nFontes de Variabilidade: Os testes F (com aproximação de Satterthwaite) indicaram que o modelo e a idade da máquina não exercem efeito significativo sobre o desvio médio. Contudo, a máquina individual e o laboratório operativo são altamente relevantes.\r\n\r\n\r\nÍndice de Correlação Intraclasse (ICC): Demonstrou que aproximadamente 35% da variabilidade total é explicada pelas diferenças entre equipamentos individuais, evidenciando unidades descalibradas ou flutuações operacionais específicas por laboratório.\r\n\r\n\r\nAnálise Diagnóstica Residual: Avaliação por meio de gráficos Q-Q indicando desvios de normalidade nas caudas, sugerindo o desdobramento futuro para distribuições mais robustas (como a t de Student).\r\n\r\n\r\n📥 Baixar relatório_estagio.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-07-09T11:32:31-03:00",
+    "input_file": "modelos-mistos-aplicados-a-precisao-de-equipamentos-hvi.knit.md"
+  },
+  {
     "path": "posts/2026-05-06-desempenho-no-enem-e-fatores-socioeconomicos/",
     "title": "Desempenho no ENEM e Condições Socioeconômicas",
     "description": "Trabalho de Iniciação Científica: Uma análise estatística sobre os determinantes do desempenho dos estudantes de Maringá no ENEM 2023, utilizando Regressão Linear Múltipla.",
@@ -13,8 +30,59 @@
     "categories": [],
     "contents": "\r\nEste trabalho investiga como variáveis socioeconômicas, familiares e escolares influenciam as notas dos estudantes locais, utilizando Microdados do INEP.\r\n\r\nRelatório de Iniciação Científica: Análise ENEM 2023\r\n\r\n\r\nO estudo emprega uma estratégia analítica dividida em fase exploratória e modelagem preditiva. As principais evidências encontradas incluem:\r\n\r\n\r\nCapital Familiar e Renda: A escolaridade dos pais e a renda mensal familiar foram identificadas como os fatores isolados com maior poder preditivo.\r\n\r\n\r\nDesigualdades Estruturais: Mesmo controlando por renda, variáveis de raça e tipo de escola (pública vs. privada) apresentaram impactos significativos nas notas médias.\r\n\r\n\r\nAcesso à Tecnologia: O acesso à internet e a posse de computadores no domicílio resultaram em incrementos positivos expressivos no desempenho geral.\r\n\r\n\r\n📥 Baixar enem.pdf\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2026-05-06T15:59:23-03:00",
-    "input_file": "desempenho-no-enem-e-fatores-socioeconomicos.knit.md"
+    "last_modified": "2026-05-06T15:59:24-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2026-05-06-modelos-lineares-generalizados/",
+    "title": "Modelos Lineares Generalizados",
+    "description": "Relatório da Disciplina de Modelos Lineares Generalizados sobre análise de dados clínicos e identificação de fatores de risco associados a doenças cardíacas utilizando regressão logística.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nAbaixo está o relatório completo da disciplina. O estudo utiliza um Modelo Linear Generalizado com função de ligação logito para identificar características de risco, como sexo, resultados de fluoroscopia e talassemia, em uma amostra de pacientes. Clique no título para expandir e ler o documento.\r\n\r\nRelatório: Modelos Lineares Generalizados (Doença Cardíaca)\r\n\r\n\r\nDiagnóstico de adequação do modelo, análise de resíduos e interpretação das Razões de Chances (Odds Ratio) para os fatores de risco.\r\n\r\n\r\n📥 Baixar mlg2.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:29:04-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2026-05-06-trabalho-de-series-temporais/",
+    "title": "Trabalho de Séries Temporais: Análise da Produção de Cavalinha",
+    "description": "Estudo da relação entre a quantidade pescada e a variação da temperatura utilizando modelos ARIMA, ETS e Redes Neurais (NNAR).",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nEste seminário apresenta uma análise detalhada da série temporal da produção de “Cavalinha” entre 2020 e 2024, explorando a sua tendência de crescimento e padrões sazonais anuais.\r\n\r\nRelatório Final: Modelagem e Previsão de Séries Temporais\r\n\r\n\r\nO trabalho destaca a superioridade do modelo ARIMAX (com regressor de temperatura) na previsão da produção, resultando numa redução de erro significativa em comparação com modelos univariados básicos. As principais conclusões incluem:\r\n\r\n\r\nTendência e Sazonalidade: Identificação de uma inclinação linear positiva e picos sazonais no início e fim de cada ano.\r\n\r\n\r\nImpacto Climático: A inclusão da temperatura como regressor melhorou a assertividade do modelo.\r\n\r\n\r\nProjeção Financeira: Estimativa de receita acumulada para o próximo semestre próxima de 56,7 bilhões de dólares.\r\n\r\n\r\n📥 Baixar relatorio_final.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:48:58-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2026-05-06-trabalhos-de-estatistica-multivariada/",
+    "title": "Estatística Multivariada",
+    "description": "Trabalhos da disciplina de Estatística Multivariada. Análise aprofundada de dados de saúde cardiovascular utilizando técnicas de PCA, Análise Fatorial, Correspondência Múltipla e MANOVA.",
+    "author": [
+      {
+        "name": "Felipe Yamamoto Tenedine",
+        "url": {}
+      }
+    ],
+    "date": "2026-05-06",
+    "categories": [],
+    "contents": "\r\nNesta disciplina, exploramos diversas técnicas para analisar múltiplas variáveis simultaneamente em um banco de dados clínico. Abaixo estão os relatórios técnicos detalhados.\r\n\r\nRelatório 1: MANOVA e Comparação de Vetores Médios\r\n\r\n\r\nEste trabalho foca na Análise de Variância Multivariada (MANOVA) e no teste T² de Hotelling para comparar o perfil fisiológico de pacientes doentes e saudáveis. Inclui testes de normalidade multivariada de Royston e intervalos de confiança simultâneos de Bonferroni.\r\n\r\n\r\n📥 Baixar mnorm.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 2: PCA e Correlação de Variáveis\r\n\r\n\r\nAnálise de Componentes Principais (PCA) aplicada para redução de dimensionalidade. Os quatro primeiros componentes explicaram quase 81% da variância dos dados, revelando associações entre idade, saúde dos vasos e condições metabólicas.\r\n\r\n\r\n📥 Baixar pca.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 3: Análise Fatorial, MCA e MFA\r\n\r\n\r\nExploração de estruturas latentes e associação entre variáveis categóricas. O estudo utilizou Análise Fatorial (FA), Correspondência Múltipla (MCA) e Múltiplos Fatores (MFA) para distinguir perfis de saúde e doença, além de utilizar a técnica ROSE para balanceamento de dados.\r\n\r\n\r\n📥 Baixar fa.mca.mfa.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2026-05-06T15:35:05-03:00",
+    "input_file": {}
   },
   {
     "path": "posts/2026-05-06-trabalhos-de-minerao-de-dados/",
@@ -32,57 +100,6 @@
     "preview": {},
     "last_modified": "2026-05-06T15:06:54-03:00",
     "input_file": {}
-  },
-  {
-    "path": "posts/2026-05-06-modelos-lineares-generalizados/",
-    "title": "Modelos Lineares Generalizados",
-    "description": "Relatório da Disciplina de Modelos Lineares Generalizados sobre análise de dados clínicos e identificação de fatores de risco associados a doenças cardíacas utilizando regressão logística.",
-    "author": [
-      {
-        "name": "Felipe Yamamoto Tenedine",
-        "url": {}
-      }
-    ],
-    "date": "2026-05-06",
-    "categories": [],
-    "contents": "\r\nAbaixo está o relatório completo da disciplina. O estudo utiliza um Modelo Linear Generalizado com função de ligação logito para identificar características de risco, como sexo, resultados de fluoroscopia e talassemia, em uma amostra de pacientes. Clique no título para expandir e ler o documento.\r\n\r\nRelatório: Modelos Lineares Generalizados (Doença Cardíaca)\r\n\r\n\r\nDiagnóstico de adequação do modelo, análise de resíduos e interpretação das Razões de Chances (Odds Ratio) para os fatores de risco.\r\n\r\n\r\n📥 Baixar mlg2.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2026-05-06T15:29:03-03:00",
-    "input_file": "modelos-lineares-generalizados.knit.md"
-  },
-  {
-    "path": "posts/2026-05-06-trabalhos-de-estatistica-multivariada/",
-    "title": "Estatística Multivariada",
-    "description": "Trabalhos da disciplina de Estatística Multivariada. Análise aprofundada de dados de saúde cardiovascular utilizando técnicas de PCA, Análise Fatorial, Correspondência Múltipla e MANOVA.",
-    "author": [
-      {
-        "name": "Felipe Yamamoto Tenedine",
-        "url": {}
-      }
-    ],
-    "date": "2026-05-06",
-    "categories": [],
-    "contents": "\r\nNesta disciplina, exploramos diversas técnicas para analisar múltiplas variáveis simultaneamente em um banco de dados clínico. Abaixo estão os relatórios técnicos detalhados.\r\n\r\nRelatório 1: MANOVA e Comparação de Vetores Médios\r\n\r\n\r\nEste trabalho foca na Análise de Variância Multivariada (MANOVA) e no teste T² de Hotelling para comparar o perfil fisiológico de pacientes doentes e saudáveis. Inclui testes de normalidade multivariada de Royston e intervalos de confiança simultâneos de Bonferroni.\r\n\r\n\r\n📥 Baixar mnorm.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 2: PCA e Correlação de Variáveis\r\n\r\n\r\nAnálise de Componentes Principais (PCA) aplicada para redução de dimensionalidade. Os quatro primeiros componentes explicaram quase 81% da variância dos dados, revelando associações entre idade, saúde dos vasos e condições metabólicas.\r\n\r\n\r\n📥 Baixar pca.pdf\r\n\r\n\r\n\r\n\r\n\r\nRelatório 3: Análise Fatorial, MCA e MFA\r\n\r\n\r\nExploração de estruturas latentes e associação entre variáveis categóricas. O estudo utilizou Análise Fatorial (FA), Correspondência Múltipla (MCA) e Múltiplos Fatores (MFA) para distinguir perfis de saúde e doença, além de utilizar a técnica ROSE para balanceamento de dados.\r\n\r\n\r\n📥 Baixar fa.mca.mfa.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2026-05-06T15:35:04-03:00",
-    "input_file": "trabalhos-de-estatistica-multivariada.knit.md"
-  },
-  {
-    "path": "posts/2026-05-06-trabalho-de-series-temporais/",
-    "title": "Trabalho de Séries Temporais: Análise da Produção de Cavalinha",
-    "description": "Estudo da relação entre a quantidade pescada e a variação da temperatura utilizando modelos ARIMA, ETS e Redes Neurais (NNAR).",
-    "author": [
-      {
-        "name": "Felipe Yamamoto Tenedine",
-        "url": {}
-      }
-    ],
-    "date": "2026-05-06",
-    "categories": [],
-    "contents": "\r\nEste seminário apresenta uma análise detalhada da série temporal da produção de “Cavalinha” entre 2020 e 2024, explorando a sua tendência de crescimento e padrões sazonais anuais.\r\n\r\nRelatório Final: Modelagem e Previsão de Séries Temporais\r\n\r\n\r\nO trabalho destaca a superioridade do modelo ARIMAX (com regressor de temperatura) na previsão da produção, resultando numa redução de erro significativa em comparação com modelos univariados básicos. As principais conclusões incluem:\r\n\r\n\r\nTendência e Sazonalidade: Identificação de uma inclinação linear positiva e picos sazonais no início e fim de cada ano.\r\n\r\n\r\nImpacto Climático: A inclusão da temperatura como regressor melhorou a assertividade do modelo.\r\n\r\n\r\nProjeção Financeira: Estimativa de receita acumulada para o próximo semestre próxima de 56,7 bilhões de dólares.\r\n\r\n\r\n📥 Baixar relatorio_final.pdf\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2026-05-06T15:48:57-03:00",
-    "input_file": "trabalho-de-series-temporais.knit.md"
   },
   {
     "path": "posts/2025-05-29-calibration/",
